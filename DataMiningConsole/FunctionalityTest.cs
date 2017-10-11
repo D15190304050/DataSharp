@@ -10,6 +10,18 @@ namespace DataMiningConsole
 {
     internal static class FunctionalityTest
     {
+        public static void PrintArray<T>(T[] array)
+        {
+            foreach (T t in array)
+                Console.Write(t + " ");
+        }
+
+        public static void PrintArrayLines<T>(T[] array)
+        {
+            foreach (T t in array)
+                Console.WriteLine(t);
+        }
+
         public static void SetEqualityTest()
         {
             int[] values = { 1, 2, 3, 4 };
@@ -71,30 +83,46 @@ namespace DataMiningConsole
 
         }
 
-        private static void Combinations<T>(T[] a, T[] selected, int n, LinkedList<T[]> combinations)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <Remarks>
+        /// This method should be tested using reference types, so that some kind of errors will indicates the bug.
+        /// </Remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <param name="combination"></param>
+        /// <param name="numSelection"></param>
+        /// <param name="combinations"></param>
+        private static void Combinations<T>(T[] a, int[] combination, int numSelection, LinkedList<T[]> combinations)
         {
-            if (selected.Length == n)
+            while (HasNextCombination(combination, numSelection))
             {
-                T[] combination = new T[n];
-                for (int i = 0; i < n; i++)
-                    combination[i] = selected[i];
-                combinations.AddLast(combination);
-            }
-            else
-            {
+                int count = 0;
+                int i = 0;
+                int j = 0;
+
+                T[] nextCombination = new T[numSelection];
+                for (i = 0; i < a.Length; i++)
+                {
+                    if (combination[i] == 1)
+                        nextCombination[j++] = a[i];
+                }
+                combinations.AddLast(nextCombination);
+
 
             }
         }
 
-        public static void CombinationTest()
+        private static bool HasNextCombination(int[] combination, int numSelection)
         {
-            int[] values = { 1, 2, 3, 4, 5 };
-            int total = 5;
-            int n = 3;
-
-
+            for (int i = 0; i < numSelection; i++)
+            {
+                if (combination[i] == 1)
+                    return true;
+            }
+            return false;
         }
-
         
     }
 }
