@@ -87,7 +87,7 @@ namespace DataMiningConsole
             // Traverse through the frequent (k-1)-itemsets.
             for (int i = 0; i < itemsets.Length - 1; i++)
             {
-                for (int j = i + 1; j < itemsets.Length; i++)
+                for (int j = i + 1; j < itemsets.Length; j++)
                 {
                     // Get 2 frequent (k-1)-itemsets.
                     SortedSet<string> frequentItemset1 = itemsets[i];
@@ -118,6 +118,9 @@ namespace DataMiningConsole
             return candidateItemsets;
         }
 
+        /// <summary>
+        /// Build the transacton sets using the connection and query command configured by developer.
+        /// </summary>
         private void BuildTransactionSets()
         {
             // Throw an exception if the SqlConnection and CommandText are not configured correcetly.
@@ -169,6 +172,10 @@ namespace DataMiningConsole
             }
         }
 
+        /// <summary>
+        /// Returns true if the current configuration of the SqlConnction and the CommandText is executable, false otherwise.
+        /// </summary>
+        /// <returns>True if the current configuration of the SqlConnction and the CommandText is executable, false otherwise.</returns>
         private bool CanQuery()
         {
             if (connection == null)
@@ -183,19 +190,65 @@ namespace DataMiningConsole
             return true;
         }
 
+        /// <summary>
+        /// Computes all the frequent k-itemsets from the transactions extracted before.
+        /// </summary>
         public void ComputeFrequentItemsets()
         {
+            BuildTransactionSets();
 
+            // Get the frequent 1-itemsets.
+            LinkedList<SortedSet<string>> nextFrequentItemsets = ComputeFrequentOneItemsets();
+
+            // Loop until find the frequent itemsets that can not contain any more item.
+            while (nextFrequentItemsets.Count != 0)
+            {
+                // Add the frequent 1-itemsets to the collection of frequent itemsets.
+                frequentItemsets.AddLast(nextFrequentItemsets);
+
+                // Get the next candidateItemsets.
+                Dictionary<SortedSet<string>, int> nextCandidateItemsets = GenerateNextCandidates(nextFrequentItemsets);
+
+                // Traverese through all the candidate k-itemsets.
+                foreach (KeyValuePair<SortedSet<string>, int> candidate in nextCandidateItemsets)
+                {
+                    // Update the counter if the itemset is a subset (not strictly) of some transaction.
+                    foreach (SortedSet<string> s in transactions)
+                    {
+                        // Write operation is forbidden in the foreach-clause, so we use indexer here.
+                        if (candidate.Key.IsSubsetOf(s))
+                            nextCandidateItemsets[candidate.Key]++;
+                    }
+                }
+
+                // Extract itemsets with occurance greater than the minimum support count.
+                var extractedItemsets =
+                    from c in nextCandidateItemsets
+                    where c.Value >= minSupportCount
+                    select c.Key;
+
+                // Generate next frequent k-itemsets.
+                nextFrequentItemsets = new LinkedList<SortedSet<string>>(extractedItemsets);
+            }
         }
 
-        private void ComputeFrequentOneItemsets()
+        /// <summary>
+        /// Computes the frequent 1-itemsets from the transactions extracted before.
+        /// </summary>
+        /// <returns>The frequent 1-itemsets from the transactions extracted before.</returns>
+        private LinkedList<SortedSet<string>> ComputeFrequentOneItemsets()
         {
+            // Initialize an empty Dictionary<string, int> instance to count the occurance of every kind of items.
             Dictionary<string, int> oneItemsets = new Dictionary<string, int>();
 
+            // Scan each transaction.
             foreach (SortedSet<string> set in transactions)
             {
+                // Scan every single item in a transaction.
                 foreach (string s in set)
                 {
+                    // Add the item to the dictionary when first meet it.
+                    // Update the counter otherwise.
                     if (!oneItemsets.ContainsKey(s))
                         oneItemsets[s] = 1;
                     else
@@ -203,14 +256,19 @@ namespace DataMiningConsole
                 }
             }
 
-            var frequentOneItemsets =
+            // Extract all the items with occurance greater than the minimum support count.
+            var extractedOneItemsets =
                 from c in oneItemsets
-                where c.Value > minSupportCount
+                where c.Value >= minSupportCount
                 select c.Key;
 
-            //LinkedList<SortedSet<string>>
+            // Generate the frequent 1-itemsets and add them to a LinkedList<Sorted<string>>.
+            LinkedList<SortedSet<string>> frequentOneItemsets = new LinkedList<SortedSet<string>>();
+            foreach (string s in extractedOneItemsets)
+                frequentOneItemsets.AddLast(new SortedSet<string>() { s });
 
-            //frequentItemsets.AddLast(new );
+            // Return the frequent 1-itemsets.
+            return frequentOneItemsets;
         }
     }
 }
