@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mathematics;
 
-namespace DataMiningConsole
+namespace Mathematics
 {
     public class Program
     {
         public static int Main(string[] args)
         {
-            //FunctionalityTest.StringHashTest();
-            FunctionalityTest.FrequencyCounter();
+            //FunctionalityTest.SetEqualityTest();
+            //FunctionalityTest.BuildSetsDemo();
+            //FunctionalityTest.CombinationsFunctionalityTest();
+            //FunctionalityTest.GetSubsetsDemo();
+            //FunctionalityTest.SetRemovalTest();
+
+            string[] s = new string[1];
+            s[0] = "123";
+            Console.WriteLine(s[0]);
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");
