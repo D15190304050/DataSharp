@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Mathematics
 {
+    /// <summary>
+    /// The CombinationHelper class provides a static method for computing the combinations of a speified array with the specified number of element to be extracted.
+    /// </summary>
     public static class CombinationHelper
     {
         /// <summary>

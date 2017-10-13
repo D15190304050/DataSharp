@@ -185,5 +185,21 @@ namespace Mathematics
             foreach (string[] s in combinations)
                 PrintIEnumerable(s);
         }
+
+        /// <summary>
+        /// Functionality test function for the SetHelper.GetAllSubsets() method.
+        /// </summary>
+        public static void AllSubsetsDemo()
+        {
+            int[] values = { 1, 2, 3, 4, 5 };
+            SortedSet<int> set = new SortedSet<int>(values);
+
+            foreach (ISet<int> s in SetHelper.GetAllSubsets(set))
+            {
+                foreach (int i in s)
+                    Console.Write(i + " ");
+                Console.WriteLine();
+            }
+        }
     }
 }

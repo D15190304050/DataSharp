@@ -15,10 +15,7 @@ namespace Mathematics
             //FunctionalityTest.CombinationsFunctionalityTest();
             //FunctionalityTest.GetSubsetsDemo();
             //FunctionalityTest.SetRemovalTest();
-
-            string[] s = new string[1];
-            s[0] = "123";
-            Console.WriteLine(s[0]);
+            //FunctionalityTest.AllSubsetsDemo();
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");

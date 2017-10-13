@@ -47,6 +47,9 @@ namespace DataMiningConsole
                 Console.WriteLine(kvp);
         }
 
+        /// <summary>
+        /// This function tries to find a way to update Value in Dictionary&lt;TKey, TValue> when traverse through it.
+        /// </summary>
         public static void DictionaryUpdateDemo()
         {
             string[] strings = { "123", "456", "789", "111", "222", "333" };
@@ -66,8 +69,21 @@ namespace DataMiningConsole
                 }
             }
 
+            string[] subset = { "123", "456", "789" };
+
             KeyValuePair<string, int>[] kvps = frequency.ToArray();
             for (int i = 0; i < kvps.Length; i++)
+            {
+                string key = kvps[i].Key;
+                foreach (string s in subset)
+                {
+                    if (key.Equals(s))
+                        frequency[key]++;
+                }
+            }
+
+            foreach (KeyValuePair<string, int> kvp in frequency)
+                Console.WriteLine(kvp);
         }
     }
 }

@@ -9,42 +9,100 @@ using Mathematics;
 
 namespace DataMiningConsole
 {
+    /// <summary>
+    /// The AprioriSqlServer class represents the solver of the Apriori algorith applied to SQL Server.
+    /// </summary>
+    /// <remarks>
+    /// This class provides member methods for computing the frequent itemsets using the Apriori algorithm.
+    /// </remarks>
     public class AprioriSqlServer
     {
+        /// <summary>
+        /// The minimum support count for the specified frequent itemsets problem.
+        /// </summary>
         private int minSupportCount;
 
+        /// <summary>
+        /// Gets or sets the minimum support count.
+        /// </summary>
+        /// <remarks>
+        /// Any itemset with occurance greater than or euqal to the minimum support count will be regarded as a frequent itemset.
+        /// </remarks>
         public int MinSupportCount
         {
             get { return minSupportCount; }
             set { minSupportCount = value; }
         }
 
+        /// <summary>
+        /// The SQL Server connection.
+        /// </summary>
         private SqlConnection connection;
 
+        /// <summary>
+        /// Gets or sets the SQL Server connection.
+        /// </summary>
         public SqlConnection Connection
         {
             get { return connection; }
             set { connection = value; }
         }
 
+        /// <summary>
+        /// The SQL command text that will be used to extrace shoppling lists.
+        /// </summary>
         private string cmdText;
 
+        /// <summary>
+        /// Gets or sets the SQL command text that will be used to extract shoppling lists.
+        /// </summary>
         public string CommandText
         {
             get { return cmdText; }
             set { cmdText = value; }
         }
 
-        private LinkedList<LinkedList<SortedSet<string>>> frequentItemsets;
+        /// <summary>
+        /// The SqlCommand that will be used to extract shoppling lists.
+        /// </summary>
+        private SqlCommand cmd;
+        
+        /// <summary>
+        /// A LinkedList&lt;T> instance that stores all the frequent itemsets extracted by the Apriori algorithm.
+        /// </summary>
+        /// <remarks>
+        /// The SortedSet&lt;string> class here represents the itemset that stores k items where k = 1, 2, 3, ...
+        /// The Dictionary&lt;SortedSet&lt;string>, int> class here represents the collection of the KeyValuePair that associate the itemset with its occurance.
+        /// The LinkedList&lt;Dictionary&lt;SortedSet&lt;string>, int>> class here represents the collection of the Dictionary&lt;TKey, TValue> mentioned above.
+        /// </remarks>
+        private LinkedList<Dictionary<SortedSet<string>, int>> frequentItemsets;
 
+        /// <summary>
+        /// Gets the frequent itemsets extracted by the Apriori algorithm.
+        /// </summary>
+        /// <remarks>
+        /// The SortedSet&lt;string> class here represents the itemset that stores k items where k = 1, 2, 3, ...
+        /// The Dictionary&lt;SortedSet&lt;string>, int> class here represents the collection of the KeyValuePair that associate the itemset with its occurance.
+        /// The Dictionary&lt;SortedSet&lt;string>, int>[] class here represents the collection of the Dictionary&lt;TKey, TValue> mentioned above.
+        /// </remarks>
+        public Dictionary<SortedSet<string>, int>[] FrequentItemsets { get { return frequentItemsets.ToArray(); } }
+
+        /// <summary>
+        /// A LinkedList&lt;T> instance that stores all the sets of items in the data table.
+        /// </summary>
+        /// <remarks>
+        /// The SortedSet&lt;string> class here represents a collection of items in a shopping list.
+        /// </remarks>
         private LinkedList<SortedSet<string>> transactions;
 
-        public LinkedList<SortedSet<string>>[] FrequentItemsets { get { return frequentItemsets.ToArray(); } }
-
+        /// <summary>
+        /// Initialize a new Apriori solver for the database of SQL Server.
+        /// </summary>
         public AprioriSqlServer()
         {
-            frequentItemsets = new LinkedList<LinkedList<SortedSet<string>>>();
+            frequentItemsets = new LinkedList<Dictionary<SortedSet<string>, int>>();
             transactions = new LinkedList<SortedSet<string>>();
+            cmd = new SqlCommand();
         }
 
         /// <summary>
@@ -53,7 +111,7 @@ namespace DataMiningConsole
         /// <param name="candidate">A candicate itemset with k items.</param>
         /// <param name="frequentItemsets">A collection that contains all frequent (k-1)-itemsets.</param>
         /// <returns>True if there is a (k-1)-itemset of the candidate itmesets that is not in the frequent (k-1)-itemsets.</returns>
-        private static bool HasInfrequentSubset(SortedSet<string> potentialCandidateItemset, LinkedList<SortedSet<string>> frequentItemsets)
+        private static bool HasInfrequentSubset(SortedSet<string> potentialCandidateItemset, IEnumerable<SortedSet<string>> frequentItemsets)
         {
             // Get the value of (k-1).
             int numSelection = potentialCandidateItemset.Count - 1;
@@ -76,7 +134,7 @@ namespace DataMiningConsole
         /// </summary>
         /// <param name="frequentItemsets">The frequent (k-1)-itemsets.</param>
         /// <returns>Candidate itemsets with k items</returns>
-        private static Dictionary<SortedSet<string>, int> GenerateNextCandidates(LinkedList<SortedSet<string>> frequentItemsets)
+        private static Dictionary<SortedSet<string>, int> GenerateNextCandidates(IEnumerable<SortedSet<string>> frequentItemsets)
         {
             // Initialize an empty Dictionary<SortedSet<string>, int> instance to store the candidate itemsets.
             Dictionary<SortedSet<string>, int> candidateItemsets = new Dictionary<SortedSet<string>, int>();
@@ -107,6 +165,9 @@ namespace DataMiningConsole
                         string[] item = delta.ToArray();
                         potentialCandidateItemset.Add(item[0]);
 
+                        if (SetHelper.ContainsSet(candidateItemsets.Keys, potentialCandidateItemset))
+                            continue;
+
                         // Add this potential candidate itemset to the collection of candidate k-itemsets if its every subset with (k-1) elements is contained in the frequent (k-1)-itemsets.
                         if (!HasInfrequentSubset(potentialCandidateItemset, frequentItemsets))
                             candidateItemsets.Add(potentialCandidateItemset, 0);
@@ -127,8 +188,9 @@ namespace DataMiningConsole
             if (!CanQuery())
                 throw new AggregateException("You must configure the SqlConnection and CommandText correctly.");
 
-            // Initialize a SqlCommand instance that represents the query command will be executed.
-            SqlCommand cmd = new SqlCommand(cmdText, connection);
+            // Configure the SqlCommand instance before execute the query command.
+            cmd.CommandText = cmdText;
+            cmd.Connection = connection;
 
             // A linked list to store all the transactions.
             LinkedList<string> lists = new LinkedList<string>();
@@ -178,15 +240,20 @@ namespace DataMiningConsole
         /// <returns>True if the current configuration of the SqlConnction and the CommandText is executable, false otherwise.</returns>
         private bool CanQuery()
         {
+            // Return false if the connection is null.
             if (connection == null)
                 return false;
 
-            if (connection.ConnectionString.Equals(""))
+            // Returns false if the connection string is null or empty.
+            string connString = connection.ConnectionString;
+            if ((connString == null) || (connString.Equals("")))
                 return false;
 
+            // Returns false if the command text is null or empty.
             if ((cmdText == null) || (cmdText.Equals("")))
                 return false;
 
+            // Return true if the SQL Server connection and the command text are configured.
             return true;
         }
 
@@ -195,10 +262,12 @@ namespace DataMiningConsole
         /// </summary>
         public void ComputeFrequentItemsets()
         {
+            // Extract all the transactions and store them before computing.
             BuildTransactionSets();
-
-            // Get the frequent 1-itemsets.
-            LinkedList<SortedSet<string>> nextFrequentItemsets = ComputeFrequentOneItemsets();
+            
+            // The nextFrequentItemsets variable tracks the frequent itemsets with the largest k we archived during the processing.
+            // The k is 1 at first.
+            Dictionary<SortedSet<string>, int> nextFrequentItemsets = ComputeFrequentOneItemsets();
 
             // Loop until find the frequent itemsets that can not contain any more item.
             while (nextFrequentItemsets.Count != 0)
@@ -207,28 +276,41 @@ namespace DataMiningConsole
                 frequentItemsets.AddLast(nextFrequentItemsets);
 
                 // Get the next candidateItemsets.
-                Dictionary<SortedSet<string>, int> nextCandidateItemsets = GenerateNextCandidates(nextFrequentItemsets);
+                Dictionary<SortedSet<string>, int> nextCandidateItemsets = GenerateNextCandidates(nextFrequentItemsets.Keys);
 
                 // Traverese through all the candidate k-itemsets.
-                foreach (KeyValuePair<SortedSet<string>, int> candidate in nextCandidateItemsets)
+                // Write operation is forbidden in the foreach-clause, but it is necessary to update the counter of the occurace of every candidate itemset.
+                // So, use the IEnumberable<T>.ToArray() method to create an array that contains the same contents, 
+                // and then we traverse through the array and update the counter.
+                KeyValuePair<SortedSet<string>, int>[] candidates = nextCandidateItemsets.ToArray();
+                for (int i = 0; i < candidates.Length; i++)
                 {
+                    // Get the itemset as a key that will be used.
+                    SortedSet<string> key = candidates[i].Key;
+
                     // Update the counter if the itemset is a subset (not strictly) of some transaction.
                     foreach (SortedSet<string> s in transactions)
                     {
-                        // Write operation is forbidden in the foreach-clause, so we use indexer here.
-                        if (candidate.Key.IsSubsetOf(s))
-                            nextCandidateItemsets[candidate.Key]++;
+                        if (key.IsSubsetOf(s))
+                            nextCandidateItemsets[key]++;
                     }
                 }
 
                 // Extract itemsets with occurance greater than the minimum support count.
+                // This LINQ expression will be explained in the document.
                 var extractedItemsets =
                     from c in nextCandidateItemsets
                     where c.Value >= minSupportCount
-                    select c.Key;
+                    select new { Key = c.Key, Value = c.Value };
 
                 // Generate next frequent k-itemsets.
-                nextFrequentItemsets = new LinkedList<SortedSet<string>>(extractedItemsets);
+                // Create the Dictionary<TKey, TValue> object from the itemsets extracted above.
+                Dictionary<SortedSet<string>, int> extractedFrequentItemsets = new Dictionary<SortedSet<string>, int>();
+                foreach (var itemset in extractedItemsets)
+                    extractedFrequentItemsets.Add(itemset.Key, itemset.Value);
+
+                // Update the nextFrequentItemsets with the max-k archived.
+                nextFrequentItemsets = extractedFrequentItemsets;
             }
         }
 
@@ -236,7 +318,7 @@ namespace DataMiningConsole
         /// Computes the frequent 1-itemsets from the transactions extracted before.
         /// </summary>
         /// <returns>The frequent 1-itemsets from the transactions extracted before.</returns>
-        private LinkedList<SortedSet<string>> ComputeFrequentOneItemsets()
+        private Dictionary<SortedSet<string>, int> ComputeFrequentOneItemsets()
         {
             // Initialize an empty Dictionary<string, int> instance to count the occurance of every kind of items.
             Dictionary<string, int> oneItemsets = new Dictionary<string, int>();
@@ -257,15 +339,19 @@ namespace DataMiningConsole
             }
 
             // Extract all the items with occurance greater than the minimum support count.
+            // This LINQ expression will be explained in the document.
             var extractedOneItemsets =
                 from c in oneItemsets
                 where c.Value >= minSupportCount
-                select c.Key;
+                select new { Key = c.Key, Value = c.Value };
 
             // Generate the frequent 1-itemsets and add them to a LinkedList<Sorted<string>>.
-            LinkedList<SortedSet<string>> frequentOneItemsets = new LinkedList<SortedSet<string>>();
-            foreach (string s in extractedOneItemsets)
-                frequentOneItemsets.AddLast(new SortedSet<string>() { s });
+            Dictionary<SortedSet<string>, int> frequentOneItemsets = new Dictionary<SortedSet<string>, int>();
+            foreach (var itemset in extractedOneItemsets)
+            {
+                SortedSet<string> items = new SortedSet<string> { itemset.Key };
+                frequentOneItemsets.Add(items, itemset.Value);
+            }
 
             // Return the frequent 1-itemsets.
             return frequentOneItemsets;

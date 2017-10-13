@@ -6,20 +6,23 @@ using System.Threading.Tasks;
 
 namespace Mathematics
 {
+    /// <summary>
+    /// The SetHelper class provides static method for supporting some frequent set operations.
+    /// </summary>
     public static class SetHelper
     {
         /// <summary>
         /// Returns a collection that contains all the subsets of the input set with specified number of elements.
         /// </summary>
+        /// <remarks>
+        /// This method is suitable for the developer-defined class that implements the ISet&lt;T> interface.
+        /// </remarks>
         /// <typeparam name="T">The type of elements in the set.</typeparam>
         /// <param name="set">The input set.</param>
         /// <param name="numSelection">The number of elements in every subset to be generated.</param>
         /// <returns>A collection that contains all the subsets of the input set with specified number of elements.</returns>
         public static IEnumerable<ISet<T>> GetSubsets<T>(ISet<T> set, int numSelection)
         {
-            // Remarks :
-            // This method is suitable for the developer-defined class that implements the ISet<T> interface.
-
             // Get the array format of the set.
             T[] values = set.ToArray();
 
@@ -38,15 +41,15 @@ namespace Mathematics
         /// <summary>
         /// Returns a collection that contains all the subsets of the input set with specified number of elements.
         /// </summary>
+        /// <remarks>
+        /// This method is suitable for the SortedSet&lt;T> class.
+        /// </remarks>
         /// <typeparam name="T">The type of elements in the set.</typeparam>
         /// <param name="set">The input set.</param>
         /// <param name="numSelection">The number of elements in every subset to be generated.</param>
         /// <returns>A collection that contains all the subsets of the input set with specified number of elements.</returns>
         public static IEnumerable<SortedSet<T>> GetSubsets<T>(SortedSet<T> set, int numSelection)
         {
-            // Remarks :
-            // This method is suitable for the SortedSet<T> class.
-
             // Get the array format of the set.
             T[] values = set.ToArray();
 
@@ -65,6 +68,9 @@ namespace Mathematics
         /// <summary>
         /// Returns a collection that contains all the subsets of the input set with specified number of elements.
         /// </summary>
+        /// <remarks>
+        /// This method is suitable for the HashSet&lt;T> class.
+        /// </remarks>
         /// <typeparam name="T">The type of elements in the set.</typeparam>
         /// <param name="set">The input set.</param>
         /// <param name="numSelection">The number of elements in every subset to be generated.</param>
@@ -92,6 +98,9 @@ namespace Mathematics
         /// <summary>
         /// Returns true if there is a set in the input collection that contains exact same elements with the input set.
         /// </summary>
+        /// <remarks>
+        /// This method is suitable for the developer-defined class that implements the ISet&lt;T> interface.
+        /// </remarks>
         /// <typeparam name="T">The type of elements in the set.</typeparam>
         /// <param name="collection">The collection that contains ISet&lt;T> instances.</param>
         /// <param name="set">The specified set.</param>
@@ -112,6 +121,9 @@ namespace Mathematics
         /// <summary>
         /// Returns true if there is a set in the input collection that contains exact same elements with the input set.
         /// </summary>
+        /// <remarks>
+        /// This method is suitable for the SortedSet&lt;T> class.
+        /// </remarks>
         /// <typeparam name="T">The type of elements in the set.</typeparam>
         /// <param name="collection">The collection that contains ISet&lt;T> instances.</param>
         /// <param name="set">The specified set.</param>
@@ -132,6 +144,9 @@ namespace Mathematics
         /// <summary>
         /// Returns true if there is a set in the input collection that contains exact same elements with the input set.
         /// </summary>
+        /// <remarks>
+        /// This method is suitable for the HashSet&lt;T> class.
+        /// </remarks>
         /// <typeparam name="T">The type of elements in the set.</typeparam>
         /// <param name="collection">The collection that contains ISet&lt;T> instances.</param>
         /// <param name="set">The specified set.</param>
@@ -147,6 +162,29 @@ namespace Mathematics
                     return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns all the subsets of the input set except the empty set and the set itself in an enumerator.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the set.</typeparam>
+        /// <param name="set">A set that contains some elements.</param>
+        /// <returns>All the subsets of the input set except the empty set and the set itself in an enumerator.</returns>
+        public static IEnumerable<ISet<T>> GetAllSubsets<T>(ISet<T> set)
+        {
+            // Initialize an empty linked list to store all the subsets of the input set.
+            LinkedList<ISet<T>> subsets = new LinkedList<ISet<T>>();
+
+            // Generate all the subsets with i elements, where i = 1, 2, ..., set.Count - 1
+            for (int i = 1; i < set.Count; i++)
+            {
+                // Get the subsets and add them to the LinkedList<ISet<T>>.
+                foreach (ISet<T> s in GetSubsets(set, i))
+                    subsets.AddLast(s);
+            }
+
+            // Return the subsets.
+            return subsets;
         }
     }
 }
