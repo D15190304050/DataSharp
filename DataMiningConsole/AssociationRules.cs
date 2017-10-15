@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataMiningConsole
 {
-    public class AssociationRules
+    public static class AssociationRules
     {
 
     }

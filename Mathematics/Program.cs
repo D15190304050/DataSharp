@@ -16,6 +16,7 @@ namespace Mathematics
             //FunctionalityTest.GetSubsetsDemo();
             //FunctionalityTest.SetRemovalTest();
             //FunctionalityTest.AllSubsetsDemo();
+            FunctionalityTest.ComplementDemo();
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");

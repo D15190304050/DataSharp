@@ -175,7 +175,7 @@ namespace Mathematics
         }
 
         /// <summary>
-        /// Functionality test function for the Combinations() method.
+        /// Functionality  test method for the Combinations() method.
         /// </summary>
         public static void CombinationsFunctionalityTest()
         {
@@ -187,7 +187,7 @@ namespace Mathematics
         }
 
         /// <summary>
-        /// Functionality test function for the SetHelper.GetAllSubsets() method.
+        /// Functionality  test method for the SetHelper.GetAllSubsets() method.
         /// </summary>
         public static void AllSubsetsDemo()
         {
@@ -200,6 +200,47 @@ namespace Mathematics
                     Console.Write(i + " ");
                 Console.WriteLine();
             }
+        }
+
+        /// <summary>
+        /// Functionality test method for the SetHelper.GetComplement() method.
+        /// </summary>
+        public static void ComplementDemo()
+        {
+            string[] strings = { "123", "456", "789", "111", "222", "333" };
+            SortedSet<string> complete = new SortedSet<string>(strings);
+
+            Console.WriteLine("The contents in the complete set:");
+            foreach (string s in complete)
+                Console.Write(s + " ");
+            Console.WriteLine();
+
+            SortedSet<string> wrongSubset = new SortedSet<string> { "qwe" };
+            Console.WriteLine("The contents in the wrong subset: qwe.");
+
+            try
+            {
+                ISet<string> wrongComplement = SetHelper.GetComplement(complete, wrongSubset);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Wrong subset error catched: " + ex.Message);
+            }
+
+            SortedSet<string> correctSubset = new SortedSet<string>();
+            for (int i = 0; i < 3; i++)
+                correctSubset.Add(strings[i]);
+            ISet<string> complement = SetHelper.GetComplement(complete, correctSubset);
+
+            Console.Write("The contents in the correct subset:");
+            foreach (string s in correctSubset)
+                Console.Write(s + " ");
+            Console.WriteLine();
+
+            Console.Write("The contents in the complement:");
+            foreach (string s in complement)
+                Console.Write(s + " ");
+            Console.WriteLine();
         }
     }
 }

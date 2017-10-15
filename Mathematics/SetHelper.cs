@@ -186,5 +186,28 @@ namespace Mathematics
             // Return the subsets.
             return subsets;
         }
+
+        /// <summary>
+        /// Returns the complement of the subset in the complete set.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the set.</typeparam>
+        /// <param name="set">The complete set.</param>
+        /// <param name="subset">A subset of the complete set.</param>
+        /// <returns>The complement of the subset in the complete set.</returns>
+        public static ISet<T> GetComplement<T>(ISet<T> set, ISet<T> subset)
+        {
+            // Throw an exception if the input sets are not correct.
+            if (!set.IsSupersetOf(subset))
+                throw new ArgumentException("Errors occured in input sets.");
+
+            // Make a copy of the complete set because the ExceptWith() method will change the set itself.
+            SortedSet<T> complement = new SortedSet<T>(set);
+
+            // Remove all the element in the given subset from the complete set so that the complement will be the set of elements remained.
+            complement.ExceptWith(subset);
+
+            // Return the complete
+            return complement;
+        }
     }
 }
