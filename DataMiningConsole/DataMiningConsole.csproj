@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AprioriSqlServer.cs" />
+    <Compile Include="AssociationRule.cs" />
     <Compile Include="AssociationRules.cs" />
     <Compile Include="FunctionalityTest.cs" />
     <Compile Include="Program.cs" />

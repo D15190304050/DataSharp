@@ -85,7 +85,7 @@ namespace DataMiningConsole
         /// The Dictionary&lt;SortedSet&lt;string>, int> class here represents the collection of the KeyValuePair that associate the itemset with its occurance.
         /// The Dictionary&lt;SortedSet&lt;string>, int>[] class here represents the collection of the Dictionary&lt;TKey, TValue> mentioned above.
         /// </remarks>
-        public Dictionary<SortedSet<string>, int>[] FrequentItemsets { get { return frequentItemsets.ToArray(); } }
+        public LinkedList<Dictionary<SortedSet<string>, int>> FrequentItemsets { get { return frequentItemsets; } }
 
         /// <summary>
         /// A LinkedList&lt;T> instance that stores all the sets of items in the data table.

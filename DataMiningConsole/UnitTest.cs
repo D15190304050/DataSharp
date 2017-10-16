@@ -67,5 +67,39 @@ namespace DataMiningConsole
                 Console.WriteLine();
             }
         }
+
+        /// <summary>
+        /// Unit test method for the AssociationRules class.
+        /// </summary>
+        public static void AssociationRulesUnitTest()
+        {
+            // Initialize a SqlConnection instance that will be used in the Apriori algorithm.
+            // You can re-write your connection string here.
+            string connString = @"Server = DESKTOP-2ARV8QK\DINOSTARK; Integrated Security = True; Database = Startup;";
+            SqlConnection conn = new SqlConnection(connString);
+
+            // The query command.
+            string query = @"Select ShoppingList From Transactions;";
+
+            // Initialize an Apriori solver with specified configuration.
+            AprioriSqlServer apriori = new AprioriSqlServer
+            {
+                Connection = conn,
+                CommandText = query,
+                MinSupportCount = 2
+            };
+
+            // Compute the frequent itemsets.
+            apriori.ComputeFrequentItemsets();
+
+            // Get the frequent itemsets computed above.
+            var frequentItemsets = apriori.FrequentItemsets;
+
+            // Generate the association rules from the frequent itemsets we extract before.
+            IEnumerable<AssociationRule> associationRules = AssociationRules.GenerateAssociationRules(frequentItemsets);
+
+            foreach (AssociationRule ar in associationRules)
+                Console.WriteLine(ar);
+        }
     }
 }

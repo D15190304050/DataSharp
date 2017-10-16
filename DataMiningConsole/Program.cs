@@ -15,8 +15,10 @@ namespace DataMiningConsole
             //FunctionalityTest.StringHashTest();
             //FunctionalityTest.FrequencyCounter();
             //FunctionalityTest.DictionaryUpdateDemo();
-
             UnitTest.AprioriSqlServerUnitTest();
+
+            Console.WriteLine();
+            UnitTest.AssociationRulesUnitTest();
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");
