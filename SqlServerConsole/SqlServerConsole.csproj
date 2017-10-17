@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{43F4ACAC-D13F-43BF-9B44-4323C4C0E3C8}</ProjectGuid>
+    <ProjectGuid>{71B2884E-ABC1-4D29-91E3-F3D70865CD19}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DataMiningConsole</RootNamespace>
-    <AssemblyName>DataMiningConsole</AssemblyName>
+    <RootNamespace>SqlServerConsole</RootNamespace>
+    <AssemblyName>SqlServerConsole</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,7 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,29 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Apriori.cs" />
-    <Compile Include="AprioriMySql.cs" />
-    <Compile Include="AprioriSqlServer.cs" />
-    <Compile Include="AssociationRule.cs" />
-    <Compile Include="AssociationRules.cs" />
-    <Compile Include="FrequentItemset.cs" />
-    <Compile Include="FunctionalityTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Mathematics\Mathematics.csproj">
-      <Project>{6fbe2ae3-f517-43c5-9a83-1adc7a84229d}</Project>
-      <Name>Mathematics</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Content Include="Data\SQL Script for Test Data.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

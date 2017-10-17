@@ -1,0 +1,34 @@
+-- This is the SQL Script for creating a test data set in your local database server.
+-- The script here can be used both for SQL Server and MySQL.
+
+-- Create a new database named 'Startup' using the following statement if you don't have such one in your local database server.
+-- Create Databse Startup;
+
+-- Use the Startup database.
+USE Startup;
+
+-- Create a table to store the test data.
+CREATE TABLE Transactions
+(
+	TransactionID int Primary Key,
+    ShoppingList text Not Null
+);
+
+-- Insert test data into the table.
+INSERT INTO Transactions
+VALUES
+(1, '1,2,5'),
+(2, '2,4'),
+(3, '2,3'),
+(4, '1,2,4'),
+(5, '1,3'),
+(6, '2,3'),
+(7, '1,3'),
+(8, '1,2,3,5'),
+(9, '1,2,3');
+
+-- Show the contents in the table.
+SELECT * FROM Transactions;
+
+-- Show the column that contains the items in the table.
+SELECT ShoppingList FROM Transactions;

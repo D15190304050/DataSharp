@@ -8,10 +8,15 @@ using Mathematics;
 namespace DataMiningConsole
 {
     /// <summary>
-    /// The <code>AssociationRules<code>
+    /// The AssociationRules class provides a static method for generating association rules from the extracted frequent itemsets.
     /// </summary>
     public static class AssociationRules
     {
+        /// <summary>
+        /// Generate association rules from the extracted frequent itemsets.
+        /// </summary>
+        /// <param name="frequentItemsets">The extracted frequent itemsets.</param>
+        /// <returns>Association ruels generated from the extracted frequent itemsets.</returns>
         public static IEnumerable<AssociationRule> GenerateAssociationRules(LinkedList<Dictionary<SortedSet<string>, int>> frequentItemsets)
         {
             // Return null if there is no frequent itemset.

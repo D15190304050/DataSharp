@@ -3,47 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data;
-using System.Data.SqlClient;
-using Mathematics;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace DataMiningConsole
 {
     /// <summary>
-    /// The AprioriSqlServer class represents a solver of the Apriori algorith applied to SQL Server.
+    /// The AprioriSqlServer class represents a solver of the Apriori algorith applied to MySQL Server.
     /// </summary>
     /// <remarks>
     /// This class provides member methods for computing the frequent itemsets using the Apriori algorithm.
     /// </remarks>
-    public class AprioriSqlServer : Apriori
+    public class AprioriMySql : Apriori
     {
         /// <summary>
-        /// The SQL Server connection.
+        /// The MySQL Server connection.
         /// </summary>
-        private SqlConnection connection;
+        private MySqlConnection connection;
 
         /// <summary>
-        /// Gets or sets the SQL Server connection.
+        /// /// <summary>
+        /// Gets or sets the MySQL Server connection.
         /// </summary>
-        public SqlConnection Connection
+        /// </summary>
+        public MySqlConnection Connection
         {
             get { return connection; }
             set { connection = value; }
         }
 
         /// <summary>
-        /// The SqlCommand that will be used to extract shoppling lists.
+        /// The MySqlCommand that will be used to extract shoppling lists.
         /// </summary>
-        private SqlCommand cmd;
+        private MySqlCommand cmd;
 
         /// <summary>
         /// Initialize a new Apriori solver for the database of SQL Server.
         /// </summary>
-        public AprioriSqlServer()
+        public AprioriMySql()
         {
             frequentItemsets = new LinkedList<Dictionary<SortedSet<string>, int>>();
             transactions = new LinkedList<SortedSet<string>>();
-            cmd = new SqlCommand();
+            cmd = new MySqlCommand();
         }
 
         /// <summary>
@@ -69,14 +70,14 @@ namespace DataMiningConsole
                 connection.Open();
 
                 // Read transactions and add them to the linked list.
-                SqlDataReader reader = cmd.ExecuteReader();
+                MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                     lists.AddLast(reader[0].ToString());
 
                 // Close the data reader.
                 reader.Close();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine(ex.StackTrace);
             }
