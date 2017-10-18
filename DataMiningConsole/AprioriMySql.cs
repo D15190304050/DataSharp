@@ -22,9 +22,7 @@ namespace DataMiningConsole
         private MySqlConnection connection;
 
         /// <summary>
-        /// /// <summary>
         /// Gets or sets the MySQL Server connection.
-        /// </summary>
         /// </summary>
         public MySqlConnection Connection
         {

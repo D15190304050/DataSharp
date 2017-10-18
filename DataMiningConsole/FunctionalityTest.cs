@@ -22,7 +22,7 @@ namespace DataMiningConsole
         }
 
         /// <summary>
-        /// 
+        /// This function is used to count the frequency of occurance of each object.
         /// </summary>
         public static void FrequencyCounter()
         {
@@ -48,7 +48,7 @@ namespace DataMiningConsole
         }
 
         /// <summary>
-        /// This function tries to find a way to update Value in Dictionary&lt;TKey, TValue> when traverse through it.
+        /// This method tries to find a way to update Value in Dictionary&lt;TKey, TValue> when traverse through it.
         /// </summary>
         public static void DictionaryUpdateDemo()
         {
