@@ -38,13 +38,33 @@ namespace DataMiningConsole
         private MySqlCommand cmd;
 
         /// <summary>
-        /// Initialize a new Apriori solver for the database of SQL Server.
+        /// Initialize a new Apriori solver for the database of MySQL Server.
         /// </summary>
         public AprioriMySql()
         {
             frequentItemsets = new LinkedList<Dictionary<SortedSet<string>, int>>();
             transactions = new LinkedList<SortedSet<string>>();
             cmd = new MySqlCommand();
+        }
+
+        /// <summary>
+        /// Initialize a new Apriori solver for the database of MySQL Server.
+        /// </summary>
+        /// <param name="conn">The MySQL Server connection will be used by this instance.</param>
+        public AprioriMySql(MySqlConnection conn) : this()
+        {
+            connection = conn;
+        }
+
+        /// <summary>
+        /// Initialize a new Apriori solver for the database of MySQL Server.
+        /// </summary>
+        /// <param name="conn">The MySQL Server connection will be used by this instance.</param>
+        /// <param name="cmdText">The SQL command text that will be used to extract shopping lists.</param>
+        public AprioriMySql(MySqlConnection conn, string cmdText) : this()
+        {
+            connection = conn;
+            this.cmdText = cmdText;
         }
 
         /// <summary>
@@ -121,7 +141,7 @@ namespace DataMiningConsole
             if ((cmdText == null) || (cmdText.Equals("")))
                 return false;
 
-            // Return true if the SQL Server connection and the command text are configured.
+            // Return true if the MySQL Server connection and the command text are configured.
             return true;
         }
     }

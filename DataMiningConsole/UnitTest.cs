@@ -87,9 +87,12 @@ namespace DataMiningConsole
                 Console.WriteLine(ar);
         }
 
+        /// <summary>
+        /// Unit test method for the AssociationRules class.
+        /// </summary>
         public static void AprioriMySqlUnitTest()
         {
-            // Initialize a SqlConnection instance that will be used in the Apriori algorithm.
+            // Initialize a MySqlConnection instance that will be used in the Apriori algorithm.
             // You can re-write your connection string here.
             string connString = @"Server = localhost; User Id = root; Password = non-feeling; Database = Startup;";
             MySqlConnection conn = new MySqlConnection(connString);

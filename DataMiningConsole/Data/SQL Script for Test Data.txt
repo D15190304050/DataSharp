@@ -2,7 +2,7 @@
 -- The script here can be used both for SQL Server and MySQL.
 
 -- Create a new database named 'Startup' using the following statement if you don't have such one in your local database server.
--- Create Databse Startup;
+-- Create Database Startup;
 
 -- Use the Startup database.
 USE Startup;

@@ -47,6 +47,26 @@ namespace DataMiningConsole
         }
 
         /// <summary>
+        /// Initialize a new Apriori solver for the database of SQL Server.
+        /// </summary>
+        /// <param name="conn">The SQL Server connection will be used by this instance.</param>
+        public AprioriSqlServer(SqlConnection conn) : this()
+        {
+            connection = conn;
+        }
+
+        /// <summary>
+        /// Initialize a new Apriori solver for the database of SQL Server.
+        /// </summary>
+        /// <param name="conn">The SQL Server connection will be used by this instance.</param>
+        /// <param name="cmdText">The SQL command text that will be used to extract shopping lists.</param>
+        public AprioriSqlServer(SqlConnection conn, string cmdText) : this()
+        {
+            connection = conn;
+            this.cmdText = cmdText;
+        }
+
+        /// <summary>
         /// Build the transacton sets using the connection and query command configured by developer.
         /// </summary>
         protected override void BuildTransactionSets()
