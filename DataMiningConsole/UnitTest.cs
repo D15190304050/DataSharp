@@ -94,7 +94,7 @@ namespace DataMiningConsole
         {
             // Initialize a MySqlConnection instance that will be used in the Apriori algorithm.
             // You can re-write your connection string here.
-            string connString = @"Server = localhost; User Id = root; Password = non-feeling; Database = Startup;";
+            string connString = @"Server = localhost; User Id = DinoStark; Password = non-feeling; Database = Startup;";
             MySqlConnection conn = new MySqlConnection(connString);
 
             // The query command.
