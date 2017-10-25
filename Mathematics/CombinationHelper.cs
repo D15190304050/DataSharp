@@ -23,8 +23,8 @@ namespace Mathematics
         /// </returns>
         public static IEnumerable<T[]> Combinations<T>(T[] a, int numSelection)
         {
-            // Remark :
-            // This method should be tested using reference types, so that some kind of errors will indicates the bug.
+            // Check length before processing.
+            LengthCheck(a.Length, numSelection);
 
             // Initialize an empty linked list to store all the combinations.
             LinkedList<T[]> combinations = new LinkedList<T[]>();
@@ -46,9 +46,6 @@ namespace Mathematics
         /// <param name="combinations">The collection of all the combinations that are needed to be extracted.</param>
         private static void Combinations<T>(T[] a, int numSelection, LinkedList<T[]> combinations)
         {
-            // Remark :
-            // This method should be tested using reference types, so that some kind of errors will indicates the bug.
-
             // combination is an int array that indicates conbination.
             // combination[i] == 1 means that the element in the input array with index i is selected.
             // combination[i] == 0 means that the element in the input array with index i is not selected.
@@ -139,6 +136,17 @@ namespace Mathematics
 
             // Add the array of combination to the LinkedList.
             combinations.AddLast(nextCombination);
+        }
+
+        /// <summary>
+        /// Throws ArgumentException if the count of input array is less than the number of elements to be selected.
+        /// </summary>
+        /// <param name="a">The array that contains all the candidate elements.</param>
+        /// <param name="numSelection">The number of elements to be extracted.</param>
+        private static void LengthCheck(int collectionLength, int numSelection)
+        {
+            if (collectionLength < numSelection)
+                throw new ArgumentException("The number of elements in the input array must be equal to or greater than the number of elements to be selected.");
         }
     }
 }

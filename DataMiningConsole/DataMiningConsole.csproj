@@ -48,6 +48,8 @@
     <Compile Include="AprioriSqlServer.cs" />
     <Compile Include="AssociationRule.cs" />
     <Compile Include="AssociationRules.cs" />
+    <Compile Include="DataGenerator.cs" />
+    <Compile Include="DataSourceOption.cs" />
     <Compile Include="FrequentItemset.cs" />
     <Compile Include="FunctionalityTest.cs" />
     <Compile Include="Program.cs" />

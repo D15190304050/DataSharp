@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6FBE2AE3-F517-43C5-9A83-1ADC7A84229D}</ProjectGuid>
+    <ProjectGuid>{53C64EF4-2F7E-482A-9867-F52445222746}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Mathematics</RootNamespace>
-    <AssemblyName>Mathematics</AssemblyName>
+    <RootNamespace>Startup</RootNamespace>
+    <AssemblyName>Startup</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,12 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CombinationHelper.cs" />
-    <Compile Include="FunctionalityTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SetHelper.cs" />
-    <Compile Include="StdRandom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

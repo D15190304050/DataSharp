@@ -23,6 +23,9 @@ namespace Mathematics
         /// <returns>A collection that contains all the subsets of the input set with specified number of elements.</returns>
         public static IEnumerable<ISet<T>> GetSubsets<T>(ISet<T> set, int numSelection)
         {
+            // Check length before processing.
+            LengthCheck(set.Count, numSelection);
+
             // Get the array format of the set.
             T[] values = set.ToArray();
 
@@ -50,6 +53,9 @@ namespace Mathematics
         /// <returns>A collection that contains all the subsets of the input set with specified number of elements.</returns>
         public static IEnumerable<SortedSet<T>> GetSubsets<T>(SortedSet<T> set, int numSelection)
         {
+            // Check length before processing.
+            LengthCheck(set.Count, numSelection);
+
             // Get the array format of the set.
             T[] values = set.ToArray();
 
@@ -77,8 +83,8 @@ namespace Mathematics
         /// <returns>A collection that contains all the subsets of the input set with specified number of elements.</returns>
         public static IEnumerable<HashSet<T>> GetSubsets<T>(HashSet<T> set, int numSelection)
         {
-            // Remraks:
-            // This method is suitable for the HashSet<T> class.
+            // Check length before processing.
+            LengthCheck(set.Count, numSelection);
 
             // Get the array format of the set.
             T[] values = set.ToArray();
@@ -208,6 +214,17 @@ namespace Mathematics
 
             // Return the complete
             return complement;
+        }
+
+        /// <summary>
+        /// Throws ArgumentException if the count of the input set is less than the number of elements to be selected.
+        /// </summary>
+        /// <param name="setLength">The number of elements in the input set.</param>
+        /// <param name="numSelection">The number of elements in every subset to be generated.</param>
+        private static void LengthCheck(int setLength, int numSelection)
+        {
+            if (setLength < numSelection)
+                throw new ArgumentException("The number of elements in the input set must be equal to or greater than the number of elements in its subset(s).");
         }
     }
 }

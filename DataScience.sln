@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMiningConsole", "DataMiningConsole\DataMiningConsole.csproj", "{43F4ACAC-D13F-43BF-9B44-4323C4C0E3C8}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlServerConsole", "SqlServerConsole\SqlServerConsole.csproj", "{71B2884E-ABC1-4D29-91E3-F3D70865CD19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySqlConsole", "MySqlConsole\MySqlConsole.csproj", "{39583AFF-5826-4669-BC6E-D1DFFA9345B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Startup", "Startup\Startup.csproj", "{53C64EF4-2F7E-482A-9867-F52445222746}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{39583AFF-5826-4669-BC6E-D1DFFA9345B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39583AFF-5826-4669-BC6E-D1DFFA9345B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39583AFF-5826-4669-BC6E-D1DFFA9345B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53C64EF4-2F7E-482A-9867-F52445222746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53C64EF4-2F7E-482A-9867-F52445222746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53C64EF4-2F7E-482A-9867-F52445222746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53C64EF4-2F7E-482A-9867-F52445222746}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
