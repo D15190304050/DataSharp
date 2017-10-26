@@ -20,7 +20,7 @@ namespace MySqlConsole
             string connectionString = @"Server = localhost; User Id = root; Password = non-feeling; Database = Startup;";
             MySqlConnection conn = new MySqlConnection(connectionString);
 
-            string query = @"Select * From Student;";
+            string query = @"Select * From Transactions;";
             MySqlCommand cmd = new MySqlCommand(query, conn);
 
             try

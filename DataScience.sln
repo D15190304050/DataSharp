@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySqlConsole", "MySqlConsol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Startup", "Startup\Startup.csproj", "{53C64EF4-2F7E-482A-9867-F52445222746}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMiningWpf", "DataMiningWpf\DataMiningWpf.csproj", "{8FE127A0-3DAD-47CF-A7F9-8B42103008B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessWpf", "DataAccessWpf\DataAccessWpf.csproj", "{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{53C64EF4-2F7E-482A-9867-F52445222746}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53C64EF4-2F7E-482A-9867-F52445222746}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53C64EF4-2F7E-482A-9867-F52445222746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FE127A0-3DAD-47CF-A7F9-8B42103008B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FE127A0-3DAD-47CF-A7F9-8B42103008B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FE127A0-3DAD-47CF-A7F9-8B42103008B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FE127A0-3DAD-47CF-A7F9-8B42103008B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
