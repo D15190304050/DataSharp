@@ -69,20 +69,15 @@ namespace DataMiningConsole
                     SortedSet<string> frequentItemset1 = itemsets[i];
                     SortedSet<string> frequentItemset2 = itemsets[j];
 
-                    // Find the items that is contained in frequentItemset1 but is not contained in frequentItemset2, and store the result in variable delta.
-                    SortedSet<string> delta = new SortedSet<string>(frequentItemset1);
-                    delta.ExceptWith(frequentItemset2);
+                    // Get the superset of 2 selected frequent (k-1)-itemsets.
+                    SortedSet<string> potentialCandidateItemset = new SortedSet<string>(frequentItemset1);
+                    potentialCandidateItemset.UnionWith(frequentItemset2);
 
-                    // Generate candidate k-itemsets if the delta contains excat 1 item.
-                    if (delta.Count == 1)
+                    // Generate candidate k-itemsets if the number of elements in the superset is k,
+                    // where (k-1) is the number of elements in the selected frequent itemsets.
+                    if (potentialCandidateItemset.Count == frequentItemset1.Count + 1)
                     {
-                        // Initialize the potential candidate itemset using frequentItemset2.
-                        SortedSet<string> potentialCandidateItemset = new SortedSet<string>(frequentItemset2);
-
-                        // Add the item in the delta to the potential candidate itemset.
-                        string[] item = delta.ToArray();
-                        potentialCandidateItemset.Add(item[0]);
-
+                        // Skip this potential candidate itemset if it exists in the collection to return.
                         if (SetHelper.ContainsSet(candidateItemsets.Keys, potentialCandidateItemset))
                             continue;
 

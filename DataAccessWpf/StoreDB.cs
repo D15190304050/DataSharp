@@ -27,9 +27,9 @@ namespace DataAccessWpf
 
             Product product = new Product((string)productRow[ModelNumber],
                                           (string)productRow[ModelName],
-                                          (decimal)productRow[UnitCost],
+                                          decimal.Parse(productRow[UnitCost].ToString()),
                                           (string)productRow[Description],
-                                          (int)productRow[CategoryID],
+                                          int.Parse(productRow[CategoryID].ToString()),
                                           (string)productRow[CategoryName],
                                           (string)productRow[ProductImage]);
             return product;
