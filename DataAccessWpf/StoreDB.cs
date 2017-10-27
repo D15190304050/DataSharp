@@ -22,6 +22,7 @@ namespace DataAccessWpf
         public Product GetProduct(int ID)
         {
             DataSet ds = StoreDbDataSet.ReadDataSet();
+            DataTable dt = ds.Tables[0];
             DataRow productRow = ds.Tables[0].Select("ProductID = " + ID)[0];
 
             Product product = new Product((string)productRow[ModelNumber],
@@ -43,9 +44,9 @@ namespace DataAccessWpf
             {
                 products.Add(new Product((string)productRow[ModelNumber],
                                          (string)productRow[ModelName],
-                                         (decimal)productRow[UnitCost],
+                                         decimal.Parse(productRow[UnitCost].ToString()),
                                          (string)productRow[Description],
-                                         (int)productRow[CategoryID],
+                                         int.Parse(productRow[CategoryID].ToString()),
                                          (string)productRow[CategoryName],
                                          (string)productRow[ProductImage]));
             }
