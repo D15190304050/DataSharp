@@ -16,8 +16,9 @@ namespace DataMiningConsole
             //FunctionalityTest.FrequencyCounter();
             //FunctionalityTest.DictionaryUpdateDemo();
             //UnitTest.AprioriSqlServerUnitTest();
+            UnitTest.AprioriMySqlUnitTest();
             //Console.WriteLine();
-            UnitTest.AssociationRulesUnitTest();
+            //UnitTest.AssociationRulesUnitTest();
             //UnitTest.AssociationRulesUnitTest(DataSourceOption.GenerateNewData, 20, 5);
 
             //UnitTest.AprioriMySqlUnitTest();
