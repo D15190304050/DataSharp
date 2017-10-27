@@ -54,7 +54,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BindToCollection.xaml.cs">
+      <DependentUpon>BindToCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BindToDataSet.xaml.cs">
+      <DependentUpon>BindToDataSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BindToLinqFilteredCollection.xaml.cs">
+      <DependentUpon>BindToLinqFilteredCollection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Category.cs" />
+    <Compile Include="EditProductObject.xaml.cs">
+      <DependentUpon>EditProductObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositivePriceRule.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="store.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -64,7 +77,29 @@
     </Compile>
     <Compile Include="StoreDB.cs" />
     <Compile Include="StoreDbDataSet.cs" />
+    <Compile Include="ValidationTest.xaml.cs">
+      <DependentUpon>ValidationTest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VirtualizationTest.xaml.cs">
+      <DependentUpon>VirtualizationTest.xaml</DependentUpon>
+    </Compile>
     <Page Include="BindProductObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BindToCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BindToDataSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BindToLinqFilteredCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditProductObject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -83,6 +118,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ValidationTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VirtualizationTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

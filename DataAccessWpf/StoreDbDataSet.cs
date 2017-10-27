@@ -9,11 +9,19 @@ namespace DataAccessWpf
 {
     public class StoreDbDataSet
     {
-        public static DataTable GetProducts()
+        /// <summary>
+        /// Returns a DataTable object that contains product info in the format of DataTable.
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetProducts()
         {
             return ReadDataSet().Tables[0];
         }
 
+        /// <summary>
+        /// Returns a DataSet object that contains product info.
+        /// </summary>
+        /// <returns>A DataSet object that contains product info.</returns>
         internal static DataSet ReadDataSet()
         {
             DataSet ds = new DataSet();
