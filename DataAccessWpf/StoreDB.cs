@@ -22,7 +22,6 @@ namespace DataAccessWpf
         public Product GetProduct(int ID)
         {
             DataSet ds = StoreDbDataSet.ReadDataSet();
-            DataTable dt = ds.Tables[0];
             DataRow productRow = ds.Tables[0].Select("ProductID = " + ID)[0];
 
             Product product = new Product((string)productRow[ModelNumber],
