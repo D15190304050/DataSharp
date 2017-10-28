@@ -94,5 +94,11 @@ namespace DataAccessWpf
 
             return new ObservableCollection<Product>(matches.ToList());
         }
+
+        public ICollection<Product> GetProductsSlow()
+        {
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
+            return GetProducts();
+        }
     }
 }

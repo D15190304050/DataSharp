@@ -54,6 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BindingGroupValidation.xaml.cs">
+      <DependentUpon>BindingGroupValidation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BindToCollection.xaml.cs">
       <DependentUpon>BindToCollection.xaml</DependentUpon>
     </Compile>
@@ -63,10 +66,17 @@
     <Compile Include="BindToLinqFilteredCollection.xaml.cs">
       <DependentUpon>BindToLinqFilteredCollection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BindToObjectDataProvider.xaml.cs">
+      <DependentUpon>BindToObjectDataProvider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BindToXmlDataProvider.xaml.cs">
+      <DependentUpon>BindToXmlDataProvider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Category.cs" />
     <Compile Include="EditProductObject.xaml.cs">
       <DependentUpon>EditProductObject.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NoBlankProductRule.cs" />
     <Compile Include="PositivePriceRule.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="store.Designer.cs">
@@ -83,6 +93,10 @@
     <Compile Include="VirtualizationTest.xaml.cs">
       <DependentUpon>VirtualizationTest.xaml</DependentUpon>
     </Compile>
+    <Page Include="BindingGroupValidation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BindProductObject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -96,6 +110,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BindToLinqFilteredCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BindToObjectDataProvider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BindToXmlDataProvider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
