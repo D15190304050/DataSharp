@@ -24,16 +24,16 @@ namespace DataAccessWpf
         {
             InitializeComponent();
 
-            XmlDataProvider provider = new XmlDataProvider();
-            XmlDocument doc = new XmlDocument();
-            doc.Load("store.xml");
-            provider.Document = doc;
-            provider.XPath = "/Products";
-            Binding binding = new Binding();
-            binding.XPath = "Products";
-            binding.Source = provider;
-            binding.Mode = BindingMode.TwoWay;
-            lstProducts.SetBinding(ListBox.ItemsSourceProperty, binding);
+            //XmlDataProvider provider = new XmlDataProvider();
+            //XmlDocument doc = new XmlDocument();
+            //doc.Load("store.xml");
+            //provider.Document = doc;
+            //provider.XPath = "Products";
+            //Binding binding = new Binding();
+            //binding.XPath = "Products";
+            //binding.Source = provider;
+            //binding.Mode = BindingMode.TwoWay;
+            //lstProducts.SetBinding(ListBox.ItemsSourceProperty, binding);
         }
     }
 }

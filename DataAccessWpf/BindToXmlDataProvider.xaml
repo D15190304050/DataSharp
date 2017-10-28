@@ -8,7 +8,7 @@
         Title="BindToXmlDataProvider" Height="570" Width="400">
 
     <Window.Resources>
-        <XmlDataProvider x:Key="products" Source="E:\DinoStark\Computer Science\Programming Design\DataScience\DataAccessWpf\store.xml" XPath="/Products" />
+        <XmlDataProvider x:Key="products" Source="/store.xml" XPath="/Products" />
     </Window.Resources>
 
     <Grid>

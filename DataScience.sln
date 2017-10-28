@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMiningWpf", "DataMining
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessWpf", "DataAccessWpf\DataAccessWpf.csproj", "{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessConsole", "DataAccessConsole\DataAccessConsole.csproj", "{1F2FDBFF-07C5-4184-8840-79AEF6190DF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F2FDBFF-07C5-4184-8840-79AEF6190DF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F2FDBFF-07C5-4184-8840-79AEF6190DF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F2FDBFF-07C5-4184-8840-79AEF6190DF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F2FDBFF-07C5-4184-8840-79AEF6190DF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
