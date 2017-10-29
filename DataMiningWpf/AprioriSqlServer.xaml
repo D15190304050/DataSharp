@@ -22,7 +22,24 @@
             
 
             <TextBlock Grid.Row="0" Margin="20,5,5,5">Settings</TextBlock>
-            
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,0,5,0">Number of Lines:</TextBlock>
+                <TextBox Grid.Row="1" Grid.Column="0" Margin="5" Name="txtNumLines" />
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5,0,5,0">Number of Items:</TextBlock>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Name="txtNumItems" />
+            </Grid>
         </Grid>
     </Grid>
 </Window>

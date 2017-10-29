@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Reflection;
 
 namespace DataMiningWpf
 {
@@ -25,9 +26,15 @@ namespace DataMiningWpf
             InitializeComponent();
         }
 
-        private void ButtonClick(object sender, RoutedEventArgs args)
+        private void ButtonClick(object sender, RoutedEventArgs e)
         {
+            Button cmd = (Button)e.OriginalSource;
 
+            Type type = this.GetType();
+            Assembly assembly = type.Assembly;
+            Window window = (Window)assembly.CreateInstance(type.Namespace + "." + cmd.Content);
+
+            window.ShowDialog();
         }
     }
 }
