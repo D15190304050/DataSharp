@@ -60,6 +60,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BasicListView.xaml.cs">
+      <DependentUpon>BasicListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BindingGroupValidation.xaml.cs">
       <DependentUpon>BindingGroupValidation.xaml</DependentUpon>
     </Compile>
@@ -85,6 +88,9 @@
     <Compile Include="NoBlankProductRule.cs" />
     <Compile Include="PositivePriceRule.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="ReadExcelDemo.xaml.cs">
+      <DependentUpon>ReadExcelDemo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="store.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -99,6 +105,10 @@
     <Compile Include="VirtualizationTest.xaml.cs">
       <DependentUpon>VirtualizationTest.xaml</DependentUpon>
     </Compile>
+    <Page Include="BasicListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BindingGroupValidation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -146,6 +156,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ReadExcelDemo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ValidationTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -191,6 +205,9 @@
       <DependentUpon>store.xsd</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Resource Include="HealthCare.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

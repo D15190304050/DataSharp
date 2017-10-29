@@ -6,11 +6,6 @@
         xmlns:local="clr-namespace:DataAccessWpf"
         mc:Ignorable="d"
         Title="BindToXmlDataProvider" Height="570" Width="400">
-
-    <Window.Resources>
-        <XmlDataProvider x:Key="products" Source="/store.xml" XPath="/Products" />
-    </Window.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -18,7 +13,7 @@
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" Name="lstProducts" Margin="5" DisplayMemberPath="ModelName" ItemsSource="{Binding Source={StaticResource products}, XPath=Products}" />
+        <ListBox Grid.Row="0" Name="lstProducts" Margin="5" DisplayMemberPath="ModelName" />
 
         <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" Height="5"/>
 

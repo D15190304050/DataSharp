@@ -26,6 +26,8 @@
             <Button>BindingGroupValidation</Button>
             <Button>BindToObjectDataProvider</Button>
             <Button>BindToXmlDataProvider</Button>
+            <Button>BasicListView</Button>
+            <Button>ReadExcelDemo</Button>
         </StackPanel>
     </Grid>
 </Window>
