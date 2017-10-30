@@ -77,16 +77,25 @@ namespace DataMiningWpf
         /// <summary>
         /// The connection string used to connect to the local SQL Server.
         /// </summary>
-        private const string connString = @"Server = DESKTOP-2ARV8QK\DINOSTARK; Integrated Security = True; Database = Startup;";
+        /// <remarks>
+        /// You can configure you own connection string here. You can also let users can type the needed info by changing the window XAML.
+        /// </remarks>
+        private const string connString = @"Server = PC\SQLEXPRESS; Integrated Security = True; Database = Startup;";
 
         /// <summary>
         /// The SQL query command used to retrive all the data in the Transaction table.
         /// </summary>
+        /// <remarks>
+        /// You can configure you onw query command here. You can also let users can type the query command by changing the window XAML.
+        /// </remarks>
         private const string queryAll = @"SELECT * FROM Transactions;";
 
         /// <summary>
         /// The SQL query command used to retrive all the shopping lists in the Transaction table.
         /// </summary>
+        /// <remarks>
+        /// You can configure you onw query command here. You can also let users can type the query command by changing the window XAML.
+        /// </remarks>
         private const string queryShoppingLists = @"SELECT ShoppingList FROM Transactions;";
 
         /// <summary>
@@ -97,6 +106,9 @@ namespace DataMiningWpf
         /// <summary>
         /// Initializes a new window for the Apriori algorithm test, where the back-end database is SQL Server.
         /// </summary>
+        /// <remarks>
+        /// You can configure you onw query command here. You can also let users can type the query command by changing the window XAML.
+        /// </remarks>
         public AprioriSqlServer()
         {
             // Initialize the window described in XMAL.
@@ -115,10 +127,10 @@ namespace DataMiningWpf
         }
 
         /// <summary>
-        /// Generate data, and then insert them into back-end database, and then show them on the window.
+        /// Generates data, and then inserts them into back-end database, and then shows them on the window.
         /// </summary>
         /// <param name="sender">The Button instance associated with this method.</param>
-        /// <param name="e">The RoutedEventArgs that contains info of the Click event.</param>
+        /// <param name="e">The RoutedEventArgs that contains state information and event data associated with the Click event.</param>
         private void cmdGenerateData_Click(object sender, RoutedEventArgs e)
         {
             // Do nothing if there is something wrong with the input.
@@ -158,106 +170,173 @@ namespace DataMiningWpf
         }
 
         /// <summary>
-        /// 
+        /// Computes the frequent itemsets according to the transaction data stored in the database, and then shows them on the window.
         /// </summary>
-        /// <remarks>
-        /// The variables aren't used, and they don't have any concrete meaning, so the comments for them are omitted.
-        /// </remarks>
+        /// <param name="sender">The Button instance associated with this method.</param>
+        /// <param name="e">The RoutedEventArgs that contains state information and event data associated with the Click event.</param>
         private void cmdComputeFrequentItemsets_Click(object sender, RoutedEventArgs e)
         {
+            // Do nothing if there is something wrong with the input.
             if (!CanComputeFrequentItemsets())
                 return;
 
+            // Initialize an Apriori solver based on SQL Server with specified SqlConnection and SQL query command.
             DataMiningConsole.AprioriSqlServer apriori = new DataMiningConsole.AprioriSqlServer(conn, queryShoppingLists);
+
+            // Set the minimum support count for the frequent itemset computation.
             apriori.MinSupportCount = minSupportCount;
+
+            // Get the frequent itemsets.
             frequentItemsets = apriori.ComputeFrequentItemsets();
+
+            // Initialize an empty LinkedList<T> instance to store the FrequentItemsetData instances that will be used for the window control (the ListView).
             LinkedList<FrequentItemsetData> frequntItemstesData = new LinkedList<FrequentItemsetData>();
+
+            // Traverse through all the frequent itemsets.
             foreach (Dictionary<SortedSet<string>, int> nextFrequentItemsets in frequentItemsets)
             {
                 foreach (KeyValuePair<SortedSet<string>, int> frequentItemset in nextFrequentItemsets)
                 {
+                    // Initialize the FrequentItemsetData instance for presentation.
                     FrequentItemsetData itemsetData = new FrequentItemsetData(frequentItemset);
+
+                    // Add it to the collection.
                     frequntItemstesData.AddLast(itemsetData);
                 }
             }
 
+            // Set the ItemsSource property so that the window control will be refreshed.
+            // And then you can see the computed frequent itemsets on the window.
             lstFrequentItemsets.ItemsSource = frequntItemstesData;
         }
 
+        /// <summary>
+        /// Generates the association rules according to the frequent itemsets computed before, and then shows them on the window.
+        /// </summary>
+        /// <param name="sender">The Button instance associated with this method.</param>
+        /// <param name="e">The RoutedEventArgs that contains state information and event data associated with the Click event.</param>
         private void cmdGenerateAssociationRules_Click(object sender, RoutedEventArgs e)
         {
+            // Do nothing if there is something wrong with the input.
             if (!CanGenerateSars())
                 return;
 
-            var associationRules = AssociationRules.GenerateStrongAssociationRules(frequentItemsets, minConfidence);
+            // Get the association rules generated according to the frequent itemsets computed before.
+            IEnumerable<AssociationRule> associationRules = AssociationRules.GenerateStrongAssociationRules(frequentItemsets, minConfidence);
+
+            // Set the ItemsSource property so that the window control will be refreshed.
+            // And then you can see the generated association rules on the window.
             lstStrongAR.ItemsSource = associationRules;
         }
 
+        /// <summary>
+        /// Clears the ListView controls on the window and clears the transactions stored in the database.
+        /// </summary>
+        /// <param name="sender">The Button instance associated with this method.</param>
+        /// <param name="e">The RoutedEventArgs that contains state information and event data associated with the Click event.</param>
         private void cmdClearData_Click(object sender, RoutedEventArgs e)
         {
+            // Clear the transactions stored in the database.
             ClearPreviousData();
+
+            // Set the ItemsSource of ListView controls to null so that there will be nothing in the control.
             lstTransactions.ItemsSource = null;
             lstFrequentItemsets.ItemsSource = null;
             lstStrongAR.ItemsSource = null;
         }
 
+        /// <summary>
+        /// Returns true if the current configuration can let this program generate transactions correctly, false otherwise.
+        /// </summary>
+        /// <returns>True if the current configuration can let this program generate transactions correctly, false otherwise.</returns>
         private bool CanGenerateData()
         {
+            // Report the error message and return false if the text that represents the numebr of transactions cann't be parsed to an integer.
             if (!int.TryParse(txtNumTransactions.Text, out numRows))
             {
                 MessageBox.Show("You must input a positive integer for the number of transactions.");
                 return false;
             }
+
+            // Report the error message and return false if the text that represents the numebr of items can't be parsed to an integer.
             if (!int.TryParse(txtNumItems.Text, out numItems))
             {
                 MessageBox.Show("You must input a positive integer for the number of items.");
                 return false;
             }
+
+            // Report the error message and return false if the parsed integers aren't both positive.
+            if ((numRows <= 0) || (numItems <= 0))
+            {
+                MessageBox.Show("The input integers for the number of transactions and the number of items must be positive.");
+                return false;
+            }
+
+            // Return true if the input information can pass the validation here.
             return true;
         }
 
+        /// <summary>
+        /// Returns true if the current configuration can let this program compute frequent itemsets correctly, false otherwise.
+        /// </summary>
+        /// <returns>True if the current configuration can let this program compute frequent itemsets correctly, false otherwise.</returns>
         private bool CanComputeFrequentItemsets()
         {
+            // Reprot the error message and return false if the text that represents the minimum support count can't be parsed to an integer.
             if (!int.TryParse(txtMinSupportCount.Text, out minSupportCount))
             {
                 MessageBox.Show("You must input a positive integer for the minimum support count.");
                 return false;
             }
 
+            // Report the error message and return false if the value of minSupportCount < 0.
             if ((minSupportCount < 0))
             {
                 MessageBox.Show("You must input a positive integer for the minimum support count.");
                 return false;
             }
 
+            // Report the error message and return false if the value of minSupportCount > numRows.
             if (minSupportCount > numRows)
             {
                 MessageBox.Show("The value of minimum support count must be less than or equal to the number of transactions.");
                 return false;
             }
 
+            // Return true if the input information can pass the validation here.
             return true;
         }
 
+        /// <summary>
+        /// Returns true if the current configuration can let this program generate association rules correctly, false otherwise.
+        /// </summary>
+        /// <returns>True if the current configuration can let this program generate association rules correctly, false otherwise.</returns>
         private bool CanGenerateSars()
         {
+            // Report the error message and return false if the text that represents the minimum confidence can't be parsed to a double value.
             if (!double.TryParse(txtMinConfidence.Text, out minConfidence))
             {
                 MessageBox.Show("You must input a double value for the minimum confidence.");
                 return false;
             }
 
+            // Report the error message and return false if the text that represents the minimum confidence isn't in the range of [0, 1].
             if ((minConfidence < 0) || (minConfidence > 1))
             {
                 MessageBox.Show("The minimum confidence must be in the range of [0, 1]");
                 return false;
             }
 
+            // Return true if the input information can pass the validation here.
             return true;
         }
 
+        /// <summary>
+        /// Clear all the transactions stored in the Transaction table in the database.
+        /// </summary>
         private void ClearPreviousData()
         {
+            // Try to execute the clear command and report the error message if an exception captured.
             try
             {
                 conn.Open();
@@ -273,9 +352,15 @@ namespace DataMiningWpf
             }
         }
 
+        /// <summary>
+        /// Fetch transactions stored in the database.
+        /// </summary>
         private void FetchData()
         {
+            // Clear the original DataTable stored in the DataSet instance.
             ds.Tables.Clear();
+
+            // Try to retrive all the transactions and report the error message if an exception captured.
             try
             {
                 conn.Open();

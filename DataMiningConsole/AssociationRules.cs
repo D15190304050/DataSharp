@@ -106,12 +106,11 @@ namespace DataMiningConsole
             // Get all the association rules.
             IEnumerable<AssociationRule> associationRules = GenerateAssociationRules(frequentItemsets);
 
-            // Extract the association rules whose confidence is larger than or equal to the minimum confidence.
+            // Extract and return the association rules whose confidence is larger than or equal to the minimum confidence.
             IEnumerable<AssociationRule> strongAR =
                 from ar in associationRules
                 where ar.Confidence >= minConfidence
                 select ar;
-
             return strongAR;
         }
     }
