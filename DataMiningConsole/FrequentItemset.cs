@@ -71,6 +71,6 @@ namespace DataMiningConsole
         /// <summary>
         /// Computes all the frequent k-itemsets from the transactions extracted before.
         /// </summary>
-        public abstract void ComputeFrequentItemsets();
+        public abstract LinkedList<Dictionary<SortedSet<string>, int>> ComputeFrequentItemsets();
     }
 }

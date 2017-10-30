@@ -16,11 +16,12 @@ namespace DataMiningConsole
     public static class DataGenerator
     {
         /// <summary>
-        /// Generates the transactions for frequent itemsets analysis.
+        /// Returns a SQL INSERT command that generates transactions for frequent itemsets analysis.
         /// </summary>
         /// <param name="numRow">The number of rows in the table.</param>
         /// <param name="numItem">The number of items in the table.</param>
-        public static string GenerateTransactions(int numRow, int numItem)
+        /// <returns>A SQL INSERT command that generates transactions for frequent itemsets analysis.</returns>
+        private static string GenerateTransactions(int numRow, int numItem, int startTransactionID = 1)
         {
             // Initialize a new LinkedList<string> to store all the transaction records.
             // I use LinkedList<T> here just because it can make use of fragment memory, while the array of string need consecutive memory.
@@ -58,7 +59,7 @@ namespace DataMiningConsole
             StringBuilder textForInsertion = new StringBuilder(@"INSERT INTO Transactions VALUES");
 
             // TransactionID starts from 1.
-            int transactionID = 1;
+            int transactionID = startTransactionID;
             foreach (string s in shoppingLists)
             {
                 // Build the transaction record.
@@ -68,8 +69,9 @@ namespace DataMiningConsole
                 transactionID++;
             }
 
-            // Remove the ',' at the end.
+            // Remove the ',' at the end and then add the ";".
             textForInsertion.Remove(textForInsertion.Length - 1, 1);
+            textForInsertion.Append(";");
 
             return textForInsertion.ToString();
         }
@@ -85,11 +87,24 @@ namespace DataMiningConsole
             // Check the SQL Server connection before processing.
             CheckConnection(conn);
 
+            // Use StringBuilder to accelerate.
+            StringBuilder textForInsertion = new StringBuilder();
+
+            if (numRow > 1000)
+            {
+                int startTransactionID = 1;
+                for (startTransactionID = 1; startTransactionID + 1000 < numRow; startTransactionID += 1000)
+                    textForInsertion.Append(GenerateTransactions(1000, numItem, startTransactionID));
+                textForInsertion.Append(GenerateTransactions(numRow - startTransactionID + 1, numItem, startTransactionID));
+            }
+            else
+                textForInsertion.Append(GenerateTransactions(numRow, numItem));
+
             // Generate the transactions for test.
-            string textForInsertion = GenerateTransactions(numRow, numItem);
+            //string textForInsertion = GenerateTransactions(numRow, numItem);
 
             // Initialize a new instance of the SqlCommand with specified command text and SQL Server connection.
-            SqlCommand cmd = new SqlCommand(textForInsertion, conn);
+            SqlCommand cmd = new SqlCommand(textForInsertion.ToString(), conn);
 
             // Try to add data generated in this method to the test data table.
             try

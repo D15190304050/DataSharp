@@ -26,7 +26,7 @@ namespace DataMiningConsole
         /// <summary>
         /// Returns true if there is a (k-1)-itemset of the candidate itmesets that is not in the frequent (k-1)-itemsets.
         /// </summary>
-        /// <param name="candidate">A candicate itemset with k items.</param>
+        /// <param name="candidate">A candidate itemset with k items.</param>
         /// <param name="frequentItemsets">A collection that contains all frequent (k-1)-itemsets.</param>
         /// <returns>True if there is a (k-1)-itemset of the candidate itmesets that is not in the frequent (k-1)-itemsets.</returns>
         private static bool HasInfrequentSubset(SortedSet<string> potentialCandidateItemset, IEnumerable<SortedSet<string>> frequentItemsets)
@@ -37,7 +37,7 @@ namespace DataMiningConsole
             // Get all the subsets of candidate itemset.
             var subsets = SetHelper.GetSubsets(potentialCandidateItemset, numSelection);
 
-            // Returns true If any of the subset is not a set in frequent (k-1)-itemsets, false otherwise.
+            // Returns true if any of the subset is not a set in frequent (k-1)-itemsets, false otherwise.
             foreach (var s in subsets)
             {
                 if (!SetHelper.ContainsSet(frequentItemsets, s))
@@ -100,7 +100,7 @@ namespace DataMiningConsole
         /// <summary>
         /// Computes all the frequent k-itemsets from the transactions extracted before.
         /// </summary>
-        public override void ComputeFrequentItemsets()
+        public override LinkedList<Dictionary<SortedSet<string>, int>> ComputeFrequentItemsets()
         {
             // Extract all the transactions and store them before computing.
             BuildTransactionSets();
@@ -152,6 +152,8 @@ namespace DataMiningConsole
                 // Update the nextFrequentItemsets with the max-k archived.
                 nextFrequentItemsets = extractedFrequentItemsets;
             }
+
+            return frequentItemsets;
         }
 
         /// <summary>

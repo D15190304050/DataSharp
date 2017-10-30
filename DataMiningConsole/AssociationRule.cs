@@ -35,6 +35,11 @@ namespace DataMiningConsole
         /// </summary>
         public double Confidence { get; }
 
+        public string ConfidenceString
+        {
+            get { return string.Format("{0:0.}%", Confidence * 100); }
+        }
+
         /// <summary>
         /// The frequency count of itemset x in the data table.
         /// </summary>
@@ -50,6 +55,8 @@ namespace DataMiningConsole
         /// y is one of the frequent k-itemsets with the largest k.
         /// </remarks>
         public int FrequencyY { get; }
+
+        public string Rule { get; }
 
         /// <summary>
         /// Initializes a new instance of the AssociationRule.
@@ -68,6 +75,7 @@ namespace DataMiningConsole
             this.FrequencyX = frequencyX;
             this.FrequencyY = frequencyY;
             this.Confidence = (double)FrequencyY / frequencyX;
+            this.Rule = string.Format("{0} => {1}", X, Y);
         }
 
         /// <summary>
@@ -76,7 +84,7 @@ namespace DataMiningConsole
         /// <returns>The string representation of the association rule.</returns>
         public override string ToString()
         {
-            return string.Format("{0} => {1}, confidence = {2} / {3} = {4:0.}%", X, Y, FrequencyY, FrequencyX, Confidence * 100);
+            return string.Format("{0}, confidence = {1} / {2} = {3}", Rule, FrequencyY, FrequencyX, ConfidenceString);
         }
     }
 }

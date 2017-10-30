@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FrequentItemsetData.cs" />
+    <Compile Include="Transaction.cs" />
     <Page Include="AprioriSqlServer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -99,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataMiningConsole\DataMiningConsole.csproj">
+      <Project>{43f4acac-d13f-43bf-9b44-4323c4c0e3c8}</Project>
+      <Name>DataMiningConsole</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

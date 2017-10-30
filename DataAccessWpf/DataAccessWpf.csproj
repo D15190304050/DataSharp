@@ -88,6 +88,9 @@
     <Compile Include="NoBlankProductRule.cs" />
     <Compile Include="PositivePriceRule.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="ReadDatabaseDemo.xaml.cs">
+      <DependentUpon>ReadDatabaseDemo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ReadExcelDemo.xaml.cs">
       <DependentUpon>ReadExcelDemo.xaml</DependentUpon>
     </Compile>
@@ -156,6 +159,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ReadDatabaseDemo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ReadExcelDemo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

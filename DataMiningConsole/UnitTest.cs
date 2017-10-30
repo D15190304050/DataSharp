@@ -156,6 +156,19 @@ namespace DataMiningConsole
                 Console.WriteLine(ar);
         }
 
+        public static void StrongARUnitTest(double minConfidence, SqlConnection conn = null)
+        {
+            // Get the frequent itemsets computed by the AprioriSqlServer class.
+            LinkedList<Dictionary<SortedSet<string>, int>> frequentItemsets = AprioriSqlServerUnitTest();
+
+            // Generate the association rules from the frequent itemsets we extract before.
+            IEnumerable<AssociationRule> associationRules = AssociationRules.GenerateStrongAssociationRules(frequentItemsets, minConfidence);
+
+            // Print the association rules computed before.
+            foreach (AssociationRule ar in associationRules)
+                Console.WriteLine(ar);
+        }
+
         /// <summary>
         /// Unit test method for the AssociationRules class.
         /// </summary>

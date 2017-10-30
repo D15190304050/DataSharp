@@ -32,56 +32,59 @@ namespace DataMiningConsole
             // Split the frequent itemsets into arrays.
             Dictionary<SortedSet<string>, int>[] frequentItemsetsArray = frequentItemsets.ToArray();
 
-            // Get the frequent k-itemsets with the largest k.
-            Dictionary<SortedSet<string>, int> completes = frequentItemsets.Last.Value;
-
-            // Traverse through each frequent itemset with the largest k.
-            foreach (SortedSet<string> complete in completes.Keys)
+            // Get the frequent k-itemsets for every k >= 2.
+            for (int k = 2; k < frequentItemsetsArray.Length; k++)
             {
-                // Get the frequency of Y.
-                int frequencyY = completes[complete];
+                Dictionary<SortedSet<string>, int> completes = frequentItemsetsArray[k];
 
-                // Traverse through each subset of the complete set that named 'complete' here.
-                foreach (ISet<string> x in SetHelper.GetAllSubsets(complete))
+                // Traverse through each frequent itemset with the largest k.
+                foreach (SortedSet<string> complete in completes.Keys)
                 {
-                    // Get the number of items in the set x that implies the index of the Dictionary<> that contains x.
-                    int itemCount = x.Count;
+                    // Get the frequency of Y.
+                    int frequencyY = completes[complete];
 
-                    // Initialize the occurance of x to 0.
-                    int frequencyX = 0;
-
-                    // Find the key set that equals to x.
-                    foreach (SortedSet<string> itemset in frequentItemsetsArray[itemCount].Keys)
+                    // Traverse through each subset of the complete set that named 'complete' here.
+                    foreach (ISet<string> x in SetHelper.GetAllSubsets(complete))
                     {
-                        // There must be a set in the frequentItemsetsArray[itemCount].Keys that is equal to x.
-                        // So the frequencyX must be greater than 0 when exit this foreach-loop.
-                        if (x.SetEquals(itemset))
+                        // Get the number of items in the set x that implies the index of the Dictionary<> that contains x.
+                        int itemCount = x.Count;
+
+                        // Initialize the occurance of x to 0.
+                        int frequencyX = 0;
+
+                        // Find the key set that equals to x.
+                        foreach (SortedSet<string> itemset in frequentItemsetsArray[itemCount].Keys)
                         {
-                            frequencyX = frequentItemsetsArray[itemCount][itemset];
-                            break;
+                            // There must be a set in the frequentItemsetsArray[itemCount].Keys that is equal to x.
+                            // So the frequencyX must be greater than 0 when exit this foreach-loop.
+                            if (x.SetEquals(itemset))
+                            {
+                                frequencyX = frequentItemsetsArray[itemCount][itemset];
+                                break;
+                            }
                         }
+
+                        // For now we have the frequency of x, we can generate the association rule of x and Complement(complete, x).
+
+                        // Get the complement set of x in the complete set.
+                        ISet<string> y = SetHelper.GetComplement(complete, x);
+
+                        // Get the name list of the itemset x.
+                        StringBuilder itemsX = new StringBuilder();
+                        foreach (string s in x)
+                            itemsX.Append(s + " ");
+                        itemsX.Remove(itemsX.Length - 1, 1);
+
+                        // Get the name list of the itemset y.
+                        StringBuilder itemsY = new StringBuilder();
+                        foreach (string s in y)
+                            itemsY.Append(s + " ");
+                        itemsY.Remove(itemsY.Length - 1, 1);
+
+                        // Initialize a new instance of the AssociationRule.
+                        AssociationRule ar = new AssociationRule(itemsX.ToString(), itemsY.ToString(), frequencyX, frequencyY);
+                        associationRules.AddLast(ar);
                     }
-
-                    // For now we have the frequency of x, we can generate the association rule of x and Complement(complete, x).
-
-                    // Get the complement set of x in the complete set.
-                    ISet<string> y = SetHelper.GetComplement(complete, x);
-
-                    // Get the name list of the itemset x.
-                    StringBuilder itemsX = new StringBuilder();
-                    foreach (string s in x)
-                        itemsX.Append(s + " ");
-                    itemsX.Remove(itemsX.Length - 1, 1);
-
-                    // Get the name list of the itemset y.
-                    StringBuilder itemsY = new StringBuilder();
-                    foreach (string s in y)
-                        itemsY.Append(s + " ");
-                    itemsY.Remove(itemsY.Length - 1, 1);
-
-                    // Initialize a new instance of the AssociationRule.
-                    AssociationRule ar = new AssociationRule(itemsX.ToString(), itemsY.ToString(), frequencyX, frequencyY);
-                    associationRules.AddLast(ar);
                 }
             }
 
@@ -90,6 +93,26 @@ namespace DataMiningConsole
 
             // Return the association rules generated from the frequent itemsets extracted before.
             return associationRules;
+        }
+
+        /// <summary>
+        /// Generate association rules from the extracted frequent itemsets whose confidence is larger than or equal to the minimum confidence.
+        /// </summary>
+        /// <param name="frequentItemsets">The extracted frequent itemsets.</param>
+        /// <param name="minConfidence">The minimum confidence.</param>
+        /// <returns>Association rules from the extracted frequent itemsets whose confidence is larger than or equal to the minimum confidence.</returns>
+        public static IEnumerable<AssociationRule> GenerateStrongAssociationRules(LinkedList<Dictionary<SortedSet<string>, int>> frequentItemsets, double minConfidence)
+        {
+            // Get all the association rules.
+            IEnumerable<AssociationRule> associationRules = GenerateAssociationRules(frequentItemsets);
+
+            // Extract the association rules whose confidence is larger than or equal to the minimum confidence.
+            IEnumerable<AssociationRule> strongAR =
+                from ar in associationRules
+                where ar.Confidence >= minConfidence
+                select ar;
+
+            return strongAR;
         }
     }
 }

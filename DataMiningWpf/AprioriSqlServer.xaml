@@ -5,41 +5,107 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataMiningWpf"
         mc:Ignorable="d"
-        Title="AprioriSqlServer" Height="500" Width="500">
+        Title="AprioriSqlServer" Height="700" Width="700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <TextBlock Grid.Row="0" Margin="10,5,5,5">Settings</TextBlock>
+
+        <Grid Grid.Row="1">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+            </Grid.Resources>
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <!--<ColumnDefinition Width="*" />-->
+            </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Margin="20,5,5,5">Settings</TextBlock>
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0">Number of Transactions</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="0" Name="txtNumTransactions" />
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,0,5,0">Number of Lines:</TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="0" Margin="5" Name="txtNumLines" />
+            <TextBlock Grid.Row="0" Grid.Column="1">Number of Items</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="1"  Name="txtNumItems" />
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5,0,5,0">Number of Items:</TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Name="txtNumItems" />
-            </Grid>
+            <TextBlock Grid.Row="0" Grid.Column="2">Minimum Support Count</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="2" Name="txtMinSupportCount" />
+
+            <TextBlock Grid.Row="0" Grid.Column="3">Minimum Confidence</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="3" Name="txtMinConfidence" />
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <ListView Name="lstTransactions" Grid.Column="0" Margin="5">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Transaction ID" DisplayMemberBinding="{Binding Path=TransactionID}" />
+                        <GridViewColumn Header="Shopping List" DisplayMemberBinding="{Binding Path=ShoppingList}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="10" />
+                        <Setter Property="Padding" Value="5" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <Button Name="cmdGenerateData" Click="cmdGenerateData_Click">Generate Transactions</Button>
+                <Button Name="cmdComputeFrequentItemsets" Click="cmdComputeFrequentItemsets_Click">Compute Frequent Itemsets</Button>
+                <Button Name="cmdGenerateAssociationRules" Click="cmdGenerateAssociationRules_Click">Compute Association Rules</Button>
+                <Button Name="cmdClearData" Click="cmdClearData_Click">Clear Previous Data</Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <ListView Name="lstFrequentItemsets" Grid.Column="0" Margin="5">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Item Count" DisplayMemberBinding="{Binding Path=ItemCount}" />
+                        <GridViewColumn Header="Frequent Itemsets" DisplayMemberBinding="{Binding Path=FrequentItemsets}" />
+                        <GridViewColumn Header="Support Count" DisplayMemberBinding="{Binding Path=SupportCount}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <ListView Name="lstStrongAR" Grid.Column="1" Margin="5">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Association Rules" DisplayMemberBinding="{Binding Path=Rule}" />
+                        <GridViewColumn Header="Confidence" DisplayMemberBinding="{Binding Path=ConfidenceString}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
     </Grid>
 </Window>
