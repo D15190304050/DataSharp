@@ -12,30 +12,30 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using DataMiningConsole;
 
 namespace DataMiningWpf
 {
     /// <summary>
-    /// AprioriSqlServer.xaml 的交互逻辑
+    /// AprioriMySql.xaml 的交互逻辑
     /// </summary>
-    public partial class AprioriSqlServer : Window
+    public partial class AprioriMySql : Window
     {
         /// <summary>
-        /// A SqlConnection instance used to connect to the SQL Server.
+        /// A MySqlConnection instance used to connect to the SQL Server.
         /// </summary>
-        private SqlConnection conn;
+        private MySqlConnection conn;
 
         /// <summary>
-        /// A SqlDataAdapter to fetch data from SQL Server.
+        /// A MySqlDataAdapter to fetch data from SQL Server.
         /// </summary>
-        private SqlDataAdapter da;
+        private MySqlDataAdapter da;
 
         /// <summary>
         /// A clear command that can clear all the contents in the Transaction table.
         /// </summary>
-        private SqlCommand cmdClear;
+        private MySqlCommand cmdClear;
 
         /// <summary>
         /// A DataSet instance that stores the data retrived from SQL Server.
@@ -80,7 +80,7 @@ namespace DataMiningWpf
         /// <remarks>
         /// You can configure you own connection string here. You can also let users can type the needed info by changing the window XAML.
         /// </remarks>
-        private const string connString = @"Server = DESKTOP-2ARV8QK\DINOSTARK; Integrated Security = True; Database = Startup;";
+        private const string connString = @"Server = localhost; User Id = DinoStark; Password = non-feeling; Database = Startup;";
 
         /// <summary>
         /// The SQL query command used to retrive all the data in the Transaction table.
@@ -109,15 +109,15 @@ namespace DataMiningWpf
         /// <remarks>
         /// You can configure you onw query command here. You can also let users can type the query command by changing the window XAML.
         /// </remarks>
-        public AprioriSqlServer()
+        public AprioriMySql()
         {
             // Initialize the window described in XMAL.
             InitializeComponent();
-            
+
             // Configure the objects used for manipulating database.
-            conn = new SqlConnection(connString);
-            da = new SqlDataAdapter(queryAll, conn);
-            cmdClear = new SqlCommand(sqlClear, conn);
+            conn = new MySqlConnection(connString);
+            da = new MySqlDataAdapter(queryAll, conn);
+            cmdClear = new MySqlCommand(sqlClear, conn);
             ds = new DataSet();
 
             // Initialize other private variables.
@@ -138,7 +138,7 @@ namespace DataMiningWpf
                 conn.Open();
                 MessageBox.Show("Successfully connect to SQL Server.");
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
                 MessageBox.Show(ex.Message + ex.StackTrace);
             }
@@ -163,7 +163,7 @@ namespace DataMiningWpf
             ClearPreviousData();
 
             // Genereate new data using specified number of rows and items.
-            DataGenerator.GenerateTransactionsSqlServer(conn, numRows, numItems);
+            DataGenerator.GenerateTransactionsMySql(conn, numRows, numItems);
 
             // Retrive data from database.
             FetchData();
@@ -176,7 +176,7 @@ namespace DataMiningWpf
             {
                 // Get the TransactionID.
                 string transactionID = row[0].ToString();
-                
+
                 // Get the ShoppingList correspond to the TransactionID.
                 string shoppingList = row[1].ToString();
 
@@ -202,8 +202,8 @@ namespace DataMiningWpf
             if (!CanComputeFrequentItemsets())
                 return;
 
-            // Initialize an Apriori solver based on SQL Server with specified SqlConnection and SQL query command.
-            DataMiningConsole.AprioriSqlServer apriori = new DataMiningConsole.AprioriSqlServer(conn, queryShoppingLists);
+            // Initialize an Apriori solver based on SQL Server with specified MySqlConnection and SQL query command.
+            DataMiningConsole.AprioriMySql apriori = new DataMiningConsole.AprioriMySql(conn, queryShoppingLists);
 
             // Set the minimum support count for the frequent itemset computation.
             apriori.MinSupportCount = minSupportCount;
@@ -364,7 +364,7 @@ namespace DataMiningWpf
                 conn.Open();
                 cmdClear.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
                 MessageBox.Show(ex.Message + ex.StackTrace);
             }
@@ -388,7 +388,7 @@ namespace DataMiningWpf
                 conn.Open();
                 da.Fill(ds);
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
                 MessageBox.Show(ex.Message + ex.StackTrace);
             }
@@ -397,7 +397,5 @@ namespace DataMiningWpf
                 conn.Close();
             }
         }
-
-        
     }
 }

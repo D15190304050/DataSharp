@@ -138,14 +138,31 @@ namespace DataMiningConsole
         /// <param name="numItem">The number of items in the table.</param>
         public static void GenerateTransactionsMySql(MySqlConnection conn, int numRow, int numItem)
         {
-            // Check the SQL Server connection before processing.
-            CheckConnection(conn);
+            // Use StringBuilder to accelerate.
+            StringBuilder textForInsertion = new StringBuilder();
 
-            // Generate the transactions for test.
-            string textForInsertion = GenerateTransactions(numRow, numItem);
+            // Build the insertion.
+            // Build the insertion command using a for loop if the number of transactions to insert in larger than 1000.
+            // Note that when using SQL Server, you can insert at most 1000 rows each time.
+            // Build the insertion command directly otherwise.
+            if (numRow > 1000)
+            {
+                // The transaction ID starts from 1.
+                int startTransactionID = 1;
+
+                // Loop until the remaining number of transactions to generate is less than 1000.
+                for (startTransactionID = 1; startTransactionID + 1000 < numRow; startTransactionID += 1000)
+                    textForInsertion.Append(GenerateTransactions(1000, numItem, startTransactionID));
+
+                // Generate the remaining transactions.
+                // Note that the number of transactions between numRow and startTransactionID is (numRow - startTransactionID + 1).
+                textForInsertion.Append(GenerateTransactions(numRow - startTransactionID + 1, numItem, startTransactionID));
+            }
+            else
+                textForInsertion.Append(GenerateTransactions(numRow, numItem));
 
             // Initialize a new instance of the SqlCommand with specified command text and SQL Server connection.
-            MySqlCommand cmd = new MySqlCommand(textForInsertion, conn);
+            MySqlCommand cmd = new MySqlCommand(textForInsertion.ToString(), conn);
 
             // Try to add data generated in this method to the test data table.
             try
