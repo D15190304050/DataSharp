@@ -35,9 +35,10 @@ namespace DataMiningConsole
             // Get the frequent k-itemsets for every k >= 2.
             for (int k = 2; k < frequentItemsetsArray.Length; k++)
             {
+                // Get the frequents itemset with the number of items equal to k.
                 Dictionary<SortedSet<string>, int> completes = frequentItemsetsArray[k];
 
-                // Traverse through each frequent itemset with the largest k.
+                // Traverse through each frequent k-itemset.
                 foreach (SortedSet<string> complete in completes.Keys)
                 {
                     // Get the frequency of Y.

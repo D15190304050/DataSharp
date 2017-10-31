@@ -35,10 +35,10 @@ namespace DataMiningConsole
         /// </summary>
         public double Confidence { get; }
 
-        public string ConfidenceString
-        {
-            get { return string.Format("{0:0.}%", Confidence * 100); }
-        }
+        /// <summary>
+        /// Gets the string representation of the confidence.
+        /// </summary>
+        public string ConfidenceString { get; }
 
         /// <summary>
         /// The frequency count of itemset x in the data table.
@@ -56,6 +56,9 @@ namespace DataMiningConsole
         /// </remarks>
         public int FrequencyY { get; }
 
+        /// <summary>
+        /// Gets the string representation of the association rule.
+        /// </summary>
         public string Rule { get; }
 
         /// <summary>
@@ -76,6 +79,7 @@ namespace DataMiningConsole
             this.FrequencyY = frequencyY;
             this.Confidence = (double)FrequencyY / frequencyX;
             this.Rule = string.Format("{0} => {1}", X, Y);
+            this.ConfidenceString = string.Format("{0:0.}%", Confidence * 100);
         }
 
         /// <summary>
