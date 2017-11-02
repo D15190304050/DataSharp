@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,9 @@ namespace DataMiningWpf
             // Initliaze a connection object.
             MySqlConnection conn = new MySqlConnection();
 
+            // Set the MySqlConnection of this program to null to force the user to login.
+            App.MySqlConnection = null;
+
             // Configure the connction string.
 
             // Get the individual fields.
@@ -58,7 +62,7 @@ namespace DataMiningWpf
             MySqlCommand cmdInitialization = new MySqlCommand(cmdInit, conn);
 
             // correct is a flag indicating whether the connection is built.
-            bool correct = true;
+            bool correct = false;
 
             // Try to build the connection.
             try
@@ -69,13 +73,15 @@ namespace DataMiningWpf
             {
                 // Report the error message and set the flag to false.
                 MessageBox.Show(ex.Message);
-                correct = false;
 
                 // The connection object of this program will be null.
                 App.MySqlConnection = null;
 
                 // Initialize the database for this program.
                 cmdInitialization.ExecuteNonQuery();
+
+                // Set the flag to true.
+                correct = true;
             }
             finally
             {

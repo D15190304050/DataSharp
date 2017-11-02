@@ -106,8 +106,17 @@ namespace DataMiningWpf
             // Initialize the window described in XMAL.
             InitializeComponent();
 
+            // Show the login window before showing this window.
             Window loginWindow = new SqlServerLogin();
             loginWindow.ShowDialog();
+
+            // Terminate this window if the user doesn't login successfully.
+            if (App.SqlConnection == null)
+            {
+                this.Loaded += (o, e) => this.Close();
+                return;
+            }
+
             // Configure the objects used for manipulating database.
             conn = App.SqlConnection;
             da = new SqlDataAdapter(queryAll, conn);
@@ -391,7 +400,5 @@ namespace DataMiningWpf
                 conn.Close();
             }
         }
-
-        
     }
 }

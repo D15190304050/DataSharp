@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
+using System.ComponentModel;
 
 namespace DataMiningWpf
 {
@@ -48,7 +49,7 @@ namespace DataMiningWpf
             conn.ConnectionString = connString;
 
             // correct is a flag indicating whether the connection is built.
-            bool correct = true;
+            bool correct = false;
 
             // Build the SQL command for initailzing the database.
             string cmdInit = @"DROP TABLE IF EXISTS Transactions;
@@ -69,13 +70,15 @@ namespace DataMiningWpf
             {
                 // Report the error message and set the flag to false.
                 MessageBox.Show(ex.Message);
-                correct = false;
 
                 // The connection object of this program will be null.
                 App.MySqlConnection = null;
 
                 // Initialize the database for this program.
                 cmdInitialization.ExecuteNonQuery();
+
+                // Set the flag to true.
+                correct = true;
             }
             finally
             {
