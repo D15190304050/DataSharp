@@ -68,6 +68,12 @@ namespace DataMiningWpf
             try
             {
                 conn.Open();
+
+                // Initialize the database for this program.
+                cmdInitialization.ExecuteNonQuery();
+
+                // Set the flag to true.
+                correct = true;
             }
             catch (MySqlException ex)
             {
@@ -76,12 +82,6 @@ namespace DataMiningWpf
 
                 // The connection object of this program will be null.
                 App.MySqlConnection = null;
-
-                // Initialize the database for this program.
-                cmdInitialization.ExecuteNonQuery();
-
-                // Set the flag to true.
-                correct = true;
             }
             finally
             {
