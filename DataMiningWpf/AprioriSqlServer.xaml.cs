@@ -75,14 +75,6 @@ namespace DataMiningWpf
         /* String Literal for database processing. */
 
         /// <summary>
-        /// The connection string used to connect to the local SQL Server.
-        /// </summary>
-        /// <remarks>
-        /// You can configure you own connection string here. You can also let users can type the needed info by changing the window XAML.
-        /// </remarks>
-        private const string connString = @"Server = DESKTOP-2ARV8QK\DINOSTARK; Integrated Security = True; Database = Startup;";
-
-        /// <summary>
         /// The SQL query command used to retrive all the data in the Transaction table.
         /// </summary>
         /// <remarks>
@@ -113,9 +105,11 @@ namespace DataMiningWpf
         {
             // Initialize the window described in XMAL.
             InitializeComponent();
-            
+
+            Window loginWindow = new SqlServerLogin();
+            loginWindow.ShowDialog();
             // Configure the objects used for manipulating database.
-            conn = new SqlConnection(connString);
+            conn = App.SqlConnection;
             da = new SqlDataAdapter(queryAll, conn);
             cmdClear = new SqlCommand(sqlClear, conn);
             ds = new DataSet();

@@ -59,6 +59,12 @@
       <DependentUpon>AprioriMySql.xaml</DependentUpon>
     </Compile>
     <Compile Include="FrequentItemsetData.cs" />
+    <Compile Include="MySqlLogin.xaml.cs">
+      <DependentUpon>MySqlLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerLogin.xaml.cs">
+      <DependentUpon>SqlServerLogin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Transaction.cs" />
     <Page Include="AprioriMySql.xaml">
       <SubType>Designer</SubType>
@@ -83,6 +89,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MySqlLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SqlServerLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

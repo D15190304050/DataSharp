@@ -18,6 +18,8 @@
         <StackPanel Button.Click="ButtonClick">
             <Button>AprioriSqlServer</Button>
             <Button>AprioriMySql</Button>
+            <Button>SqlServerLogin</Button>
+            <Button>MySqlLogin</Button>
         </StackPanel>
     </Grid>
 </Window>
