@@ -106,6 +106,9 @@ namespace DataMiningWpf
             // Initialize the window described in XMAL.
             InitializeComponent();
 
+            // Set the SqlConnection object to null before login.
+            App.SqlConnection = null;
+
             // Show the login window before showing this window.
             Window loginWindow = new SqlServerLogin();
             loginWindow.ShowDialog();

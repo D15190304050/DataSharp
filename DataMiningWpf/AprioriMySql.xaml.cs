@@ -106,12 +106,15 @@ namespace DataMiningWpf
             // Initialize the window described in XMAL.
             InitializeComponent();
 
+            // Set the SqlConnection object to null before login.
+            App.MySqlConnection = null;
+
             // Show the login window before showing this window.
             Window loginWindow = new MySqlLogin();
             loginWindow.ShowDialog();
 
             // Terminate this window if the user doesn't login successfully.
-            if (App.SqlConnection == null)
+            if (App.MySqlConnection == null)
             {
                 this.Loaded += (o, e) => this.Close();
                 return;

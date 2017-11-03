@@ -48,10 +48,10 @@ namespace DataMiningWpf
             string connString = server + user + password + dbName;
             conn.ConnectionString = connString;
 
-            // correct is a flag indicating whether the connection is built.
-            bool correct = false;
-
             // Build the SQL command for initailzing the database.
+            // This SQL command will try to drop the table named "Transactions" if there is one in the specified database.
+            // And then a table with the same name and specified table structure will be created.
+            // This table structure is the structure for the computation of frequent itemsets and association rules by this program.
             string cmdInit = @"DROP TABLE IF EXISTS Transactions;
 
                              CREATE TABLE Transactions
@@ -61,9 +61,13 @@ namespace DataMiningWpf
                              );";
             SqlCommand cmdInitialization = new SqlCommand(cmdInit, conn);
 
+            // correct is a flag indicating whether the connection is built.
+            bool correct = false;
+
             // Try to build the connection.
             try
             {
+                // Open the connection.
                 conn.Open();
 
                 // Initialize the database for this program.

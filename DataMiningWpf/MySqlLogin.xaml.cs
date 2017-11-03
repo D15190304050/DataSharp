@@ -36,9 +36,6 @@ namespace DataMiningWpf
             // Initliaze a connection object.
             MySqlConnection conn = new MySqlConnection();
 
-            // Set the MySqlConnection of this program to null to force the user to login.
-            App.MySqlConnection = null;
-
             // Configure the connction string.
 
             // Get the individual fields.
@@ -52,6 +49,9 @@ namespace DataMiningWpf
             conn.ConnectionString = connString;
 
             // Build the SQL command for initailzing the database.
+            // This SQL command will try to drop the table named "Transactions" if there is one in the specified database.
+            // And then a table with the same name and specified table structure will be created.
+            // This table structure is the structure for the computation of frequent itemsets and association rules by this program.
             string cmdInit = @"DROP TABLE IF EXISTS Transactions;
 
                              CREATE TABLE Transactions
@@ -67,6 +67,7 @@ namespace DataMiningWpf
             // Try to build the connection.
             try
             {
+                // Open the connection.
                 conn.Open();
 
                 // Initialize the database for this program.
