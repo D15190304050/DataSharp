@@ -17,7 +17,7 @@ namespace MySqlConsole
         /// </summary>
         public static void ConnectionTest()
         {
-            string connectionString = @"Server = localhost; User Id = root; Password = non-feeling; Database = Startup;";
+            string connectionString = @"Server = localhost; User Id = DinoStark; Password = non-feeling; Database = Startup;";
             MySqlConnection conn = new MySqlConnection(connectionString);
 
             string query = @"Select * From Transactions;";

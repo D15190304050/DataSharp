@@ -24,7 +24,7 @@ namespace DataMiningConsole
             // You can re-write your connection string here.
             if (conn == null)
             {
-                string connString = @"Server = DESKTOP-2ARV8QK\DINOSTARK; Integrated Security = True; Database = Startup;";
+                string connString = @"Server = DESKTOP-AQ2402R\SQLEXPRESS; Integrated Security = True; Database = Startup;";
                 conn = new SqlConnection(connString);
             }
 

@@ -19,7 +19,7 @@ namespace DataMiningConsole
             //UnitTest.AprioriMySqlUnitTest();
             //Console.WriteLine();
             //UnitTest.AssociationRulesUnitTest();
-            UnitTest.AssociationRulesUnitTest(DataSourceOption.GenerateNewData, 20, 5);
+            //UnitTest.AssociationRulesUnitTest(DataSourceOption.GenerateNewData, 20, 5);
             //UnitTest.AprioriMySqlUnitTest();
 
             //UnitTest.StrongARUnitTest(0.6);
