@@ -44,10 +44,13 @@
   <ItemGroup>
     <Compile Include="CombinationHelper.cs" />
     <Compile Include="FunctionalityTest.cs" />
+    <Compile Include="Matrix.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetHelper.cs" />
     <Compile Include="StdRandom.cs" />
+    <Compile Include="UnitTest.cs" />
+    <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
