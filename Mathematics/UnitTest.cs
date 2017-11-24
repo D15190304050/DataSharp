@@ -22,6 +22,8 @@ namespace Mathematics
             Console.WriteLine($"v2 = {v2}");
             Console.WriteLine();
 
+            Console.WriteLine($"The sub-vector with range [1, 3] of v1 is {v1.GetSubVector(1, 3)}\n");
+
             Console.WriteLine($"v1 + 3 = {v1 + 3}");
             Console.WriteLine($"5 + v1 = {5 + v1}");
             Console.WriteLine($"v1 + v2 = {v1 + v2}");

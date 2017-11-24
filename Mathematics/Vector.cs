@@ -48,11 +48,43 @@ namespace Mathematics
         /// After initialization, this Vector will have the same value as the input double array.
         /// </remarks>
         /// <param name="vector">The specified double array.</param>
-        public Vector(double[] vector)
+        /// <exception cref="ArgumentNullException">If <paramref name="vector" /> is null.</exception>
+        public Vector(params double[] vector)
         {
+            if (vector == null)
+                throw new ArgumentNullException("The input double array must not be null.");
             this.vector = new double[vector.Length];
             for (int i = 0; i < vector.Length; i++)
                 this.vector[i] = vector[i];
+        }
+
+        /// <summary>
+        /// Initializes a Vector from a specified double array with specified range [<paramref name="startIndex" />, <paramref name="endIndex" />] so that this Vector will have the same values.
+        /// </summary>
+        /// <remarks>
+        /// After initialization, this Vector will have the same value as the input double array.
+        /// </remarks>
+        /// <param name="vector">The specified double array.</param>
+        /// <param name="startIndex">The start index (inclusive).</param>
+        /// <param name="endIndex">The end index (inclusive).</param>
+        /// <exception cref="ArgumentException">If <paramref name="startIndex" /> or <paramref name="endIndex" /> is out of range or <paramref name="startIndex" /> is not less than <paramref name="endIndex" />.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="vector" /> is null.</exception>
+        public Vector(double[] vector, int startIndex, int endIndex)
+        {
+            if (vector == null)
+                throw new ArgumentNullException("The input double array must not be null.");
+
+            if ((startIndex < 0) || (startIndex >= vector.Length))
+                throw new ArgumentException("startIndex is out of range.");
+            if ((endIndex < 0) || (startIndex >= vector.Length))
+                throw new ArgumentException("endIndex is out of range.");
+
+            if (endIndex <= startIndex)
+                throw new ArgumentException("startIndex must be less than endIndex.");
+
+            this.vector = new double[endIndex - startIndex + 1];
+            for (int i = 0; i < this.vector.Length; i++)
+                this.vector[i] = vector[i + startIndex];
         }
 
         /// <summary>
@@ -62,7 +94,7 @@ namespace Mathematics
         /// <exception cref="ArgumentNullException">If the input Vector is null.</exception>
         public Vector(Vector vector)
         {
-            if (this.vector == null)
+            if (vector == null)
                 throw new ArgumentNullException("The input vector must not be null.");
             this.vector = new double[vector.Length];
             for (int i = 0; i < vector.Length; i++)
@@ -79,6 +111,17 @@ namespace Mathematics
         public double GetLength()
         {
             return Math.Sqrt(this * this);
+        }
+
+        /// <summary>
+        /// Returns the sub-vector of this Vector with specified range [<paramref name="startIndex" />, <paramref name="endIndex" />].
+        /// </summary>
+        /// <param name="startIndex">The start index (inclusive).</param>
+        /// <param name="endIndex">The end index (inclusive).</param>
+        /// <returns>The sub-vector of this Vector with specified range [<paramref name="startIndex" />, <paramref name="endIndex" />].</returns>
+        public Vector GetSubVector(int startIndex, int endIndex)
+        {
+            return new Vector(this.vector, startIndex, endIndex);
         }
 
         /// <summary>
