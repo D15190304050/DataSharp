@@ -17,7 +17,8 @@ namespace Mathematics
             //FunctionalityTest.SetRemovalTest();
             //FunctionalityTest.AllSubsetsDemo();
             //FunctionalityTest.ComplementDemo();
-            UnitTest.VectorTest();
+            //UnitTest.VectorTest();
+            UnitTest.MatrixTest();
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");

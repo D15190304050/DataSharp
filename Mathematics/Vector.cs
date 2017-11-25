@@ -289,6 +289,8 @@ namespace Mathematics
         {
             if (vector == null)
                 throw new ArgumentNullException("The input vector must not be null.");
+            if (Math.Abs(scalar) < double.Epsilon)
+                throw new DivideByZeroException("The scalar must be a non-zero value.");
 
             Vector result = new Vector(vector);
             for (int i = 0; i < result.Length; i++)
