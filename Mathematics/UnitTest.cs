@@ -49,6 +49,15 @@ namespace Mathematics
 
             Console.WriteLine($"Sum of v1 = {v1.SumComponents()}");
             Console.WriteLine($"Sum of squared components of v1 = {v1.SumSquaredComponents()}");
+
+            Vector v4 = new Vector(1, 2, 3, 4, 5);
+            Vector v5 = new Vector(2, 7, 5);
+            Console.WriteLine($"Vector v4 = {v4}");
+            Console.WriteLine($"Vector v5 = {v5}");
+            Console.WriteLine($"The convolution of v4 * V5 = {Vector.ComputeConvolution(v4, v5)}");
+            Console.WriteLine($"The correlation of v4 * v5 = {Vector.ComputeCorrelation(v4, v5)}");
+
+            Console.WriteLine($"The element-wise product of v1 .* v4 = {Vector.ElementWiseMultiplication(v1,v4)}");
         }
 
         /// <summary>
@@ -175,6 +184,35 @@ namespace Mathematics
             PrintArray(m7.ToColumnMajorArray());
             Console.WriteLine("The array format of m7 is:");
             PrintArray(m7.ToArray());
+
+            double[] row0 = new double[] { 10, 5, 20, 20 };
+            double[] row1 = new double[] { 10, 5, 20, 20 };
+            double[] row2 = new double[] { 10, 5, 20, 20 };
+            double[] row3 = new double[] { 10, 5, 20, 20 };
+            double[][] rows = new double[4][] { row0, row1, row2, row3 };
+            Matrix m8 = new Matrix(rows);
+            row0 = new double[] { -1, 1 };
+            row1 = new double[] { 0, 1 };
+            rows = new double[2][] { row0, row1 };
+            Matrix m9 = new Matrix(rows);
+            Console.WriteLine($"Matrix m8 =\n{m8}");
+            Console.WriteLine($"Matrix m9 =\n{m9}");
+            Console.WriteLine($"Convolution of m8 * m9 =\n{Matrix.ComputeConvolution(m8, m9, 1)}");
+
+            row0 = new double[] { 1, 2, 3, 4, 5 };
+            row1 = new double[] { 1, 2, 3, 4, 5 };
+            row2 = new double[] { 1, 2, 3, 4, 5 };
+            row3 = new double[] { 1, 2, 3, 4, 5 };
+
+            rows = new double[][] { row0, row1, row2, row3 };
+            m8 = new Matrix(rows);
+            row0 = new double[] { 2, 7 };
+            row1 = new double[] { 5, 8 };
+            rows = new double[][] { row0, row1 };
+            m9 = new Matrix(rows);
+            Console.WriteLine($"Matrix m8 =\n{m8}");
+            Console.WriteLine($"Matrix m9 =\n{m9}");
+            Console.WriteLine($"Correlation of m8 * m9 =\n{Matrix.ComputeCorrelation(m8, m9, 1)}");
         }
 
         private static void PrintArray(double[] array)

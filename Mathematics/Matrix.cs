@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Mathematics
 {
+    /// <summary>
+    /// The Matrix class represents a matrix in mathematics. This class provides some corresponding operation.
+    /// </summary>
+    [Serializable]
     public class Matrix
     {
         /// <summary>
@@ -48,10 +49,13 @@ namespace Mathematics
         /// <exception cref="ArgumentNullException">If <paramref name="array"/> is null.</exception>
         public static bool IsMatrix(double[][] array)
         {
-            if (array == null)
-                throw new ArgumentNullException("array", "The input 2-D double array must not be null.");
+            if (array.Length < 1)
+                return false;
 
             int columnCount = array[0].Length;
+            if (columnCount < 1)
+                return false;
+
             for (int i = 1; i < array.Length; i++)
             {
                 if (array[i].Length != columnCount)
@@ -62,12 +66,33 @@ namespace Mathematics
         }
 
         /// <summary>
+        /// Returns true if the input 2-D double array has the shape as a matrix, otherwise, false.
+        /// </summary>
+        /// <param name="array">A 2-D double array.</param>
+        /// <returns>true if the input 2-D double array has the same shape as a matrix, otherwise, false.</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="array"/> is null.</exception>
+        public static bool IsMatrix(double[,] array)
+        {
+            int rowCount = array.GetLength(0);
+            int columnCount = array.GetLength(1);
+            if ((rowCount < 1) || (columnCount < 1))
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
         /// Initiailizes a matrix using a 2-D double array. This initialization will make a deep copy of the input array.
         /// </summary>
         /// <param name="matrix">The 2-D double array that provides the values for the initialization of this Matrix.</param>
+        /// <exception cref="ArgumentNullException">If the input 2-D double array is null.</exception>
         /// <exception cref="ArgumentException">If the input 2-D double array doesn't have the shape as a matrix.</exception>
         public Matrix(double[][] matrix)
         {
+            // Check whether the input 2-D array is null.
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "The input 2-D double array must not be null.");
+
             // Check whether the input 2-D array has the shape as a matrix or not.
             if (!IsMatrix(matrix))
                 throw new ArgumentException("The input 2-D double array doesn't have the shape as a matrix.");
@@ -82,7 +107,36 @@ namespace Mathematics
             {
                 this.matrix[i] = new double[ColumnCount];
                 for (int j = 0; j < this.ColumnCount; j++)
-                    this.matrix[i][j] = matrix[i][j];
+                    this[i, j] = matrix[i][j];
+            }
+        }
+
+        /// <summary>
+        /// Initiailizes a matrix using a 2-D double array. This initialization will make a deep copy of the input array.
+        /// </summary>
+        /// <param name="matrix">The 2-D double array that provides the values for the initialization of this Matrix.</param>
+        /// <exception cref="ArgumentNullException">If the input 2-D double array is null.</exception>
+        /// <exception cref="ArgumentException">If the input 2-D double array doesn't have the shape as a matrix.</exception>
+        public Matrix(double[,] matrix)
+        {
+            // Check whether the input 2-D array is null.
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "The input 2-D double array must not be null.");
+
+            // Check whether the input 2-D array has the shape as a matrix or not.
+            if (!IsMatrix(matrix))
+                throw new ArgumentException("The input 2-D double array doesn't have the shape as a matrix.");
+
+            this.RowCount = matrix.GetLength(0);
+            this.ColumnCount = matrix.GetLength(1);
+
+            // Initialize the internal matrix.
+            this.matrix = new double[RowCount][];
+            for (int i = 0; i < this.RowCount; i++)
+            {
+                this.matrix[i] = new double[ColumnCount];
+                for (int j = 0; j < this.ColumnCount; j++)
+                    this[i, j] = matrix[i, j];
             }
         }
 
@@ -94,17 +148,29 @@ namespace Mathematics
         /// <param name="value">The specified double value.</param>
         public Matrix(int numRows, int numColumns, double value = 0)
         {
+            if ((numRows < 1) || (numColumns < 1))
+                throw new ArgumentException("The size of a Matrix must be greater than or equal to 1*1.");
+
             // Get the number of rows and columns of this matrix.
             this.RowCount = numRows;
             this.ColumnCount = numColumns;
 
             // Initialize the internal matrix.
             matrix = new double[RowCount][];
-            for (int i = 0; i < this.RowCount; i++)
+
+            if (value == 0)
             {
-                matrix[i] = new double[ColumnCount];
-                for (int j = 0; j < this.ColumnCount; j++)
-                    matrix[i][j] = value;
+                for (int i = 0; i < this.RowCount; i++)
+                    matrix[i] = new double[ColumnCount];
+            }
+            else
+            {
+                for (int i = 0; i < this.RowCount; i++)
+                {
+                    matrix[i] = new double[ColumnCount];
+                    for (int j = 0; j < this.ColumnCount; j++)
+                        this[i, j] = value;
+                }
             }
         }
 
@@ -203,7 +269,7 @@ namespace Mathematics
         /// Throws an exception if the input column index is out of the range of this Matrix, otherwise, do nothing.
         /// </summary>
         /// <param name="columnIndex">The index of a column.</param>
-        /// <exception cref="ArgumentOutOfRangeException">If the input column index is out of the range of this Matrix, otherwise, do nothing.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the input column index is out of the range of this Matrix.</exception>
         private void CheckColumnIndex(int columnIndex)
         {
             if (!ColumnIndexIsInRange(columnIndex))
@@ -211,12 +277,12 @@ namespace Mathematics
         }
 
         /// <summary>
-        /// Check the indicies of startRowIndex, startColumnIndex, endRowIndex, endColumnIndex, which will be used operate some area of a Matrix.
+        /// Check the indicies of startRowIndex, startColumnIndex, endRowIndex, endColumnIndex, which will be used operate some region of a Matrix.
         /// </summary>
-        /// <param name="startRowIndex">The start row index of the sub area (inclusive).</param>
-        /// <param name="startColumnIndex">The start column index of the sub area (inclusive).</param>
-        /// <param name="endRowIndex">The end row index of the sub area (inclusive).</param>
-        /// <param name="endColumnIndex">The end column index of the sub area (inclusive).</param>
+        /// <param name="startRowIndex">The start row index of the sub region (inclusive).</param>
+        /// <param name="startColumnIndex">The start column index of the sub region (inclusive).</param>
+        /// <param name="endRowIndex">The end row index of the sub region (inclusive).</param>
+        /// <param name="endColumnIndex">The end column index of the sub region (inclusive).</param>
         /// <exception cref="ArgumentOutOfRangeException">If one of the indicies is out of range of this Matrix.</exception>
         /// <exception cref="ArgumentException">If the end index is not greater than the start index (both row and column).</exception>
         private void CheckIndicies(int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
@@ -263,7 +329,7 @@ namespace Mathematics
         }
 
         /// <summary>
-        /// Throws exception if the input row vector is null or doesn't have the same length as the row count of this matrix.
+        /// Throws exception if the input row vector is null or doesn't have the same length as the row count of this matrix, otherwise, do nothing.
         /// </summary>
         /// <param name="row">The input row vector to check.</param>
         /// <exception cref="ArgumentNullException">If the input row vector is null.</exception>
@@ -358,12 +424,12 @@ namespace Mathematics
         }
 
         /// <summary>
-        /// Sets all the values of the components in the specified area of this Matrix to 0.
+        /// Sets all the values of the components in the specified region of this Matrix to 0.
         /// </summary>
-        /// <param name="startRowIndex">The start row index of the sub area (inclusive).</param>
-        /// <param name="startColumnIndex">The start column index of the sub area (inclusive).</param>
-        /// <param name="endRowIndex">The end row index of the sub area (inclusive).</param>
-        /// <param name="endColumnIndex">The end column index of the sub area (inclusive).</param>
+        /// <param name="startRowIndex">The start row index of the sub region (inclusive).</param>
+        /// <param name="startColumnIndex">The start column index of the sub region (inclusive).</param>
+        /// <param name="endRowIndex">The end row index of the sub region (inclusive).</param>
+        /// <param name="endColumnIndex">The end column index of the sub region (inclusive).</param>
         /// <exception cref="ArgumentOutOfRangeException">If one of the indicies is out of range of this Matrix.</exception>
         /// <exception cref="ArgumentException">If the end index is not greater than the start index (both row and column).</exception>
         public void ClearSubMatrix(int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
@@ -373,7 +439,7 @@ namespace Mathematics
             for (int i = startRowIndex; i <= endRowIndex; i++)
             {
                 for (int j = startColumnIndex; j <= endColumnIndex; j++)
-                    matrix[i][j] = 0;
+                    this[i, j] = 0;
             }
         }
 
@@ -391,8 +457,8 @@ namespace Mathematics
             {
                 for (int j = 0; j < this.ColumnCount; j++)
                 {
-                    if (Math.Abs(matrix[i][j]) < threshold)
-                        matrix[i][j] = 0;
+                    if (Math.Abs(this[i, j]) < threshold)
+                        this[i, j] = 0;
                 }
             }
         }
@@ -412,7 +478,7 @@ namespace Mathematics
                 for (int j = 0; j < this.ColumnCount; j++)
                 {
                     if (zeroPredicate(matrix[i][i]))
-                        matrix[i][j] = 0;
+                        this[i, j] = 0;
                 }
             }
         }
@@ -499,201 +565,479 @@ namespace Mathematics
         /// <exception cref="ArgumentException">If this Matrix is not a square matrix.</exception>
         public Matrix UpperTriangular()
         {
+            // Only a square matrix have its upper triangular matrix.
             CheckIsSquareMatrix();
 
+            // Make a deep copy of this Matrix.
             Matrix result = this.Clone();
+
+            // Clear all components in the strict lower triangular region.
             for (int i = 1; i < this.RowCount; i++)
             {
                 for (int j = 0; j < i; j++)
                     result[i, j] = 0;
             }
+
+            // Return the upper triangular matrix.
             return result;
         }
 
-        // Returns a new matrix containing the lower triangle of this matrix.
+        /// <summary>
+        /// Returns a new matrix containing the lower triangle of this matrix.
+        /// </summary>
+        /// <returns>A new matrix containing the lower triangle of this matrix.</returns>
         public Matrix LowerTriangular()
         {
+            // Only a square matrix have its lower triangular matrix.
             CheckIsSquareMatrix();
 
+            // Make a deep copy of this Matrix.
             Matrix result = this.Clone();
+
+            // Clear all components in the sttrict upper triangular region.
             for (int j = 1; j < this.ColumnCount; j++)
             {
                 for (int i = 0; i < j; i++)
                     result[i, j] = 0;
             }
 
+            // Return the lower triangular matrix.
             return result;
         }
 
+        public double Determinant()
+        {
+            return 0;
+        }
+
+        public Matrix Inverse()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Do the pre-check for the convolution operation.
+        /// </summary>
+        /// <remarks>
+        /// This implementation correspond to the operation used in convolutional neural networks (CNN).
+        /// </remarks>
+        /// <param name="matrix1">A Matrix.</param>
+        /// <param name="matrix2">The other Matrix.</param>
+        /// <param name="padding">Padding for the 1st matrix.</param>
+        /// <param name="stride">Stride of the operation.</param>
+        /// <exception cref="ArgumentNullException">If one of the input Matrix is null.</exception>
+        /// <exception cref="ArgumentException">If the setting is not suitable for the convolution and correlation operation.</exception>
+        private static void ConvolutionPreCheck(Matrix matrix1, Matrix matrix2, int padding, int stride)
+        {
+            if (matrix1 == null)
+                throw new ArgumentNullException("matrix1", "matrix1 is null.");
+            if (matrix2 == null)
+                throw new ArgumentNullException("matrix2", "matrix2 is null.");
+
+            if (padding < 0)
+                throw new ArgumentException("Padding of a matrix must be a non-negative integer.");
+            if (stride <= 0)
+                throw new ArgumentException("Stride of a convolution or correlation operation must be a positive integer.");
+            if (!((matrix1.RowCount + 2 * padding - matrix2.RowCount) % stride == 0))
+                throw new ArgumentException("The stride is not fit.");
+            if (!((matrix1.ColumnCount + 2 * padding - matrix2.ColumnCount) % stride == 0))
+                throw new ArgumentException("The stride is not fit.");
+        }
+
+        /// <summary>
+        /// Computes the convolution of 2 Matrix, with specified padding and stride.
+        /// </summary>
+        /// <param name="matrix1">A Matrix.</param>
+        /// <param name="matrix2">The other Matrix.</param>
+        /// <param name="padding">Padding for the convolution operation.</param>
+        /// <param name="stride">Stride of the operation.</param>
+        /// <returns>The convolution of 2 input Matrix.</returns>
+        /// <exception cref="ArgumentNullException">If one of the input Matrix is null.</exception>
+        /// <exception cref="ArgumentException">If the setting is not suitable for the convolution and correlation operation.</exception>
+        public static Matrix ComputeConvolution(Matrix matrix1, Matrix matrix2, int padding = 0, int stride = 1)
+        {
+            // Check before computing.
+            ConvolutionPreCheck(matrix1, matrix2, padding, stride);
+
+            // Reflect matrix 2.
+            double[,] reflectedMatrix2 = new double[matrix2.RowCount, matrix2.ColumnCount];
+            for (int i = 0; i < matrix2.RowCount; i++)
+            {
+                for (int j = 0; j < matrix2.ColumnCount; j++)
+                    reflectedMatrix2[i, j] = matrix2[matrix2.RowCount - 1 - i, matrix2.ColumnCount - 1 - j];
+            }
+
+            // Pad zeros around matrix 1.
+            double[,] extendedMatrix1 = new double[matrix1.RowCount + 2 * padding, matrix1.ColumnCount + 2 * padding];
+            for (int i = 0; i < matrix1.RowCount; i++)
+            {
+                for (int j = 0; j < matrix1.ColumnCount; j++)
+                    extendedMatrix1[i + padding, j + padding] = matrix1[i, j];
+            }
+
+            // Initialize the result matrix.
+            int resultRowCount = 1 + (extendedMatrix1.GetLength(0) - matrix2.RowCount) / stride;
+            int resultColumnCount = 1 + (extendedMatrix1.GetLength(1) - matrix2.ColumnCount) / stride;
+            Matrix result = new Matrix(resultRowCount, resultColumnCount);
+
+            // Compute the convolution.
+            for (int i = 0; i < result.RowCount; i++)
+            {
+                int startRowIndex = i * stride;
+
+                for (int j = 0; j < result.ColumnCount; j++)
+                {
+                    int startColumnIndex = j * stride;
+
+                    // Use reflectedMatrix2 here so that CPU doesn't need to read matrix2 to cache to get its row count and column count.
+                    // To avoid cache miss.
+                    for (int x = 0; x < reflectedMatrix2.GetLength(0); x++)
+                    {
+                        for (int y = 0; y < reflectedMatrix2.GetLength(1); y++)
+                            result[i, j] += extendedMatrix1[startRowIndex + x, startColumnIndex + y] * reflectedMatrix2[x, y];
+                    }
+                }
+            }
+
+            // Return the convolution computed above.
+            return result;
+        }
+
+        /// <summary>
+        /// Computes the correlation of 2 Matrix, with specified padding and stride.
+        /// </summary>
+        /// <param name="matrix1">A Matrix.</param>
+        /// <param name="matrix2">The other Matrix.</param>
+        /// <param name="padding">Padding for the correlation operation.</param>
+        /// <param name="stride">Stride of the operation.</param>
+        /// <returns>The correlation of 2 input Matrix.</returns>
+        /// <exception cref="ArgumentNullException">If one of the input Matrix is null.</exception>
+        /// <exception cref="ArgumentException">If the setting is not suitable for the convolution and correlation operation.</exception>
+        public static Matrix ComputeCorrelation(Matrix matrix1, Matrix matrix2, int padding = 0, int stride = 1)
+        {
+            // Check before computing.
+            ConvolutionPreCheck(matrix1, matrix2, padding, stride);
+
+            // Pad zeros around matrix 1.
+            double[,] extendedMatrix1 = new double[matrix1.RowCount + 2 * padding, matrix1.ColumnCount + 2 * padding];
+            for (int i = 0; i < matrix1.RowCount; i++)
+            {
+                for (int j = 0; j < matrix1.ColumnCount; j++)
+                    extendedMatrix1[i + padding, j + padding] = matrix1[i, j];
+            }
+
+            // Initialize the result matrix.
+            int resultRowCount = 1 + (extendedMatrix1.GetLength(0) - matrix2.RowCount) / stride;
+            int resultColumnCount = 1 + (extendedMatrix1.GetLength(1) - matrix2.ColumnCount) / stride;
+            Matrix result = new Matrix(resultRowCount, resultColumnCount);
+
+            // Compute the convolution.
+            for (int i = 0; i < result.RowCount; i++)
+            {
+                int startRowIndex = i * stride;
+
+                for (int j = 0; j < result.ColumnCount; j++)
+                {
+                    int startColumnIndex = j * stride;
+
+                    // Use reflectedMatrix2 here so that CPU doesn't need to read matrix2 to cache to get its row count and column count.
+                    // To avoid cache miss.
+                    for (int x = 0; x < matrix2.RowCount; x++)
+                    {
+                        for (int y = 0; y < matrix2.ColumnCount; y++)
+                            result[i, j] += extendedMatrix1[startRowIndex + x, startColumnIndex + y] * matrix2[x, y];
+                    }
+                }
+            }
+
+            // Return the correlation computed above.
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a Matrix which is the sub-matrix of this Matrix with specified range.
+        /// </summary>
+        /// <param name="startRowIndex">The start row index of the sub region (inclusive).</param>
+        /// <param name="startColumnIndex">The start column index of the sub region (inclusive).</param>
+        /// <param name="endRowIndex">The end row index of the sub region (inclusive).</param>
+        /// <param name="endColumnIndex">The end column index of the sub region (inclusive).</param>
+        /// <returns>A Matrix which is the sub-matrix of this Matrix with specified range.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">If one of the indicies is out of range of this Matrix.</exception>
+        /// <exception cref="ArgumentException">If the end index is not greater than the start index (both row and column).</exception>
         public Matrix SubMatrix(int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
+            // Check input indicies before extraction.
             CheckIndicies(startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
+
+            // Get the row count and column count of the sub-matrix.
             int numRows = endRowIndex - startRowIndex + 1;
             int numColumns = endColumnIndex - startColumnIndex + 1;
+
+            // Initialize the sub-matrix.
             Matrix result = new Matrix(numRows, numColumns);
+
+            // Extract contents for the sub-matrix.
             for (int i = 0; i < result.RowCount; i++)
             {
                 for (int j = 0; j < result.ColumnCount; j++)
                     result[i, j] = this[i + startRowIndex, j + startColumnIndex];
             }
 
+            // Return the sub-matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Vector that contains all the components of this Matrix's diagonal.
+        /// </summary>
+        /// <returns>A Vector that contains all the components of this Matrix's diagonal.</returns>
         public Vector GetDiagonal()
         {
+            // Only a square matrix have its diagonal.
             CheckIsSquareMatrix();
+
+            // Initialize the result Vector.
             Vector result = new Vector(this.RowCount);
+
+            // Assign and return.
             for (int i = 0; i < result.Length; i++)
                 result[i] = matrix[i][i];
-
             return result;
         }
 
+        /// <summary>
+        /// Returns a Matrix that inserts a column to this Matrix at right side.
+        /// </summary>
+        /// <param name="column">The column Vector to insert.</param>
+        /// <returns>A Matrix that inserts a column to this Matrix at right side.</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="column" /> is null.</exception>
+        /// <exception cref="ArgumentException">If the input column vector doesn't have the same length as the row count of this matrix.</exception>
         public Matrix InsertColumn(Vector column)
         {
+            // Check the column Vector before processing.
             CheckColumnVector(column);
 
+            // Initialize the result Matrix.
             Matrix result = new Matrix(this.RowCount, this.ColumnCount + 1);
+
+            // Copy the values of this Matrix to the result Matrix.
             for (int i = 0; i < this.RowCount; i++)
             {
                 for (int j = 0; j < this.ColumnCount; j++)
                     result[i, j] = this[i, j];
             }
 
+            // Copy the values of the column Vector to the result Matrix.
             for (int i = 0; i < column.Length; i++)
                 result[i, this.ColumnCount] = column[i];
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Matrix that removes the specified column from this Matrix.
+        /// </summary>
+        /// <param name="columnIndex">The index of the column to remove.</param>
+        /// <returns>A Matrix that removes the specified column from this Matrix.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">If the input column index is out of the range of this Matrix.</exception>
         public Matrix RemoveColumn(int columnIndex)
         {
+            // Check the column index before processing.
             CheckColumnIndex(columnIndex);
 
+            // Initialize the result Matrix.
             Matrix result = new Matrix(this.RowCount, this.ColumnCount - 1);
+
+            // Copy the sub-matrix on the left of the specified column.
             for (int j = 0; j < columnIndex; j++)
             {
                 for (int i = 0; i < result.RowCount; i++)
                     result[i, j] = this[i, j];
             }
+
+            // Copy the sub-matrix on the right of the specified column.
             for (int j = columnIndex + 1; j < this.ColumnCount; j++)
             {
                 for (int i = 0; i < result.RowCount; i++)
                     result[i, j - 1] = this[i, j];
             }
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Copies the values of the given column Vector to the specified column.
+        /// </summary>
+        /// <param name="column">The column Vector that contains the new values that the specified column should have.</param>
+        /// <param name="columnIndex">The index of the column to set.</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the input column index is out of the range of this Matrix.</exception>
+        /// <exception cref="ArgumentNullException">If the input column Vector is null.</exception>
+        /// <exception cref="ArgumentException">If the input column Vector doesn't have the same length as the row count of this matrix.</exception>
         public void SetColumn(Vector column, int columnIndex)
         {
+            // Check the column index and column Vector before processing.
             CheckColumnIndex(columnIndex);
             CheckColumnVector(column);
 
+            // Assignment.
             for (int i = 0; i < this.RowCount; i++)
                 this[i, columnIndex] = column[i];
         }
 
-        public void SetColumn(Vector column, int columnIndex, int startRowIndex, int endRowIndex)
-        {
-            if(column == null)
-                throw new ArgumentNullException("column", "The column to insert is null.");
-
-            if (!RowIndexIsInRange(startRowIndex))
-                throw new ArgumentOutOfRangeException("startRowIndex", "startRowIndex is out of the range of this Matrix.");
-            if (!RowIndexIsInRange(endRowIndex))
-                throw new ArgumentOutOfRangeException("endRowIndex", "endRowIndex is out or the range of this Matrix.");
-            if (!ColumnIndexIsInRange(columnIndex))
-                throw new ArgumentOutOfRangeException("startColumnIndex", "startColumnIndex is out of the range of this Matrix.");
-
-            if (endRowIndex <= startRowIndex)
-                throw new ArgumentException("startRowIndex must be less than endRowIndex.");
-
-            int length = endRowIndex - startRowIndex + 1;
-            if (column.Length != length)
-                throw new ArgumentException("The length of the range is not equal to the length of the column to insert.");
-
-            for (int i = 0; i < length; i++)
-                this[i + startRowIndex, columnIndex] = column[i];
-        }
-
-        // Copies the values of the given array to the specified column.
+        /// <summary>
+        /// Copies the values of the given double array to the specified column.
+        /// </summary>
+        /// <param name="column">The double array that contains the new values that the sepcified column should have.</param>
+        /// <param name="columnIndex">The index of the column to set.</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the input column index is out of the range of this Matrix.</exception>
+        /// <exception cref="ArgumentNullException">If the input double array is null.</exception>
+        /// <exception cref="ArgumentException">If the input double array doesn't have the same length as the row count of this matrix.</exception>
         public void SetColumn(double[] column, int columnIndex)
         {
+            // Check the column index before processing.
+            CheckColumnIndex(columnIndex);
+
+            // Throw exception if the given array is not suitable for the assgnment operation.
             if (column == null)
                 throw new ArgumentNullException("column", "The column to insert is null.");
             if (column.Length != this.RowCount)
                 throw new ArgumentException("The length of the vector is not equal to the row count of this Matrix.");
 
+            // Assignment.
             for (int i = 0; i < this.RowCount; i++)
                 this[i, columnIndex] = column[i];
         }
 
+        /// <summary>
+        /// Returns a Matrix that inserts a row to this Matrix at the bottom.
+        /// </summary>
+        /// <param name="row">The row Vector to insert.</param>
+        /// <returns>A Matrix that inserts a row to this Matrix at the bottom.</returns>
+        /// <exception cref="ArgumentNullException">If the input row vector is null.</exception>
+        /// <exception cref="ArgumentException">If the input row vector doesn't have the same length as the row count of this matrix.</exception>
         public Matrix InsertRow(Vector row)
         {
+            // Check the row Vector before processing.
             CheckRowVector(row);
 
+            // Initialize the result Matrix.
             Matrix result = new Matrix(this.RowCount + 1, this.ColumnCount);
+
+            // Copy the values of this Matrix to the result Matrix.
             for (int i = 0; i < this.RowCount; i++)
             {
                 for (int j = 0; j < this.ColumnCount; j++)
                     result[i, j] = this[i, j];
             }
+
+            // Copy the values of the row Vector to the result Matrix.
             for (int j = 0; j < row.Length; j++)
                 result[this.RowCount, j] = row[j];
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Matrix that removes the specified row from this Matrix.
+        /// </summary>
+        /// <param name="columnIndex">The index of the row to remove.</param>
+        /// <returns>A Matrix that removes the specified row from this Matrix.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">If the input row index is out of the range of this Matrix.</exception>
         public Matrix RemoveRow(int rowIndex)
         {
+            // Check the column index before processing.
             CheckRowIndex(rowIndex);
+
+            // Initialize the result Matrix.
             Matrix result = new Matrix(this.RowCount - 1, this.ColumnCount);
 
+            // Copy the sub-matrix on the above the specified column.
             for (int i = 0; i < rowIndex; i++)
             {
                 for (int j = 0; j < this.ColumnCount; j++)
                     result[i, j] = this[i, j];
             }
+
+            // Copy the sub-matrix on the below the specified column.
             for (int i = rowIndex + 1; i < this.RowCount; i++)
             {
                 for (int j = 0; j < this.ColumnCount; j++)
                     result[i - 1, j] = this[i, j];
             }
 
-
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Copies the values of the given row Vector to the specified row.
+        /// </summary>
+        /// <param name="row">The row Vector that contains the new values that the specified row should have.</param>
+        /// <param name="rowIndex">The index of the row to set.</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the input row index is out of the range of this Matrix.</exception>
+        /// <exception cref="ArgumentNullException">If the input row Vector is null.</exception>
+        /// <exception cref="ArgumentException">If the input row Vector doesn't have the same length as the row count of this matrix.</exception>
         public void SetRow(Vector row, int rowIndex)
         {
+            // Check the column index and column Vector before processing.
             CheckRowIndex(rowIndex);
             CheckRowVector(row);
 
+            // Assignment.
             for (int j = 0; j < this.ColumnCount; j++)
                 this[rowIndex, j] = row[j];
         }
 
-        public void SetRow(Vector row, int rowIndex, int startColumnIndex, int endColumnIndex)
+        /// <summary>
+        /// Copies the values of the given double array to the specified row.
+        /// </summary>
+        /// <param name="row">The double array that contains the new values that the sepcified row should have.</param>
+        /// <param name="rowIndex">The index of the row to set.</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the input row index is out of the range of this Matrix.</exception>
+        /// <exception cref="ArgumentNullException">If the input double array is null.</exception>
+        /// <exception cref="ArgumentException">If the input double array doesn't have the same length as the column count of this matrix.</exception>
+        public void SetRow(double[] row, int rowIndex)
         {
+            // Check the row index before processing.
+            CheckRowIndex(rowIndex);
+
+            // Throw exception if the given array is not suitable for the assgnment operation.
             if (row == null)
-                throw new ArgumentNullException("column", "The row to insert is null.");
+                throw new ArgumentNullException("row", "The row to insert is null.");
             if (row.Length != this.ColumnCount)
                 throw new ArgumentException("The length of the vector is not equal to the column count of this Matrix.");
+
+            // Assignment.
+            for (int j = 0; j < this.ColumnCount; j++)
+                this[rowIndex, j] = row[j];
         }
 
-        // Copies the values of a given matrix into a region in this matrix.
+        /// <summary>
+        /// Copies the values of a given Matrix into a region in this matrix.
+        /// </summary>
+        /// <param name="subMatrix">The Matrix that contains the new values that the sub-region should have.</param>
+        /// <param name="startRowIndex">The start row index of the sub-region.</param>
+        /// <param name="startColumnIndex">The start column index of the sub-region.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If <paramref name="startRowIndex" /> or <paramref name="startColumnIndex" /> is out of the range of this Matrix.
+        /// If the sub-region is smaller than <paramref name="subMatrix" />
+        /// </exception>
         public void SetSubMatrix(Matrix subMatrix, int startRowIndex, int startColumnIndex)
         {
+            // Check start row index and stasrt column index.
             CheckRowIndex(startColumnIndex);
             CheckColumnIndex(startColumnIndex);
 
+            // Check whether the size of the sub-region is smaller than the given Matrix.
             if (this.RowCount < subMatrix.RowCount + startRowIndex)
                 throw new ArgumentOutOfRangeException("subMatrix", "The row count of subMatrix is larger than the remaining capacity of this Matrix.");
             if (this.ColumnCount < subMatrix.ColumnCount + startColumnIndex)
                 throw new ArgumentOutOfRangeException("subMatrix", "The column count of subMatrix is larger than the remaining capacity of this Matrix.");
 
+            // Assignment.
             for (int i = 0; i < subMatrix.RowCount; i++)
             {
                 for (int j = 0; j < subMatrix.ColumnCount; j++)
@@ -701,27 +1045,60 @@ namespace Mathematics
             }
         }
 
+        /// <summary>
+        /// Sets the value of the diagonal of this Matrix using the sepcified Vector.
+        /// </summary>
+        /// <param name="diagonal">The Vector that contains the new values that the diagonal of this Matrix should have.</param>
+        /// <exception cref="ArgumentException">
+        /// If this Matrix is not a square matrix.
+        /// If The length of the input vector is not equal to the size of the diagonal of this Matrix.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">If the input Vector is null.</exception>
         public void SetDiagonal(Vector diagonal)
         {
+            // Check whether this Matrix is square matrix.
             CheckIsSquareMatrix();
+
+            // Check the diagonal Vector.
+            if (diagonal == null)
+                throw new ArgumentNullException("diagonal", "The input Vector must not be null.");
             if (this.RowCount != diagonal.Length)
                 throw new ArgumentException("The length of the input vector is not equal to the size of the diagonal of this Matrix.");
 
+            // Assignment.
             for (int i = 0; i < diagonal.Length; i++)
                 this[i, i] = diagonal[i];
         }
 
+        /// <summary>
+        /// Sets the value of the diagonal of this Matrix using the sepcified Vector.
+        /// </summary>
+        /// <param name="diagonal">The double array that contains the new values that the diagonal of this Matrix should have.</param>
+        /// <exception cref="ArgumentException">
+        /// If this Matrix is not a square matrix.
+        /// If The length of the input double array is not equal to the size of the diagonal of this Matrix.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">If the input double array is null.</exception>
         public void SetDiagonal(params double[] diagonal)
         {
+            // Check whether this Matrix is square matrix.
             CheckIsSquareMatrix();
-            if (this.RowCount != diagonal.Length)
-                throw new ArgumentException("The length of the input vector is not equal to the size of the diagonal of this Matrix.");
 
+            // Check the diagonal Vector.
+            if (diagonal == null)
+                throw new ArgumentNullException("diagonal", "The input input doubl must not be null.");
+            if (this.RowCount != diagonal.Length)
+                throw new ArgumentException("The length of the input Vector is not equal to the size of the diagonal of this Matrix.");
+
+            // Assignment.
             for (int i = 0; i < diagonal.Length; i++)
                 this[i, i] = diagonal[i];
         }
 
-        // Returns the transpose of this matrix.
+        /// <summary>
+        /// Returns the transpose of this matrix.
+        /// </summary>
+        /// <returns>The transpose of this matrix.</returns>
         public Matrix Transpose()
         {
             Matrix result = new Matrix(this.ColumnCount, this.RowCount);
@@ -734,26 +1111,39 @@ namespace Mathematics
             return result;
         }
 
-        // Concatenates this matrix with the given matrix.
+        /// <summary>
+        /// Concatenates this matrix with the given matrix.
+        /// </summary>
+        /// <param name="right">The Matrix to concatenate.</param>
+        /// <returns>A Matrix that whose left part is this Matrix, right part is the given Matrix.</returns>
+        /// <exception cref="ArgumentNullException">If the Matrix to append is null.</exception>
+        /// <exception cref="ArgumentException">If the row count of the input Matrix is not equal to the the row count of this Matrix.</exception>
         public Matrix Append(Matrix right)
         {
+            // Check the given Matrix.
             if (right == null)
                 throw new ArgumentNullException("right", "The Matrix to append is null.");
             if (this.RowCount != right.RowCount)
                 throw new ArgumentException("The row count of the input Matrix is not equal to the the row count of this Matrix.");
 
+            // Initialize the result Matrix with.
             Matrix result = new Matrix(this.RowCount, this.ColumnCount + right.ColumnCount);
+
+            // Copy the left half.
             for (int j = 0; j < this.ColumnCount; j++)
             {
                 for (int i = 0; i < this.RowCount; i++)
                     result[i, j] = this[i, j];
             }
+
+            // Copy the right half.
             for (int j = 0; j < right.ColumnCount; j++)
             {
                 for (int i = 0; i < right.RowCount; i++)
                     result[i, j + this.ColumnCount] = right[i, j];
             }
 
+            // Return the result Matrix.
             return result;
         }
 
@@ -761,43 +1151,60 @@ namespace Mathematics
         /// Stacks this matrix on top of the given matrix and places the result into the result matrix.
         /// </summary>
         /// <param name="lower">The matrix to stack this matrix upon.</param>
+        /// <exception cref="ArgumentNullException">If the Matrix to stack is null.</exception>
+        /// <exception cref="ArgumentException">If the column count of the input Matrix is not equal to the the column count of this Matrix.</exception>
         public Matrix Stack(Matrix lower)
         {
+            // Check the given Matrix.
             if (lower == null)
                 throw new ArgumentNullException("lower", "The Matrix to stack is null.");
             if (this.ColumnCount != lower.ColumnCount)
                 throw new ArgumentException("The column count of the input Matrix is not equal to the column count of this Matrix.");
 
+            // Initialize the result Matrix with.
             Matrix result = new Matrix(this.RowCount + lower.RowCount, this.ColumnCount);
+
+            // Copy the left half.
             for (int i = 0; i < this.RowCount; i++)
             {
                 for (int j = 0; j < this.ColumnCount; j++)
                     result[i, j] = this[i, j];
             }
+
+            // Copy the right half.
             for (int i = 0; i < lower.RowCount; i++)
             {
                 for (int j = 0; j < lower.ColumnCount; j++)
                     result[i + this.RowCount, j] = lower[i, j];
             }
 
+            // Return the result Matrix.
             return result;
         }
 
-        // Evaluates whether this matrix is hermitian (conjugate symmetric).
+        /// <summary>
+        /// Evaluates whether this matrix is hermitian (conjugate symmetric).
+        /// </summary>
+        /// <param name="epsilon">The threshold to determine whether the difference of 2 value is 0.</param>
+        /// <returns>True if this Matrix is symmetric, otherwise, false.</returns>
+        /// <remarks>
+        /// This method doesn't throw exception.
+        /// </remarks>
         public bool IsSymmetric(double epsilon = 1e-5)
         {
+            // Check whether this Matrix is a square matrix.
             if (!IsSquareMatrix)
                 return false;
 
+            // Check if this Matrix is symmetrix.
             for (int i = 1; i < this.RowCount; i++)
             {
                 for (int j = 0; j < i; j++)
                 {
-                    if (Math.Abs(matrix[i][j] - matrix[j][i]) >= epsilon)
+                    if (Math.Abs(this[i, j] - this[j, i]) >= epsilon)
                         return false;
                 }
             }
-
             return true;
         }
 
@@ -818,11 +1225,11 @@ namespace Mathematics
         /// The returned array will be independent from this matrix.
         /// A new memory block will be allocated for the array.
         /// </summary>
-        /// <example><pre>
+        /// <example>
         /// 1, 2, 3
         /// 4, 5, 6  will be returned as  1, 4, 7, 2, 5, 8, 3, 6, 9
         /// 7, 8, 9
-        /// </pre></example>
+        /// </example>
         /// <returns>An array containing the matrix's components.</returns>
         public double[] ToColumnMajorArray()
         {
@@ -875,7 +1282,7 @@ namespace Mathematics
             {
                 result[i] = new double[this.ColumnCount];
                 for (int j = 0; j < this.ColumnCount; j++)
-                    result[i][j] = matrix[i][j];
+                    result[i][j] = this[i, j];
             }
 
             return result;
@@ -893,12 +1300,16 @@ namespace Mathematics
             {
                 result[j] = new double[this.RowCount];
                 for (int i = 0; i < this.RowCount; i++)
-                    result[j][i] = matrix[i][j];
+                    result[j][i] = this[i, j];
             }
 
             return result;
         }
 
+        /// <summary>
+        /// Returns an array of Vectors whose elements are correspond to the rows vector of this Matrix.
+        /// </summary>
+        /// <returns>an array of Vectors whose elements are correspond to the rows vector of this Matrix.</returns>
         public Vector[] ToRowVectors()
         {
             Vector[] rows = new Vector[this.RowCount];
@@ -908,185 +1319,346 @@ namespace Mathematics
             return rows;
         }
 
+        /// <summary>
+        /// Returns an array of Vectors whose elements are correspond to the column vector of this Matrix.
+        /// </summary>
+        /// <returns>an array of Vectors whose elements are correspond to the column vector of this Matrix.</returns>
         public Vector[] ToColumnVectors()
         {
+            // Initialize the columns vector.
             Vector[] columns = new Vector[this.ColumnCount];
+
+            // Copy values and return.
             double[][] columnArrays = ToColumnArrays();
             for (int i = 0; i < columns.Length; i++)
                 columns[i] = new Vector(columnArrays[i]);
             return columns;
         }
 
+        /// <summary>
+        /// Returns a Matrix whose i-th component equals matrix[i, j] + scalar, where matrix and scalar are input arguments.
+        /// </summary>
+        /// <param name="matrix">The input Matrix.</param>
+        /// <param name="scalar">The input scalar.</param>
+        /// <returns>A Matrix whose i-th component equals matrix[i, j] + scalar, where matrix and scalar are input arguments.</returns>
+        /// <exception cref="ArgumentNullException">If input Matrix is null.</exception>
         public static Matrix operator +(Matrix matrix, double scalar)
         {
+            // Check the input Matrix.
             if (matrix == null)
                 throw new ArgumentNullException("matrix", "The input Matrix is null.");
 
+            // Make a deep copy of this Matrix.
             Matrix result = matrix.Clone();
+
+            // Add operation.
             for (int i = 0; i < result.RowCount; i++)
             {
                 for (int j = 0; j < result.ColumnCount; j++)
                     result[i, j] += scalar;
             }
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Vector whose i-th component equals matrix[i, j] + scalar, where matrix and scalar are input arguments.
+        /// </summary>
+        /// <param name="matrix">The input Matrix.</param>
+        /// <param name="scalar">The input scalar.</param>
+        /// <returns>A Vector whose i-th component equals matrix[i, j] + scalar, where matrix and scalar are input arguments.</returns>
+        /// <exception cref="ArgumentNullException">If input Matrix is null.</exception>
         public static Matrix operator +(double scalar, Matrix matrix)
         {
             return matrix + scalar;
         }
 
+        /// <summary>
+        /// Returns a Matrix whose i-th component equals matrix1[i, j] + matrix2[i, j], where matrix1 and matrix2 are input arguments.
+        /// </summary>
+        /// <param name="matrix1">A Matrix.</param>
+        /// <param name="matrix2">The other Matrix.</param>
+        /// <returns>a Matrix whose i-th component equals matrix1[i, j] + matrix2[i, j], where matrix1 and matrix2 are input arguments.</returns>
+        /// <exception cref="ArgumentNullException">If one of the input Matrix is null.</exception>
+        /// <exception cref="ArgumentException">If input matrices don't have the same shape.</exception>
         public static Matrix operator +(Matrix matrix1, Matrix matrix2)
         {
+            // Check 2 input matrices.
             CheckMatrices(matrix1, matrix2);
 
+            // Make a deep copy of this Matrix.
             Matrix result = matrix1.Clone();
+
+            // Add operation.
             for (int i = 0; i < matrix1.RowCount; i++)
             {
                 for (int j = 0; j < matrix1.ColumnCount; j++)
                     result[i, j] += matrix2[i, j];
             }
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Vector whose i-th component equals matrix[i, j] - scalar, where matrix and scalar are input arguments.
+        /// </summary>
+        /// <param name="matrix">The input Matrix.</param>
+        /// <param name="scalar">The input scalar.</param>
+        /// <returns>A Vector whose i-th component equals matrix[i, j] - scalar, where matrix and scalar are input arguments.</returns>
+        /// <exception cref="ArgumentNullException">If input Matrix is null.</exception>
         public static Matrix operator -(Matrix matrix, double scalar)
         {
+            // Check the input Matrix.
             if (matrix == null)
                 throw new ArgumentNullException("matrix", "The input Matrix is null.");
 
+            // Make a deep copy of this Matrix.
             Matrix result = matrix.Clone();
+
+            // Subtraction operation.
             for (int i = 0; i < result.RowCount; i++)
             {
                 for (int j = 0; j < result.ColumnCount; j++)
                     result[i, j] -= scalar;
             }
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Vector whose i-th component equals scalar - matrix[i, j], where matrix and scalar are input arguments.
+        /// </summary>
+        /// <param name="matrix">The input Matrix.</param>
+        /// <param name="scalar">The input scalar.</param>
+        /// <returns>A Vector whose i-th component equals scalar - matrix[i, j], where matrix and scalar are input arguments.</returns>
+        /// <exception cref="ArgumentNullException">If input Matrix is null.</exception>
         public static Matrix operator -(double scalar, Matrix matrix)
         {
+            // Check the input Matrix.
             if (matrix == null)
                 throw new ArgumentNullException("matrix", "The input Matrix is null.");
 
+            // Make a deep copy of this Matrix.
             Matrix result = matrix.Clone();
+
+            // Subtraction operation.
             for (int i = 0; i < result.RowCount; i++)
             {
                 for (int j = 0; j < result.ColumnCount; j++)
                     result[i, j] = scalar - result[i, j];
             }
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Matrix whose i-th component equals matrix1[i, j] + matrix2[i, j], where matrix1 and matrix2 are input arguments.
+        /// </summary>
+        /// <param name="matrix1">A Matrix.</param>
+        /// <param name="matrix2">The other Matrix.</param>
+        /// <returns>a Matrix whose i-th component equals matrix1[i, j] + matrix2[i, j], where matrix1 and matrix2 are input arguments.</returns>
+        /// <exception cref="ArgumentNullException">If one of the input Matrix is null.</exception>
+        /// <exception cref="ArgumentException">If input matrices don't have the same shape.</exception>
         public static Matrix operator -(Matrix matrix1, Matrix matrix2)
         {
+            // Check 2 input matrices.
             CheckMatrices(matrix1, matrix2);
+
+            // Make a deep copy of this Matrix.
             Matrix result = matrix1.Clone();
+
+            // Subtraction operation.
             for (int i = 0; i < result.RowCount; i++)
             {
                 for (int j = 0; j < matrix2.RowCount; j++)
                     result[i, j] -= matrix2[i, j];
             }
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Matrix whose i-th component equals matrix[i, j] * scalar, where matrix and scalar are input arguments.
+        /// </summary>
+        /// <param name="matrix">The input Matrix.</param>
+        /// <param name="scalar">The input scalar.</param>
+        /// <returns>A Matrix whose i-th component equals matrix[i, j] * scalar, where matrix and scalar are input arguments.</returns>
+        /// <exception cref="ArgumentNullException">If input Matrix is null.</exception>
         public static Matrix operator *(Matrix matrix, double scalar)
         {
+            // Check the input Matrix.
             if (matrix == null)
                 throw new ArgumentNullException("matrix", "The input Matrix is null.");
 
+            // Make a deep copy of this Matrix.
             Matrix result = matrix.Clone();
+
+            // Multiplication operation.
             for (int i = 0; i < result.RowCount; i++)
             {
                 for (int j = 0; j < result.ColumnCount; j++)
                     result[i, j] *= scalar;
             }
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Matrix whose i-th component equals matrix[i, j] * scalar, where matrix and scalar are input arguments.
+        /// </summary>
+        /// <param name="matrix">The input Matrix.</param>
+        /// <param name="scalar">The input scalar.</param>
+        /// <returns>A Matrix whose i-th component equals matrix[i, j] * scalar, where matrix and scalar are input arguments.</returns>
+        /// <exception cref="ArgumentNullException">If input Matrix is null.</exception>
         public static Matrix operator *(double scalar, Matrix matrix)
         {
             return matrix * scalar;
         }
 
+        /// <summary>
+        /// Returns a Matrix that is the product of the input Matrix and the input column Vector.
+        /// </summary>
+        /// <param name="matrix">The Matrix of this multiplication operation.</param>
+        /// <param name="columnVector">The column vector of this multiplication.</param>
+        /// <returns>A Matrix that is the product of the input Matrix and the input column Vector.</returns>
+        /// <exception cref="ArgumentNullException">If the input Matrix of Vector is null.</exception>
+        /// <exception cref="ArgumentException">If the column count of the matrix and the length of the vector must be equal.</exception>
         public static Vector operator *(Matrix matrix, Vector columnVector)
         {
+            // Check whether one of them is null.
             if (matrix == null)
                 throw new ArgumentNullException("matrix", "The input Matrix is null.");
             if (columnVector == null)
                 throw new ArgumentNullException("columnVector", "The input Vector is null.");
 
+            // Check whether the column count of the matrix and the length of the vector must be equal
             if (matrix.ColumnCount != columnVector.Length)
                 throw new ArgumentException("The column count of the matrix and the length of the vector must be equal.");
 
+            // Initialize the result Vector.
             Vector[] rows = matrix.ToRowVectors();
+            
+            // Multiplication operation.
             Vector result = new Vector(matrix.RowCount);
             for (int i = 0; i < result.Length; i++)
                 result[i] = rows[i] * columnVector;
 
+            // Return the result Vector.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Matrix that is the product of 2 input matrices.
+        /// </summary>
+        /// <param name="matrixLeft">The Matrix on the left of the *.</param>
+        /// <param name="matrixRight">The Matrix on the right of the *.</param>
+        /// <returns>A Matrix that is the product of 2 input matrices.</returns>
+        /// <exception cref="ArgumentNullException">If one of the input matrices is null.</exception>
+        /// <exception cref="ArgumentException">If the column count of left matrix and the row count of right matrix are not equal.</exception>
         public static Matrix operator *(Matrix matrixLeft, Matrix matrixRight)
         {
+            // Check whether one of them is null.
             if (matrixLeft == null)
                 throw new ArgumentNullException("matrixLeft", "matrixLeft is null.");
             if (matrixRight == null)
                 throw new ArgumentNullException("matrixRight", "matrixRight is null.");
+
+            // Check the inner dimension of 2 matrices.
             if (matrixLeft.ColumnCount != matrixRight.RowCount)
                 throw new ArgumentException("The column count of left matrix and the row count of right matrix must be equal.");
 
+            // Initialize the result Matrix.
             Matrix result = new Matrix(matrixLeft.RowCount, matrixRight.ColumnCount);
+
+            // Get the row and column vectors.
             Vector[] rows = matrixLeft.ToRowVectors();
             Vector[] columns = matrixRight.ToColumnVectors();
+
+            // Matrix multiplication.
             for (int i = 0; i < result.RowCount; i++)
             {
                 for (int j = 0; j < result.ColumnCount; j++)
                     result[i, j] = rows[i] * columns[j];
             }
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Returns a Vector whose i-th component equals matrix[i, j] / scalar, where matrix and scalar are input arguments.
+        /// </summary>
+        /// <param name="matrix">The input Matrix.</param>
+        /// <param name="scalar">The input scalar.</param>
+        /// <returns>A Vector whose i-th component equals matrix[i, j] / scalar, where matrix and scalar are input arguments.</returns>
+        /// <exception cref="ArgumentNullException">If input Matrix is null.</exception>
         public static Matrix operator /(Matrix matrix, double scalar)
         {
+            // Check the input Matrix.
             if (matrix == null)
                 throw new ArgumentNullException("matrix", "The input Matrix is null.");
 
+            // Make a deep copy of this Matrix.
             Matrix result = matrix.Clone();
+
+            // Division operation.
             for (int i = 0; i < result.RowCount; i++)
             {
                 for (int j = 0; j < result.ColumnCount; j++)
                     result[i, j] /= scalar;
             }
 
+            // Return the result Matrix.
             return result;
         }
 
+        /// <summary>
+        /// Throws exception if 2 input matrices don't have the same shape.
+        /// </summary>
+        /// <param name="matrix1">A Matrix.</param>
+        /// <param name="matrix2">The other Matrix.</param>
+        /// <exception cref="ArgumentException">If input matrices don't have the same shape.</exception>
         private static void HaveSameShape(Matrix matrix1, Matrix matrix2)
         {
             if ((matrix1.RowCount != matrix2.RowCount) || (matrix1.ColumnCount != matrix2.ColumnCount))
                 throw new ArgumentException("Input matrices don't have the same shape.");
         }
 
+        /// <summary>
+        /// Throws exception if 2 input matrices don't have the same shape.
+        /// </summary>
+        /// <param name="matrix1">A Matrix.</param>
+        /// <param name="matrix2">The other Matrix.</param>
+        /// <exception cref="ArgumentNullException">If one of the input Matrix is null.</exception>
+        /// <exception cref="ArgumentException">If input matrices don't have the same shape.</exception>
         private static void CheckMatrices(Matrix matrix1, Matrix matrix2)
         {
+            // Check if one of the Matrix is null.
             if (matrix1 == null)
                 throw new ArgumentNullException("matrix1", "matrix1 is null.");
             if (matrix2 == null)
                 throw new ArgumentNullException("matrix2", "matrix2 is null");
 
+            // Check whether they have the same shape.
             HaveSameShape(matrix1, matrix2);
         }
 
+        /// <summary>
+        /// Returns the string representation of this Matrix. Each row of this Matrix will be a line in the string, every 2 adjacent components in the same line will be separated by white space.
+        /// </summary>
+        /// <returns>The string representation of this Matrix. Each row of this Matrix will be a line in the string, every 2 adjacent components in the same line will be separated by white space.</returns>
         public override string ToString()
         {
+            // Use StringBuilder to accelerate.
             StringBuilder s = new StringBuilder();
+
+            // Gether contents for the StringBuilder.
             for (int i = 0; i < this.RowCount; i++)
             {
                 for (int j = 0; j < this.ColumnCount; j++)
@@ -1097,6 +1669,7 @@ namespace Mathematics
             // Remove the line breaks at the end of this StringBuilder.
             s.Remove(s.Length - 1, 1);
 
+            // Return the string representation of this Matrix.
             return s.ToString();
         }
     }

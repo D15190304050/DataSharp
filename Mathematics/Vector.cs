@@ -9,6 +9,7 @@ namespace Mathematics
     /// <summary>
     /// The Vector class represnets a vector in mathematics that provides vector operations.
     /// </summary>
+    [Serializable]
     public class Vector
     {
         /// <summary>
@@ -38,6 +39,9 @@ namespace Mathematics
         /// <param name="length">The number of components in this Vector.</param>
         public Vector(int length)
         {
+            if (length <= 0)
+                throw new ArgumentException("The length of a Vector must be a positive integer.");
+
             vector = new double[length];
         }
 
@@ -296,6 +300,91 @@ namespace Mathematics
             for (int i = 0; i < result.Length; i++)
                 result[i] /= scalar;
 
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a Vector whose values are the element-wise product of <paramref name="vector1" /> and <paramref name="vector2" />.
+        /// </summary>
+        /// <param name="vector1">An input Vector.</param>
+        /// <param name="vector2">The other input Vector.</param>
+        /// <returns>A Vector whose values are the element-wise product of <paramref name="vector1" /> and <paramref name="vector2" />.</returns>
+        /// <exception cref="ArgumentNullException">If one of the input Vector is null.</exception>
+        /// <exception cref="ArgumentException">If 2 input Vector don't have the same length.</exception>
+        public static Vector ElementWiseMultiplication(Vector vector1, Vector vector2)
+        {
+            // Check 2 input vectors before processing.
+            LengthCheck(vector1, vector2);
+
+            // Initialize the result vector.
+            int length = vector1.Length;
+            Vector result = new Vector(length);
+
+            // Compute the result and return it.
+            for (int i = 0; i < length; i++)
+                result[i] = vector1[i] * vector2[i];
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a Vector that represents the correlation of 2 Vector.
+        /// </summary>
+        /// <param name="vector1">A Vector.</param>
+        /// <param name="vector2">The other Vector.</param>
+        /// <returns>A Vector that represents the correlation of 2 Vector.</returns>
+        public static Vector ComputeCorrelation(Vector vector1, Vector vector2)
+        {
+            // Throw ArgumentNullException if one of the input Vector is null.
+            if (vector1 == null)
+                throw new ArgumentNullException("vector1", "The input Vector must not be null.");
+            if (vector2 == null)
+                throw new ArgumentNullException("vector2", "The input Vector must not be null.");
+
+            // Initialize the result vector with specified length.
+            Vector correlation = new Vector(vector1.Length + vector2.Length - 1);
+
+            // Pad zeros for vector 1.
+            double[] extendedVector1 = new double[2 * (vector2.Length - 1) + vector1.Length];
+            for (int i = 0; i < vector1.Length; i++)
+                extendedVector1[i + vector2.Length - 1] = vector1[i];
+
+            // Compute and return the result of the correlation operation.
+            for (int i = 0; i < correlation.Length; i++)
+            {
+                for (int j = 0; j < vector2.Length; j++)
+                    correlation[i] += extendedVector1[i + j] * vector2[j];
+            }
+            return correlation;
+        }
+
+        /// <summary>
+        /// Returns a Vector that represents the convlution of 2 Vector.
+        /// </summary>
+        /// <param name="vector1">A Vector.</param>
+        /// <param name="vector2">The other Vector.</param>
+        /// <returns>A Vector that represents the convlution of 2 Vector.</returns>
+        public static Vector ComputeConvolution(Vector vector1, Vector vector2)
+        {
+            // Throw ArgumentNullException if one of the input Vector is null.
+            if (vector1 == null)
+                throw new ArgumentNullException("vector1", "The input Vector must not be null.");
+            if (vector2 == null)
+                throw new ArgumentNullException("vector2", "The input Vector must not be null.");
+
+            // Initialize the result vector with specified length.
+            Vector result = new Vector(vector1.Length + vector2.Length - 1);
+
+            // Pad zeros for vector 1.
+            double[] extendedVector1 = new double[2 * (vector2.Length - 1) + vector1.Length];
+            for (int i = 0; i < vector1.Length; i++)
+                extendedVector1[i + vector2.Length - 1] = vector1[i];
+
+            // Compute and return the result of the convlution operation.
+            for (int i = 0; i < result.Length; i++)
+            {
+                for (int j = 0; j < vector2.Length; j++)
+                    result[i] += extendedVector1[i + j] * vector2[vector2.Length - 1 - j];
+            }
             return result;
         }
 
