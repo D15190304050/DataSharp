@@ -52,25 +52,32 @@ namespace Plotting
 
         private void Plot()
         {
+            if ((points == null) || (points.Count == 0))
+                return;
+
+            //this.PlottingIndent = 0;
             double horizontalMin = points.Min(point => point.X);
             double horizontalMax = points.Max(point => point.X);
             double verticalMin = points.Min(point => point.Y);
             double verticalMax = points.Max(point => point.Y);
 
-            double horizontalScaleFactor = (plottingCanvas.ActualWidth - 2 * PlottingIndent) / (horizontalMax - horizontalMin);
-            double verticalScaleFactor = (plottingCanvas.ActualHeight - 2 * PlottingIndent) / (verticalMax - verticalMin);
+            double horizontalScaleFactor = (plottingCanvas.ActualWidth - this.PointRadius - 2 * this.PlottingIndent) / (horizontalMax - horizontalMin);
+            double verticalScaleFactor = (plottingCanvas.ActualHeight - this.PointRadius - 2 * this.PlottingIndent) / (verticalMax - verticalMin);
 
             foreach (DataPoint point in points)
             {
-                double screenX = (point.X - horizontalMin) * horizontalScaleFactor + this.PlottingIndent;
-                double screenY = (point.Y - verticalMin) * verticalScaleFactor + this.PlottingIndent;
+                double topLeftX = (point.X - horizontalMin) * horizontalScaleFactor + this.PlottingIndent - this.PointRadius / 2;
+                double topLeftY = (point.Y - verticalMin) * verticalScaleFactor + this.PlottingIndent - this.PointRadius / 2;
+                //double topLeftY = plottingCanvas.ActualHeight - (point.Y - verticalMin) * verticalScaleFactor - this.PlottingIndent - this.PointRadius / 2;
                 Ellipse circle = new Ellipse();
-                circle.Width = this.PointRadius;
-                circle.Height = this.PointRadius;
-                circle.SetValue(Canvas.LeftProperty, screenX);
-                circle.SetValue(Canvas.BottomProperty, screenY);
+                circle.Width = this.PointRadius * 2;
+                circle.Height = this.PointRadius * 2;
+                circle.SetValue(Canvas.LeftProperty, topLeftX);
+                //circle.SetValue(Canvas.TopProperty, topLeftY);
+                circle.SetValue(Canvas.BottomProperty, topLeftY);
                 circle.Fill = Brushes.LightBlue;
-                circle.ToolTip = point.ToString();
+                //circle.ToolTip = point.ToString();
+                circle.ToolTip = $"({point.X},{point.Y})";
                 plottingCanvas.Children.Add(circle);
             }
         }
@@ -83,6 +90,31 @@ namespace Plotting
                 throw new ArgumentNullException("y", "Y-coordinates can't be null.");
             if (x.Length != y.Length)
                 throw new ArgumentException("The length of 2 collections must be equal.");
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //Replot();
+        }
+
+        private void Replot()
+        {
+            if (points.Count == 0)
+                return;
+
+            double horizontalMin = points.Min(point => point.X);
+            double horizontalMax = points.Max(point => point.X);
+            double verticalMin = points.Min(point => point.Y);
+            double verticalMax = points.Max(point => point.Y);
+
+            double horizontalScaleFactor = (plottingCanvas.ActualWidth - 2 * PlottingIndent) / (horizontalMax - horizontalMin);
+            double verticalScaleFactor = (plottingCanvas.ActualHeight - 2 * PlottingIndent) / (verticalMax - verticalMin);
+
+            foreach (object o in plottingCanvas.Children)
+            {
+                
+                
+            }
         }
     }
 }

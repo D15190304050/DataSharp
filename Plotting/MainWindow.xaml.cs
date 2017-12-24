@@ -45,7 +45,7 @@ namespace Plotting
             Scatter scatter = new Scatter();
             scatter.PointRadius = 10;
             scatter.PlottingIndent = 20;
-            double[] x = { 1, 2, 3, 4, 5 };
+            double[] x = { 1, 2, 3, 4, 5};
             double[] y = { 5, 4, 3, 2, 1 };
             scatter.Show();
             scatter.Plot(x, y);

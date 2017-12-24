@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Plotting"
         mc:Ignorable="d"
-        Title="Scatter" Height="400" Width="400">
+        Title="Scatter" Height="400" Width="400" SizeChanged="Window_SizeChanged">
     <Grid Margin="15">
         <!--<Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -17,7 +17,8 @@
         </Grid.ColumnDefinitions>-->
 
         <Border Grid.Row="0" Grid.Column="0" BorderBrush="Black" BorderThickness="2">
-            <Canvas Name="plottingCanvas" />
+            <Canvas Name="plottingCanvas">
+            </Canvas>
         </Border>
         <!--<Canvas Grid.Row="0" Grid.Column="0" Name="verticalAxis" />
         <Canvas Grid.Row="1" Grid.Column="1" Name="horizontalAxis" />-->
