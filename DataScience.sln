@@ -1,15 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMiningConsole", "DataMiningConsole\DataMiningConsole.csproj", "{43F4ACAC-D13F-43BF-9B44-4323C4C0E3C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mathematics", "Mathematics\Mathematics.csproj", "{6FBE2AE3-F517-43C5-9A83-1ADC7A84229D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlServerConsole", "SqlServerConsole\SqlServerConsole.csproj", "{71B2884E-ABC1-4D29-91E3-F3D70865CD19}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySqlConsole", "MySqlConsole\MySqlConsole.csproj", "{39583AFF-5826-4669-BC6E-D1DFFA9345B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Startup", "Startup\Startup.csproj", "{53C64EF4-2F7E-482A-9867-F52445222746}"
 EndProject
@@ -18,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessWpf", "DataAccessWpf\DataAccessWpf.csproj", "{A33A6815-752E-429A-BA4B-DC17BCF9B4DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessConsole", "DataAccessConsole\DataAccessConsole.csproj", "{1F2FDBFF-07C5-4184-8840-79AEF6190DF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plotting", "Plotting\Plotting.csproj", "{7DF962DA-DBE6-447C-9D82-664809F8038A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +31,6 @@ Global
 		{6FBE2AE3-F517-43C5-9A83-1ADC7A84229D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FBE2AE3-F517-43C5-9A83-1ADC7A84229D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FBE2AE3-F517-43C5-9A83-1ADC7A84229D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71B2884E-ABC1-4D29-91E3-F3D70865CD19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71B2884E-ABC1-4D29-91E3-F3D70865CD19}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71B2884E-ABC1-4D29-91E3-F3D70865CD19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71B2884E-ABC1-4D29-91E3-F3D70865CD19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39583AFF-5826-4669-BC6E-D1DFFA9345B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39583AFF-5826-4669-BC6E-D1DFFA9345B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39583AFF-5826-4669-BC6E-D1DFFA9345B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39583AFF-5826-4669-BC6E-D1DFFA9345B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53C64EF4-2F7E-482A-9867-F52445222746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53C64EF4-2F7E-482A-9867-F52445222746}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53C64EF4-2F7E-482A-9867-F52445222746}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +47,10 @@ Global
 		{1F2FDBFF-07C5-4184-8840-79AEF6190DF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F2FDBFF-07C5-4184-8840-79AEF6190DF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F2FDBFF-07C5-4184-8840-79AEF6190DF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DF962DA-DBE6-447C-9D82-664809F8038A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DF962DA-DBE6-447C-9D82-664809F8038A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DF962DA-DBE6-447C-9D82-664809F8038A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DF962DA-DBE6-447C-9D82-664809F8038A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
