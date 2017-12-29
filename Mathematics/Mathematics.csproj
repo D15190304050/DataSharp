@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="CombinationHelper.cs" />
     <Compile Include="FunctionalityTest.cs" />
-    <Compile Include="MathUtility.cs" />
+    <Compile Include="MathUtil.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

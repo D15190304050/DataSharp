@@ -81,6 +81,23 @@ namespace Mathematics
             return true;
         }
 
+        public static bool IsMatrix(Vector[] vectors)
+        {
+            if (vectors[0] == null)
+                return false;
+
+            int columnCount = vectors[0].Length;
+            for (int i = 1; i < vectors.Length; i++)
+            {
+                Vector v = vectors[i];
+                if (v == null)
+                    return false;
+                if (v.Length != columnCount)
+                    return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// Initiailizes a matrix using a 2-D double array. This initialization will make a deep copy of the input array.
         /// </summary>
@@ -137,6 +154,49 @@ namespace Mathematics
                 this.matrix[i] = new double[ColumnCount];
                 for (int j = 0; j < this.ColumnCount; j++)
                     this[i, j] = matrix[i, j];
+            }
+        }
+
+        /// <summary>
+        /// Initializes a matrix using an array of Vector. This initialization will make a deep copy of the input array.
+        /// </summary>
+        /// <param name="vectors">The array of vectors.</param>
+        /// <param name="isRowVector">The bool variable that indicates whether the input Vector is a row vector or not (which means that is a column vector).</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="vectors" /> is null.</exception>
+        /// <exception cref="ArgumentException">If <paramref name="vectors" /> doesn't have the shape as a matrix.</exception>
+        public Matrix(Vector[] vectors, bool isRowVector = true)
+        {
+            if (vectors == null)
+                throw new ArgumentNullException("vectors", "The input array of Vector is null.");
+
+            if (!IsMatrix(vectors))
+                throw new ArgumentException("The input array of Vector doesn't have the shape as a matrix.");
+            
+            if (isRowVector)
+            {
+                this.RowCount = vectors.Length;
+                this.ColumnCount = vectors[0].Length;
+
+                matrix = new double[this.RowCount][];
+                for (int i = 0; i < this.RowCount; i++)
+                {
+                    matrix[i] = new double[this.ColumnCount];
+                    for (int j = 0; j < this.ColumnCount; j++)
+                        this[i, j] = vectors[i][j];
+                }
+            }
+            else
+            {
+                this.RowCount = vectors[0].Length;
+                this.ColumnCount = vectors.Length;
+
+                matrix = new double[this.RowCount][];
+                for (int i = 0; i < this.RowCount; i++)
+                {
+                    matrix[i] = new double[this.ColumnCount];
+                    for (int j = 0; j < this.ColumnCount; j++)
+                        this[i, j] = vectors[j][i];
+                }
             }
         }
 
@@ -1208,6 +1268,12 @@ namespace Mathematics
             return true;
         }
 
+        /// <summary>
+        /// Returns this matrix as array of double[,].
+        /// The returned array will be independent from this matrix.
+        /// A new memory block will be allocated for the arrays.
+        /// </summary>
+        /// <returns>This matrix as array of double[,].</returns>
         public double[,] ToArray()
         {
             double[,] result = new double[this.RowCount, this.ColumnCount];
@@ -1293,6 +1359,7 @@ namespace Mathematics
         /// The returned arrays will be independent from this matrix.
         /// A new memory block will be allocated for the arrays.
         /// </summary>
+        /// <returns>This matrix as array of double[,].</returns>
         public double[][] ToColumnArrays()
         {
             double[][] result = new double[this.ColumnCount][];

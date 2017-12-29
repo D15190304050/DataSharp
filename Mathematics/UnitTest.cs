@@ -58,6 +58,9 @@ namespace Mathematics
             Console.WriteLine($"The correlation of v4 * v5 = {Vector.ComputeCorrelation(v4, v5)}");
 
             Console.WriteLine($"The element-wise product of v1 .* v4 = {Vector.ElementWiseMultiplication(v1,v4)}");
+
+            Console.WriteLine($"Tile v5 to a 3 * 4 matrix where v5 is a row vector:\n{v5.Tile(4, 1)}");
+            Console.WriteLine($"Tile v5 to a 6 * 2 matrix where v5 is a column vector:\n{v5.Tile(2, 2, false)}");
         }
 
         /// <summary>
@@ -213,6 +216,15 @@ namespace Mathematics
             Console.WriteLine($"Matrix m8 =\n{m8}");
             Console.WriteLine($"Matrix m9 =\n{m9}");
             Console.WriteLine($"Correlation of m8 * m9 =\n{Matrix.ComputeCorrelation(m8, m9, 1)}");
+
+            Vector v2 = new Vector(1, 2, 3);
+            Vector v3 = new Vector(4, 5, 6);
+            Vector v4 = new Vector(7, 8, 9);
+            Vector[] vectors = new Vector[] { v2, v3, v4 };
+            Matrix m10 = new Matrix(vectors);
+            Console.WriteLine($"Matrix constructed from row vectors:\n{m10}");
+            m10 = new Matrix(vectors, false);
+            Console.WriteLine($"Matrix constructed from column vectors:\n{m10}");
         }
 
         private static void PrintArray(double[] array)

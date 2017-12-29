@@ -436,6 +436,44 @@ namespace Mathematics
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rowCopyCount"></param>
+        /// <param name="columnCopyCount"></param>
+        /// <param name="isRowVector"></param>
+        /// <returns></returns>
+        public Matrix Tile(int rowCopyCount, int columnCopyCount, bool isRowVector = true)
+        {
+            int baseRowCount = 1;
+            int baseColumnCount = 1;
+
+            if (isRowVector)
+            {
+                baseColumnCount = this.Length;
+                Matrix result = new Matrix(rowCopyCount * baseRowCount, columnCopyCount * baseColumnCount);
+
+                for (int i = 0; i < result.RowCount; i++)
+                {
+                    for (int j = 0; j < result.ColumnCount; j++)
+                        result[i, j] = this[j % this.Length];
+                }
+                return result;
+            }
+            else
+            {
+                baseRowCount = this.Length;
+                Matrix result = new Matrix(rowCopyCount * baseRowCount, columnCopyCount * baseColumnCount);
+
+                for (int i = 0; i < result.RowCount; i++)
+                {
+                    for (int j = 0; j < result.ColumnCount; j++)
+                        result[i, j] = this[i % this.Length];
+                }
+                return result;
+            }
+        }
+
+        /// <summary>
         /// Returns the sum of each component of this Vector.
         /// </summary>
         /// <returns>The sum of each component of this Vector.</returns>
