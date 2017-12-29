@@ -10,12 +10,13 @@ namespace MachineLearning
 {
     public class MachineLearningUtil
     {
+
         /// <summary>
         /// Returns an array of Vector that contains all the normalized Vector correspond to original Vector.
         /// </summary>
         /// <param name="vectors">An array of Vector.</param>
         /// <returns>An array of Vector that contains all the normalized Vector correspond to original Vector.</returns>
-        public Vector[] Normalize(Vector[] vectors)
+        public static (Vector[] normalizedVectors, Vector min, Vector ranges) Normalize(Vector[] vectors)
         {
             if (vectors == null)
                 throw new ArgumentNullException("vectors", "The input array of Vector is null.");
@@ -25,14 +26,15 @@ namespace MachineLearning
                     throw new ArgumentNullException($"vectors[{i}]", "There is an entry for Vector has null value.");
             }
 
-            Vector[] normalizedVectors = new Vector[vectors.Length];
-            for (int i = 0; i < normalizedVectors.Length; i++)
-                normalizedVectors[i] = vectors[i].Normalize();
+            for (int i = 1; i < vectors.Length; i++)
+            {
+                
+            }
 
-            return normalizedVectors;
+            return (null, null, null);
         }
 
-        public Vector[] FileToMatrix(string filePath)
+        public static Vector[] FileToMatrix(string filePath)
         {
             if (!File.Exists(filePath))
                 throw new ArgumentException("No such file.");
