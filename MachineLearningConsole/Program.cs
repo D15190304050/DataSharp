@@ -25,7 +25,7 @@ namespace MachineLearning
 
         public static int Main(string[] args)
         {
-            
+            UnitTest.MachineLearningUtilTest();
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");
