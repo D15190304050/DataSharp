@@ -53,6 +53,7 @@
     <Compile Include="StdRandom.cs" />
     <Compile Include="UnitTest.cs" />
     <Compile Include="Vector.cs" />
+    <Compile Include="VectorBasedMatrix.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
