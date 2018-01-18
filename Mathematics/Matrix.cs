@@ -12,7 +12,7 @@ namespace Mathematics
         /// <summary>
         /// The internal representation of this matrix.
         /// </summary>
-        private double[][] matrix;
+        private Vector[] matrix;
 
         /// <summary>
         /// Gets the number of rows of this matrix.
@@ -86,13 +86,13 @@ namespace Mathematics
             if (vectors[0] == null)
                 return false;
 
-            int columnCount = vectors[0].Length;
+            int columnCount = vectors[0].Count;
             for (int i = 1; i < vectors.Length; i++)
             {
                 Vector v = vectors[i];
                 if (v == null)
                     return false;
-                if (v.Length != columnCount)
+                if (v.Count != columnCount)
                     return false;
             }
             return true;
@@ -119,10 +119,10 @@ namespace Mathematics
             this.ColumnCount = matrix[0].Length;
 
             // Initialize the internal matrix.
-            this.matrix = new double[RowCount][];
+            this.matrix = new Vector[this.RowCount];
             for (int i = 0; i < this.RowCount; i++)
             {
-                this.matrix[i] = new double[ColumnCount];
+                this.matrix[i] = new Vector(ColumnCount);
                 for (int j = 0; j < this.ColumnCount; j++)
                     this[i, j] = matrix[i][j];
             }
@@ -148,10 +148,10 @@ namespace Mathematics
             this.ColumnCount = matrix.GetLength(1);
 
             // Initialize the internal matrix.
-            this.matrix = new double[RowCount][];
+            this.matrix = new Vector[this.RowCount];
             for (int i = 0; i < this.RowCount; i++)
             {
-                this.matrix[i] = new double[ColumnCount];
+                this.matrix[i] = new Vector(this.ColumnCount);
                 for (int j = 0; j < this.ColumnCount; j++)
                     this[i, j] = matrix[i, j];
             }
@@ -175,25 +175,25 @@ namespace Mathematics
             if (isRowVector)
             {
                 this.RowCount = vectors.Length;
-                this.ColumnCount = vectors[0].Length;
+                this.ColumnCount = vectors[0].Count;
 
-                matrix = new double[this.RowCount][];
+                matrix = new Vector[this.RowCount];
                 for (int i = 0; i < this.RowCount; i++)
                 {
-                    matrix[i] = new double[this.ColumnCount];
+                    matrix[i] = new Vector(this.ColumnCount);
                     for (int j = 0; j < this.ColumnCount; j++)
                         this[i, j] = vectors[i][j];
                 }
             }
             else
             {
-                this.RowCount = vectors[0].Length;
+                this.RowCount = vectors[0].Count;
                 this.ColumnCount = vectors.Length;
 
-                matrix = new double[this.RowCount][];
+                matrix = new Vector[this.RowCount];
                 for (int i = 0; i < this.RowCount; i++)
                 {
-                    matrix[i] = new double[this.ColumnCount];
+                    matrix[i] = new Vector(this.RowCount);
                     for (int j = 0; j < this.ColumnCount; j++)
                         this[i, j] = vectors[j][i];
                 }
@@ -216,18 +216,18 @@ namespace Mathematics
             this.ColumnCount = numColumns;
 
             // Initialize the internal matrix.
-            matrix = new double[RowCount][];
+            matrix = new Vector[this.RowCount];
 
             if (value == 0)
             {
                 for (int i = 0; i < this.RowCount; i++)
-                    matrix[i] = new double[ColumnCount];
+                    matrix[i] = new Vector(this.ColumnCount);
             }
             else
             {
                 for (int i = 0; i < this.RowCount; i++)
                 {
-                    matrix[i] = new double[ColumnCount];
+                    matrix[i] = new Vector(this.ColumnCount);
                     for (int j = 0; j < this.ColumnCount; j++)
                         this[i, j] = value;
                 }
@@ -384,7 +384,7 @@ namespace Mathematics
             if (column == null)
                 throw new ArgumentNullException("column", "The column to insert is null.");
 
-            if (column.Length != this.RowCount)
+            if (column.Count != this.RowCount)
                 throw new ArgumentException("The length of the vector is not equalt to the row count of this Matrix.");
         }
 
@@ -399,7 +399,7 @@ namespace Mathematics
             if (row == null)
                 throw new ArgumentNullException("column", "The column to insert is null.");
 
-            if (row.Length != this.ColumnCount)
+            if (row.Count != this.ColumnCount)
                 throw new ArgumentException("The length of the vector is not equalt to the column count of this Matrix.");
         }
 
@@ -426,8 +426,8 @@ namespace Mathematics
             CheckRowIndex(rowIndex);
 
             // Clear the specified row.
-            for (int i = 0; i < this.ColumnCount; i++)
-                matrix[rowIndex][i] = 0;
+            for (int j = 0; j < this.ColumnCount; j++)
+                this[rowIndex, j] = 0;
         }
 
         /// <summary>
@@ -442,7 +442,7 @@ namespace Mathematics
 
             // Clear the specified column.
             for (int i = 0; i < this.RowCount; i++)
-                matrix[i][columnIndex] = 0;
+                this[i, columnIndex] = 0;
         }
 
         /// <summary>
@@ -537,7 +537,7 @@ namespace Mathematics
             {
                 for (int j = 0; j < this.ColumnCount; j++)
                 {
-                    if (zeroPredicate(matrix[i][i]))
+                    if (zeroPredicate(this[i, j]))
                         this[i, j] = 0;
                 }
             }
@@ -578,7 +578,7 @@ namespace Mathematics
             CheckRowIndex(rowIndex);
 
             // Remainging check will be done here in the Vector's constructor.
-            return new Vector(matrix[rowIndex], startColumnIndex, endColumnIndex);
+            return matrix[rowIndex].GetSubVector(startColumnIndex, endColumnIndex);
         }
 
         /// <summary>
@@ -593,7 +593,7 @@ namespace Mathematics
 
             double[] vector = new double[this.RowCount];
             for (int i = 0; i < vector.Length; i++)
-                vector[i] = matrix[i][columnIndex];
+                vector[i] = this[i, columnIndex];
 
             return new Vector(vector);
         }
@@ -613,7 +613,7 @@ namespace Mathematics
 
             double[] vector = new double[endRowIndex - startRowIndex + 1];
             for (int i = 0; i < vector.Length; i++)
-                vector[i] = matrix[i + startRowIndex][columnIndex];
+                vector[i] = this[i + startRowIndex, columnIndex];
 
             return new Vector(vector);
         }
@@ -860,8 +860,8 @@ namespace Mathematics
             Vector result = new Vector(this.RowCount);
 
             // Assign and return.
-            for (int i = 0; i < result.Length; i++)
-                result[i] = matrix[i][i];
+            for (int i = 0; i < result.Count; i++)
+                result[i] = this[i, i];
             return result;
         }
 
@@ -888,7 +888,7 @@ namespace Mathematics
             }
 
             // Copy the values of the column Vector to the result Matrix.
-            for (int i = 0; i < column.Length; i++)
+            for (int i = 0; i < column.Count; i++)
                 result[i, this.ColumnCount] = column[i];
 
             // Return the result Matrix.
@@ -993,7 +993,7 @@ namespace Mathematics
             }
 
             // Copy the values of the row Vector to the result Matrix.
-            for (int j = 0; j < row.Length; j++)
+            for (int j = 0; j < row.Count; j++)
                 result[this.RowCount, j] = row[j];
 
             // Return the result Matrix.
@@ -1122,11 +1122,11 @@ namespace Mathematics
             // Check the diagonal Vector.
             if (diagonal == null)
                 throw new ArgumentNullException("diagonal", "The input Vector must not be null.");
-            if (this.RowCount != diagonal.Length)
+            if (this.RowCount != diagonal.Count)
                 throw new ArgumentException("The length of the input vector is not equal to the size of the diagonal of this Matrix.");
 
             // Assignment.
-            for (int i = 0; i < diagonal.Length; i++)
+            for (int i = 0; i < diagonal.Count; i++)
                 this[i, i] = diagonal[i];
         }
 
@@ -1605,15 +1605,15 @@ namespace Mathematics
                 throw new ArgumentNullException("columnVector", "The input Vector is null.");
 
             // Check whether the column count of the matrix and the length of the vector must be equal
-            if (matrix.ColumnCount != columnVector.Length)
+            if (matrix.ColumnCount != columnVector.Count)
                 throw new ArgumentException("The column count of the matrix and the length of the vector must be equal.");
 
             // Initialize the result Vector.
-            Vector[] rows = matrix.ToRowVectors();
+            Vector[] rows = matrix.matrix;
             
             // Multiplication operation.
             Vector result = new Vector(matrix.RowCount);
-            for (int i = 0; i < result.Length; i++)
+            for (int i = 0; i < result.Count; i++)
                 result[i] = rows[i] * columnVector;
 
             // Return the result Vector.
@@ -1644,7 +1644,7 @@ namespace Mathematics
             Matrix result = new Matrix(matrixLeft.RowCount, matrixRight.ColumnCount);
 
             // Get the row and column vectors.
-            Vector[] rows = matrixLeft.ToRowVectors();
+            Vector[] rows = matrixLeft.matrix;
             Vector[] columns = matrixRight.ToColumnVectors();
 
             // Matrix multiplication.

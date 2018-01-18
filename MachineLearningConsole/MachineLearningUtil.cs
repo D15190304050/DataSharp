@@ -26,7 +26,7 @@ namespace MachineLearning
                     throw new ArgumentNullException($"vectors[{i}]", "There is an entry for Vector has null value.");
             }
 
-            int vectorLength = vectors[0].Length;
+            int vectorLength = vectors[0].Count;
             Vector min = new Vector(vectorLength);
             Vector max = new Vector(vectorLength);
 

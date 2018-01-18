@@ -31,7 +31,7 @@ namespace Mathematics
         /// <summary>
         /// Gets the number of components of this Vector.
         /// </summary>
-        public int Length { get { return vector.Length; } }
+        public int Count { get { return vector.Length; } }
 
         /// <summary>
         /// Initializes a Vector with specified number of components.
@@ -100,8 +100,8 @@ namespace Mathematics
         {
             if (vector == null)
                 throw new ArgumentNullException("The input vector must not be null.");
-            this.vector = new double[vector.Length];
-            for (int i = 0; i < vector.Length; i++)
+            this.vector = new double[vector.Count];
+            for (int i = 0; i < vector.Count; i++)
                 this.vector[i] = vector[i];
         }
 
@@ -141,7 +141,7 @@ namespace Mathematics
                 throw new ArgumentNullException("The input vector must not be null.");
 
             Vector result = new Vector(vector);
-            for (int i = 0; i < result.Length; i++)
+            for (int i = 0; i < result.Count; i++)
                 result[i] += scalar;
 
             return result;
@@ -170,7 +170,7 @@ namespace Mathematics
         {
             LengthCheck(vector1, vector2);
 
-            int length = vector1.Length;
+            int length = vector1.Count;
             Vector result = new Vector(length);
             for (int i = 0; i < length; i++)
                 result[i] = vector1[i] + vector2[i];
@@ -190,7 +190,7 @@ namespace Mathematics
                 throw new ArgumentNullException("The input vector must not be null.");
 
             Vector result = new Vector(vector);
-            for (int i = 0; i < result.Length; i++)
+            for (int i = 0; i < result.Count; i++)
                 result[i] -= scalar;
 
             return result;
@@ -209,7 +209,7 @@ namespace Mathematics
                 throw new ArgumentNullException("The input vector must not be null.");
 
             Vector result = new Vector(vector);
-            for (int i = 0; i < result.Length; i++)
+            for (int i = 0; i < result.Count; i++)
                 result[i] = scalar - vector[i];
 
             return result;
@@ -226,7 +226,7 @@ namespace Mathematics
         {
             LengthCheck(vector1, vector2);
 
-            int length = vector1.Length;
+            int length = vector1.Count;
             Vector result = new Vector(length);
             for (int i = 0; i < length; i++)
                 result[i] = vector1[i] - vector2[i];
@@ -246,7 +246,7 @@ namespace Mathematics
                 throw new ArgumentNullException("The input vector must not be null.");
 
             Vector result = new Vector(vector);
-            for (int i = 0; i < result.Length; i++)
+            for (int i = 0; i < result.Count; i++)
                 result[i] *= scalar;
 
             return result;
@@ -276,7 +276,7 @@ namespace Mathematics
             LengthCheck(vector1, vector2);
 
             double sum = 0;
-            for (int i = 0; i < vector1.Length; i++)
+            for (int i = 0; i < vector1.Count; i++)
                 sum += vector1[i] * vector2[i];
 
             return sum;
@@ -297,7 +297,7 @@ namespace Mathematics
                 throw new DivideByZeroException("The scalar must be a non-zero value.");
 
             Vector result = new Vector(vector);
-            for (int i = 0; i < result.Length; i++)
+            for (int i = 0; i < result.Count; i++)
                 result[i] /= scalar;
 
             return result;
@@ -317,7 +317,7 @@ namespace Mathematics
             LengthCheck(vector1, vector2);
 
             // Initialize the result vector.
-            int length = vector1.Length;
+            int length = vector1.Count;
             Vector result = new Vector(length);
 
             // Compute the result and return it.
@@ -341,17 +341,17 @@ namespace Mathematics
                 throw new ArgumentNullException("vector2", "The input Vector must not be null.");
 
             // Initialize the result vector with specified length.
-            Vector correlation = new Vector(vector1.Length + vector2.Length - 1);
+            Vector correlation = new Vector(vector1.Count + vector2.Count - 1);
 
             // Pad zeros for vector 1.
-            double[] extendedVector1 = new double[2 * (vector2.Length - 1) + vector1.Length];
-            for (int i = 0; i < vector1.Length; i++)
-                extendedVector1[i + vector2.Length - 1] = vector1[i];
+            double[] extendedVector1 = new double[2 * (vector2.Count - 1) + vector1.Count];
+            for (int i = 0; i < vector1.Count; i++)
+                extendedVector1[i + vector2.Count - 1] = vector1[i];
 
             // Compute and return the result of the correlation operation.
-            for (int i = 0; i < correlation.Length; i++)
+            for (int i = 0; i < correlation.Count; i++)
             {
-                for (int j = 0; j < vector2.Length; j++)
+                for (int j = 0; j < vector2.Count; j++)
                     correlation[i] += extendedVector1[i + j] * vector2[j];
             }
             return correlation;
@@ -372,18 +372,18 @@ namespace Mathematics
                 throw new ArgumentNullException("vector2", "The input Vector must not be null.");
 
             // Initialize the result vector with specified length.
-            Vector result = new Vector(vector1.Length + vector2.Length - 1);
+            Vector result = new Vector(vector1.Count + vector2.Count - 1);
 
             // Pad zeros for vector 1.
-            double[] extendedVector1 = new double[2 * (vector2.Length - 1) + vector1.Length];
-            for (int i = 0; i < vector1.Length; i++)
-                extendedVector1[i + vector2.Length - 1] = vector1[i];
+            double[] extendedVector1 = new double[2 * (vector2.Count - 1) + vector1.Count];
+            for (int i = 0; i < vector1.Count; i++)
+                extendedVector1[i + vector2.Count - 1] = vector1[i];
 
             // Compute and return the result of the convlution operation.
-            for (int i = 0; i < result.Length; i++)
+            for (int i = 0; i < result.Count; i++)
             {
-                for (int j = 0; j < vector2.Length; j++)
-                    result[i] += extendedVector1[i + j] * vector2[vector2.Length - 1 - j];
+                for (int j = 0; j < vector2.Count; j++)
+                    result[i] += extendedVector1[i + j] * vector2[vector2.Count - 1 - j];
             }
             return result;
         }
@@ -400,10 +400,10 @@ namespace Mathematics
             if (vector == null)
                 return false;
 
-            if (this.Length != vector.Length)
+            if (this.Count != vector.Count)
                 return false;
 
-            for (int i = 0; i < this.Length; i++)
+            for (int i = 0; i < this.Count; i++)
             {
                 if (Math.Abs(this[i] - vector[i]) > epsilon)
                     return false;
@@ -449,25 +449,25 @@ namespace Mathematics
 
             if (isRowVector)
             {
-                baseColumnCount = this.Length;
+                baseColumnCount = this.Count;
                 Matrix result = new Matrix(rowCopyCount * baseRowCount, columnCopyCount * baseColumnCount);
 
                 for (int i = 0; i < result.RowCount; i++)
                 {
                     for (int j = 0; j < result.ColumnCount; j++)
-                        result[i, j] = this[j % this.Length];
+                        result[i, j] = this[j % this.Count];
                 }
                 return result;
             }
             else
             {
-                baseRowCount = this.Length;
+                baseRowCount = this.Count;
                 Matrix result = new Matrix(rowCopyCount * baseRowCount, columnCopyCount * baseColumnCount);
 
                 for (int i = 0; i < result.RowCount; i++)
                 {
                     for (int j = 0; j < result.ColumnCount; j++)
-                        result[i, j] = this[i % this.Length];
+                        result[i, j] = this[i % this.Count];
                 }
                 return result;
             }
@@ -480,7 +480,7 @@ namespace Mathematics
         public double SumComponents()
         {
             double sum = 0;
-            for (int i = 0; i < this.Length; i++)
+            for (int i = 0; i < this.Count; i++)
                 sum += this[i];
             return sum;
         }
@@ -506,7 +506,7 @@ namespace Mathematics
             if ((v1 == null) || (v2 == null))
                 throw new ArgumentNullException("The input vector must not be null.");
 
-            if (v1.Length != v2.Length)
+            if (v1.Count != v2.Count)
                 throw new ArgumentException("Input vectors don't have the same length.");
         }
 

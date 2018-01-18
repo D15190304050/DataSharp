@@ -11,16 +11,20 @@ namespace MachineLearning
     {
         public static void ClassifyPerson()
         {
+            // Prepare the data set.
             string filePath = @"TestData\datingTestSet2.txt";
-            double testRatio = 0.1;
             Vector[] datingData = MachineLearningUtil.FileToMatrix(filePath);
             int[] labels =
                 (from date in datingData
-                 select (int)date[date.Length - 1]).ToArray();
-            for (int i = 0; i < datingData.Length; i++)
-                datingData[i] = datingData[i].GetSubVector(0, datingData[i].Length - 2);
+                 select (int)date[date.Count - 1]).ToArray();
+            Vector[] datingDataMatrix =
+                (from date in datingData
+                 select date.GetSubVector(0, date.Count - 2)).ToArray();
+
+            var (normedMatrix, ranges, minValues) = MachineLearningUtil.Normalize(datingDataMatrix);
 
 
+            double testRatio = 0.1;
         }
 
         public static int Main(string[] args)

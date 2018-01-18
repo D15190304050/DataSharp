@@ -112,7 +112,7 @@ namespace Mathematics
 
             Console.WriteLine("Test for operator *");
             Vector v1 = new Vector(5);
-            for (int i = 0; i < v1.Length; i++)
+            for (int i = 0; i < v1.Count; i++)
                 v1[i] = 1;
             Console.WriteLine($"A vector will be used here : v1 = {v1}.");
             Console.WriteLine($"m1 * 2 =\n{m1 * 2}");

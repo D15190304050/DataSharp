@@ -14,6 +14,28 @@ namespace MachineLearning
         /// </summary>
         public Func<Vector, double> DistanceMetric { get; set; }
 
+        private Vector[] dataSet;
+        private int[] labels;
+
+        private readonly int dataSize;
+
+        public KNearestNeighbor(Vector[] dataSet, int[] labels, Func<Vector, double> distanceMetric)
+        {
+            if (dataSet == null)
+                throw new ArgumentNullException("dataSet", "The input array of Vector is null.");
+            if (!Matrix.IsMatrix(dataSet))
+                throw new ArgumentException("The input array of Vector doesn't have the shape as a matrix.");
+            if (labels == null)
+                throw new ArgumentNullException("labels", "The input array of int is null.");
+            if (dataSet.Length != labels.Length)
+                throw new ArgumentException("The size of the data set isn't equal to the length of labels.");
+
+            this.dataSet = dataSet;
+            this.labels = labels;
+            this.DistanceMetric = distanceMetric;
+            dataSize = dataSet.Length;
+        }
+
         /// <summary>
         /// Returns the index of the label of given sample computed by k-NN algorithm.
         /// </summary>
@@ -21,18 +43,14 @@ namespace MachineLearning
         /// <param name="dataSet"></param>
         /// <param name="k"></param>
         /// <returns></returns>
-        public int Classify(Vector sample, Vector[] dataSet, int[] labels, int k)
+        public int Classify(Vector sample, int k)
         {
-            if (dataSet == null)
-                throw new ArgumentNullException("dataSet", "The input array of Vector is null.");
-            if (!Matrix.IsMatrix(dataSet))
-                throw new ArgumentException("The input array of Vector doesn't have the shape as a matrix.");
-
             int dataSize = dataSet.Length;
             Vector[] differenceMatrix = new Vector[dataSize];
             for (int i = 0; i < dataSize; i++)
                 differenceMatrix[i] = sample - dataSet[i];
 
+            // Compute the length of every difference Vector.
             Dictionary<int, double> distances = new Dictionary<int, double>();
             for (int i = 0; i < dataSize; i++)
                 distances.Add(i, differenceMatrix[i].GetLength());
@@ -41,6 +59,7 @@ namespace MachineLearning
                  orderby kvp.Value
                  select kvp.Key).ToArray();
 
+            // Sort and get the correspond indices.
             Dictionary<int, int> classCount = new Dictionary<int, int>();
             for (int i = 0; i < k; i++)
             {
@@ -51,6 +70,7 @@ namespace MachineLearning
                 classCount[vote]++;
             }
 
+            // Get the class label.
             int[] sortedClassCount =
                 (from kvp in classCount
                  orderby kvp.Value descending
@@ -58,5 +78,7 @@ namespace MachineLearning
 
             return sortedClassCount[0];
         }
+
+
     }
 }
