@@ -12,14 +12,14 @@ namespace MachineLearning
         /// <summary>
         /// Gets or sets the DistanceMetric of this k-NN model.
         /// </summary>
-        public Func<Vector, double> DistanceMetric { get; set; }
+        public Func<Vector, Vector, double> DistanceMetric { get; set; }
 
         private Vector[] dataSet;
         private int[] labels;
 
         private readonly int dataSize;
 
-        public KNearestNeighbor(Vector[] dataSet, int[] labels, Func<Vector, double> distanceMetric)
+        public KNearestNeighbor(Vector[] dataSet, int[] labels, Func<Vector, Vector, double> distanceMetric)
         {
             if (dataSet == null)
                 throw new ArgumentNullException("dataSet", "The input array of Vector is null.");

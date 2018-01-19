@@ -68,7 +68,7 @@ namespace MachineLearning
             Vector[] matrix = new Vector[contents.Length];
             for (int i = 0; i < matrix.Length; i++)
             {
-                string[] line = contents[i].Split(' ');
+                string[] line = contents[i].Split('\t');
                 double[] lineData = new double[line.Length];
                 for (int j = 0; j < line.Length; j++)
                     lineData[j] = double.Parse(line[j]);
