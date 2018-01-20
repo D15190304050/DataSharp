@@ -27,19 +27,19 @@ namespace MachineLearning
             int numRows = normedMatrix.Length;
             int numTestSamples = (int)(testRatio * numRows);
 
-            Vector[] knownSet = new Vector[numTestSamples];
-            for (int i = 0; i < knownSet.Length; i++)
-                knownSet[i] = normedMatrix[i];
-            Vector[] testSet = new Vector[numRows - numTestSamples];
+            Vector[] testSet = new Vector[numTestSamples];
             for (int i = 0; i < testSet.Length; i++)
-                testSet[i] = normedMatrix[i + numTestSamples];
+                testSet[i] = normedMatrix[i];
+            Vector[] knownSet = new Vector[numRows - numTestSamples];
+            for (int i = 0; i < knownSet.Length; i++)
+                knownSet[i] = normedMatrix[i + numTestSamples];
 
-            int[] knownLabels = new int[numTestSamples];
-            for (int i = 0; i < knownLabels.Length; i++)
-                knownLabels[i] = labels[i];
-            int[] testLabels = new int[numRows - numTestSamples];
+            int[] testLabels = new int[numTestSamples];
             for (int i = 0; i < testLabels.Length; i++)
-                testLabels[i] = labels[i + numTestSamples];
+                testLabels[i] = labels[i];
+            int[] knownLabels = new int[numRows - numTestSamples];
+            for (int i = 0; i < knownLabels.Length; i++)
+                knownLabels[i] = labels[i + numTestSamples];
 
             KNearestNeighbor knn = new KNearestNeighbor(knownSet, knownLabels, DistanceMetrics.EuclideanDistance);
 
@@ -47,7 +47,7 @@ namespace MachineLearning
             int k = 3;
             for (int i = 0; i < numTestSamples; i++)
             {
-                int classierResult = knn.Classify(normedMatrix[i], k);
+                int classierResult = knn.Classify(testSet[i], k);
                 if (classierResult != testLabels[i])
                     errorCount += 1.0;
             }
