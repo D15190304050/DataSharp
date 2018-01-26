@@ -7,16 +7,29 @@ using Mathematics;
 
 namespace MachineLearning
 {
+    /// <summary>
+    /// The KNearestNeighbor class represents the solver of k-Nearest Neighbor algorithm for given data set.
+    /// </summary>
     public class KNearestNeighbor
     {
         /// <summary>
-        /// Gets or sets the DistanceMetric of this k-NN model.
+        /// Gets or sets the distance metric of this k-NN model.
         /// </summary>
         public Func<Vector, Vector, double> DistanceMetric { get; set; }
 
+        /// <summary>
+        /// Known data points of this k-NN model.
+        /// </summary>
         private Vector[] dataSet;
+
+        /// <summary>
+        /// Correspond labels of this k-NN model for known data points.
+        /// </summary>
         private int[] labels;
 
+        /// <summary>
+        /// Number of dimensions of given data points.
+        /// </summary>
         private readonly int dataSize;
 
         public KNearestNeighbor(Vector[] dataSet, int[] labels, Func<Vector, Vector, double> distanceMetric)
@@ -53,7 +66,7 @@ namespace MachineLearning
             // Compute the length of every difference Vector.
             Dictionary<int, double> distances = new Dictionary<int, double>();
             for (int i = 0; i < dataSize; i++)
-                distances.Add(i, differenceMatrix[i].GetLength());
+                distances.Add(i, DistanceMetric(sample, dataSet[i]));
             int[] sortedDistanceIndices =
                 (from kvp in distances
                  orderby kvp.Value
@@ -78,7 +91,5 @@ namespace MachineLearning
 
             return sortedClassCount[0];
         }
-
-
     }
 }

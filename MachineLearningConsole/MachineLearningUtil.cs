@@ -14,9 +14,9 @@ namespace MachineLearning
         /// <summary>
         /// Returns an array of Vector that contains all the normalized Vector correspond to original Vector.
         /// </summary>
-        /// <param name="vectors">An array of Vector.</param>
-        /// <returns>An array of Vector that contains all the normalized Vector correspond to original Vector.</returns>
-        public static (Vector[], Vector, Vector) Normalize(Vector[] vectors)
+        /// <param name="vectors"></param>
+        /// <returns></returns>
+        public static (Vector[] normalizedVector, Vector min, Vector ranges) Normalize(Vector[] vectors)
         {
             if (vectors == null)
                 throw new ArgumentNullException("vectors", "The input array of Vector is null.");
