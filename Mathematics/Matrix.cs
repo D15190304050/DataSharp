@@ -824,7 +824,7 @@ namespace Mathematics
         /// <returns>A Matrix which is the sub-matrix of this Matrix with specified range.</returns>
         /// <exception cref="ArgumentOutOfRangeException">If one of the indicies is out of range of this Matrix.</exception>
         /// <exception cref="ArgumentException">If the end index is not greater than the start index (both row and column).</exception>
-        public Matrix SubMatrix(int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
+        public Matrix GetSubMatrix(int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
             // Check input indicies before extraction.
             CheckIndicies(startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
@@ -1589,13 +1589,13 @@ namespace Mathematics
         }
 
         /// <summary>
-        /// Returns a Matrix that is the product of the input Matrix and the input column Vector.
+        /// Returns a column Vector that is the product of the input Matrix and the input column Vector (matrix * rowVector).
         /// </summary>
         /// <param name="matrix">The Matrix of this multiplication operation.</param>
         /// <param name="columnVector">The column vector of this multiplication.</param>
-        /// <returns>A Matrix that is the product of the input Matrix and the input column Vector.</returns>
+        /// <returns>A column Vector that is the product of the input Matrix and the input column Vector (matrix * rowVector).</returns>
         /// <exception cref="ArgumentNullException">If the input Matrix of Vector is null.</exception>
-        /// <exception cref="ArgumentException">If the column count of the matrix and the length of the vector must be equal.</exception>
+        /// <exception cref="ArgumentException">If the column count or the matrix and the count of the vector are not equal.</exception>
         public static Vector operator *(Matrix matrix, Vector columnVector)
         {
             // Check whether one of them is null.
@@ -1604,17 +1604,53 @@ namespace Mathematics
             if (columnVector == null)
                 throw new ArgumentNullException("columnVector", "The input Vector is null.");
 
-            // Check whether the column count of the matrix and the length of the vector must be equal
+            // Check whether the column count of the matrix and the count of the vector must be equal
             if (matrix.ColumnCount != columnVector.Count)
-                throw new ArgumentException("The column count of the matrix and the length of the vector must be equal.");
+                throw new ArgumentException("The column count of the matrix and the count of the vector must be equal.");
+
+            // Get rows of the given matrix.
+            Vector[] rows = matrix.matrix;
 
             // Initialize the result Vector.
-            Vector[] rows = matrix.matrix;
-            
-            // Multiplication operation.
             Vector result = new Vector(matrix.RowCount);
+
+            // Multiplication operation.
             for (int i = 0; i < result.Count; i++)
                 result[i] = rows[i] * columnVector;
+
+            // Return the result Vector.
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a row Vector that is the product of the input row vector and the input Matrix (rowVector * matrix).
+        /// </summary>
+        /// <param name="rowVector">The row vector of this multiplication.</param>
+        /// <param name="matrix">The matrix of this multiplication.</param>
+        /// <returns>A row Vector that is the product of the input row vector and the input Matrix (rowVector * matrix).</returns>
+        /// <exception cref="ArgumentNullException">If the input Matrix or Vector is null.</exception>
+        /// <exception cref="ArgumentException">If the row count of the matrix and the count of the vector are not equal.</exception>
+        public static Vector operator *(Vector rowVector, Matrix matrix)
+        {
+            // Check whether one of them is null.
+            if (matrix == null)
+                throw new ArgumentNullException("matrix", "The input Matrix is null.");
+            if (rowVector == null)
+                throw new ArgumentNullException("rowVector", "The input Vector is null.");
+
+            // Check whether the column count of the matrix and the count of the vector must be equal
+            if (matrix.RowCount != rowVector.Count)
+                throw new ArgumentException("The row count of the matrix and the count of the vector must be equal.");
+
+            // Get columns of the given Matrix.
+            Vector[] columns = matrix.ToColumnVectors();
+
+            // Initialize the result Vector.
+            Vector result = new Vector(matrix.ColumnCount);
+
+            // Multiplication operation.
+            for (int i = 0; i < result.Count; i++)
+                result[i] = rowVector * columns[i];
 
             // Return the result Vector.
             return result;

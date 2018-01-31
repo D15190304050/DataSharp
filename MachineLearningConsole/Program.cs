@@ -58,7 +58,32 @@ namespace MachineLearning
         public static int Main(string[] args)
         {
             //UnitTest.MachineLearningUtilTest();
-            ClassifyPerson();
+            //ClassifyPerson();
+
+            string dataPath = @"TestData\testSet.txt";
+            string[] lines = System.IO.File.ReadAllLines(dataPath);
+            int sampleCount = lines.Length;
+            Matrix dataMatrix = new Matrix(sampleCount, 2);
+            Vector labels = new Vector(sampleCount);
+
+            for (int i = 0; i < sampleCount; i++)
+            {
+                string[] line = lines[i].Split('\t');
+                dataMatrix[i, 0] = double.Parse(line[0]);
+                dataMatrix[i, 1] = double.Parse(line[1]);
+                labels[i] = double.Parse(line[2]);
+            }
+
+            for (int i = 0; i < 10000; i++)
+            {
+                SupportVectorMachine svm = new SupportVectorMachine(dataMatrix, labels, 0.6, 0.001);
+                svm.SequentialMinOptimization(40);
+            }
+            Console.WriteLine("Done");
+            //Console.WriteLine(dataMatrix.GetRow(1));
+            //Console.WriteLine(dataMatrix.GetRow(2));
+            //Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(1)));
+            //Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(2)));
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");

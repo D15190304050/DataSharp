@@ -88,10 +88,10 @@ namespace Mathematics
             Matrix m4 = new Matrix(valuesForMatrix4);
             Console.WriteLine($"Matrix m4 =\n{m4}");
 
-            Matrix m5 = m4.SubMatrix(0, 0, 4, 3);
+            Matrix m5 = m4.GetSubMatrix(0, 0, 4, 3);
             Console.WriteLine($"m5 is sub matrix of m4 with range [0, 0, 4, 3] =\n{m5}");
 
-            Matrix m6 = m1.SubMatrix(0, 0, 3, 4);
+            Matrix m6 = m1.GetSubMatrix(0, 0, 3, 4);
             Console.WriteLine($"m5 is sub matrix of m1 with range [0, 0, 3, 4] =\n{m6}");
 
             Console.WriteLine("Test for operator +");
@@ -225,6 +225,10 @@ namespace Mathematics
             Console.WriteLine($"Matrix constructed from row vectors:\n{m10}");
             m10 = new Matrix(vectors, false);
             Console.WriteLine($"Matrix constructed from column vectors:\n{m10}");
+
+            Vector v5 = new Vector(1, 1, 1, 1);
+            Console.WriteLine($"v5 = {v5}");
+            Console.WriteLine($"v5 * m9 =\n{v5 * m8}");
         }
 
         private static void PrintArray(double[] array)

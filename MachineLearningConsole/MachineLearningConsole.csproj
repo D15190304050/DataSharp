@@ -2944,6 +2944,9 @@
     <Content Include="TestData\Digits\TrainingDigits\9_97.txt" />
     <Content Include="TestData\Digits\TrainingDigits\9_98.txt" />
     <Content Include="TestData\Digits\TrainingDigits\9_99.txt" />
+    <Content Include="TestData\testSet.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
