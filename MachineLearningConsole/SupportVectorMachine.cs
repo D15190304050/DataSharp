@@ -38,7 +38,7 @@ namespace MachineLearning
         /// <summary>
         /// The Vector that contains all the lagrange multipliers.
         /// </summary>
-        private Vector lagrangeMultipliers;
+        private Vector alphas;
 
         /// <summary>
         /// Bias of the decision boundary.
@@ -63,7 +63,13 @@ namespace MachineLearning
         /// <summary>
         /// Kernel function of this SVM.
         /// </summary>
-        public Func<Vector, Vector, double> Kernel { get; set; }
+        public IKernel Kernel { get; set; }
+
+        /// <summary>
+        /// Values calculated by the given kernel function.
+        /// kernelValues[i, j] = kernelValues[j, i] = values calculated by the given kernel function on the i-th and j-th sample.
+        /// </summary>
+        private Matrix kernelValues;
 
         /// <summary>
         /// Initializes an instance of linear SupportVectorMachine.
@@ -90,10 +96,11 @@ namespace MachineLearning
 
             // Initialize internal data structures.
             sampleCount = labels.Count;
-            lagrangeMultipliers = new Vector(sampleCount);
+            alphas = new Vector(sampleCount);
             bias = 0;
             errorCache = new double[sampleCount, 2];
             weights = new Vector(dataMatrix.ColumnCount);
+            kernelValues = new Matrix(dataMatrix.RowCount, dataMatrix.RowCount);
         }
 
         /// <summary>
@@ -104,7 +111,7 @@ namespace MachineLearning
         private double CalculateError(int k)
         {
             // Calculate the hypothesis of this SVM using current lagrange multipliers.
-            double hypothesis = Vector.ElementWiseMultiplication(lagrangeMultipliers, labels) * (dataMatrix * dataMatrix.GetRow(k)) + bias;
+            double hypothesis = Vector.ElementWiseMultiplication(alphas, labels) * kernelValues.GetRow(k) + bias;
 
             // Calculate the error using the formula
             double error = hypothesis - labels[k];
@@ -212,28 +219,28 @@ namespace MachineLearning
             double errorI = CalculateError(i);
 
             // Determine whether i-th sample is a support vector.
-            if (((labels[i] * errorI < -tolerance) && (lagrangeMultipliers[i] < C)) ||
-                ((labels[i] * errorI > tolerance) && (lagrangeMultipliers[i] > 0)))
+            if (((labels[i] * errorI < -tolerance) && (alphas[i] < C)) ||
+                ((labels[i] * errorI > tolerance) && (alphas[i] > 0)))
             {
                 // Get the index of the 2nd lagrange multiplier to optimize.
                 int j = Select2ndMultiplier(i, errorI, out double errorJ);
 
                 // Cache the old value of the 2 lagrange multipliers.
-                double multiplierIOld = lagrangeMultipliers[i];
-                double multiplierJOld = lagrangeMultipliers[j];
+                double alphaIOld = alphas[i];
+                double alphaJOld = alphas[j];
 
                 // Calculate upper limit and lower limit of 2nd lagrange multiplier.
                 double upperLimit;
                 double lowerLimit;
                 if (labels[i] != labels[j])
                 {
-                    upperLimit = Math.Max(0, lagrangeMultipliers[j] - lagrangeMultipliers[i]);
-                    lowerLimit = Math.Min(C, C + lagrangeMultipliers[j] - lagrangeMultipliers[i]);
+                    upperLimit = Math.Max(0, alphas[j] - alphas[i]);
+                    lowerLimit = Math.Min(C, C + alphas[j] - alphas[i]);
                 }
                 else
                 {
-                    upperLimit = Math.Max(0, lagrangeMultipliers[j] + lagrangeMultipliers[i] - C);
-                    lowerLimit = Math.Min(C, lagrangeMultipliers[j] + lagrangeMultipliers[i]);
+                    upperLimit = Math.Max(0, alphas[j] + alphas[i] - C);
+                    lowerLimit = Math.Min(C, alphas[j] + alphas[i]);
                 }
 
                 // No update if upper limit == lower limit.
@@ -244,9 +251,9 @@ namespace MachineLearning
                 // This will be cahnged by kernel function.
                 Vector ithRow = dataMatrix.GetRow(i);
                 Vector jthRow = dataMatrix.GetRow(j);
-                double k11 = ithRow * ithRow;
-                double k12 = ithRow * jthRow;
-                double k22 = jthRow * jthRow;
+                double k11 = kernelValues[i, i];
+                double k12 = kernelValues[i, j];
+                double k22 = kernelValues[j, j];
                 double eta = k11 + k22 - 2 * k12;
 
                 // No optimization if eta <= 0.
@@ -254,26 +261,26 @@ namespace MachineLearning
                     return 0;
 
                 // Calculate new value of lagrangeMultipliers[j] and update error on j-th sample.
-                lagrangeMultipliers[j] = multiplierJOld + labels[j] * (errorI - errorJ) / eta;
-                lagrangeMultipliers[j] = Clip(lagrangeMultipliers[j], upperLimit, lowerLimit);
+                alphas[j] = alphaJOld + labels[j] * (errorI - errorJ) / eta;
+                alphas[j] = Clip(alphas[j], upperLimit, lowerLimit);
                 UpdateError(j);
 
                 // No optimization if the change of j-th lagrange multiplier is not large enough.
-                if (Math.Abs(lagrangeMultipliers[j] - multiplierJOld) < epsilon)
+                if (Math.Abs(alphas[j] - alphaJOld) < epsilon)
                     return 0;
 
                 // Calculate new value of lagrangeMultipliers[i] and update error on i-th sample.
-                lagrangeMultipliers[i] = multiplierIOld + labels[i] * labels[j] * (multiplierJOld - lagrangeMultipliers[j]);
+                alphas[i] = alphaIOld + labels[i] * labels[j] * (alphaJOld - alphas[j]);
                 UpdateError(i);
 
                 // This will be changed by kernel function.
-                double b1 = bias - errorI - labels[i] * (lagrangeMultipliers[i] - multiplierIOld) * k11 - labels[j] * (lagrangeMultipliers[j] - multiplierJOld) * k12;
-                double b2 = bias - errorJ - labels[i] * (lagrangeMultipliers[i] - multiplierIOld) * k12 - labels[j] * (lagrangeMultipliers[j] - multiplierJOld) * k22;
+                double b1 = bias - errorI - labels[i] * (alphas[i] - alphaIOld) * k11 - labels[j] * (alphas[j] - alphaJOld) * k12;
+                double b2 = bias - errorJ - labels[i] * (alphas[i] - alphaIOld) * k12 - labels[j] * (alphas[j] - alphaJOld) * k22;
 
                 // Update bias using formula in the paper.
-                if ((0 < lagrangeMultipliers[i]) && (lagrangeMultipliers[i] < C))
+                if ((0 < alphas[i]) && (alphas[i] < C))
                     bias = b1;
-                else if ((0 < lagrangeMultipliers[j]) && (lagrangeMultipliers[j] < C))
+                else if ((0 < alphas[j]) && (alphas[j] < C))
                     bias = 2;
                 else
                     bias = (b1 + b2) / 2;
@@ -289,8 +296,18 @@ namespace MachineLearning
         /// Training this SVM using the SMO algorithm.
         /// </summary>
         /// <param name="maxIterations">Max count of iterations.</param>
-        public void SequentialMinOptimization(int maxIterations = 100)
+        /// <exception cref="ArgumentNullException">If Kernel is null.</exception>
+        public void Train(int maxIterations = 100)
         {
+            if (Kernel == null)
+                throw new ArgumentNullException("Kernel");
+
+            for (int i = 0; i < dataMatrix.RowCount; i++)
+            {
+                for (int j = 0; j < dataMatrix.RowCount; j++)
+                    kernelValues[i, j] = Kernel.KernelTransform(dataMatrix.GetRow(i), dataMatrix.GetRow(j));
+            }
+
             // Iteration count starts from 0.
             int iterations = 0;
 
@@ -338,7 +355,7 @@ namespace MachineLearning
         private void CalculateWeights()
         {
             for (int i = 0; i < sampleCount; i++)
-                weights += lagrangeMultipliers[i] * labels[i] * dataMatrix.GetRow(i);
+                weights += alphas[i] * labels[i] * dataMatrix.GetRow(i);
         }
 
         /// <summary>
@@ -391,7 +408,7 @@ namespace MachineLearning
             LinkedList<int> nonBoundIndices = new LinkedList<int>();
             for (int i = 0; i < sampleCount; i++)
             {
-                if ((lagrangeMultipliers[i] > 0) && (lagrangeMultipliers[i] < C))
+                if ((alphas[i] > 0) && (alphas[i] < C))
                     nonBoundIndices.AddLast(i);
             }
             return nonBoundIndices;

@@ -44,7 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DistanceMetrics.cs" />
+    <Compile Include="GaussianKernel.cs" />
+    <Compile Include="IKernel.cs" />
     <Compile Include="KNearestNeighbor.cs" />
+    <Compile Include="LinearKernel.cs" />
     <Compile Include="MachineLearningUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -2944,7 +2947,13 @@
     <Content Include="TestData\Digits\TrainingDigits\9_97.txt" />
     <Content Include="TestData\Digits\TrainingDigits\9_98.txt" />
     <Content Include="TestData\Digits\TrainingDigits\9_99.txt" />
-    <Content Include="TestData\testSet.txt">
+    <Content Include="TestData\svmTestSet.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\testSetRBF.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\testSetRBF2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
