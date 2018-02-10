@@ -71,6 +71,10 @@ namespace MachineLearning
         /// </summary>
         private Matrix kernelValues;
 
+        private Matrix supportVectors;
+        private Vector supportVectorLabels;
+        private Vector supportVectorAlphas;
+
         /// <summary>
         /// Initializes an instance of linear SupportVectorMachine.
         /// </summary>
@@ -196,7 +200,8 @@ namespace MachineLearning
                 {
                     multiplierIndex = Select2ndMultiplierRandom(i);
                     errorJ = CalculateError(multiplierIndex);
-                    return multiplierIndex;
+                    //return multiplierIndex;
+                    return alphas.Count - 1;
                 }
             }
             else
@@ -303,59 +308,75 @@ namespace MachineLearning
                 throw new ArgumentNullException("Kernel");
 
             for (int i = 0; i < dataMatrix.RowCount; i++)
-            {
-                for (int j = 0; j < dataMatrix.RowCount; j++)
-                    kernelValues[i, j] = Kernel.KernelTransform(dataMatrix.GetRow(i), dataMatrix.GetRow(j));
-            }
+                kernelValues.SetColumn(Kernel.KernelTransform(dataMatrix, dataMatrix.GetRow(i)), i);
 
             // Iteration count starts from 0.
             int iterations = 0;
 
             // The counter of how many pairs of lagrange multipliers changed in an iteration.
-            int multiplierPairsChanged = 0;
+            int alphaPairsChanged = 0;
 
             // The boolean flag that indicate whether last iteration traversed the entire traning set or not.
             bool entireSet = true;
 
             // Iterate until converge or reach maxIterations.
-            while (((iterations < maxIterations) && (multiplierPairsChanged > 0)) || 
+            while (((iterations < maxIterations) && (alphaPairsChanged > 0)) || 
                    (entireSet))
             {
                 // No lagrange multiplier changed at the beginning of this iteration.
-                multiplierPairsChanged = 0;
+                alphaPairsChanged = 0;
 
                 //
                 if (entireSet)
                 {
                     for (int i = 0; i < sampleCount; i++)
-                        multiplierPairsChanged += InnerLoop(i);
+                        alphaPairsChanged += InnerLoop(i);
                     iterations++;
                 }
                 else
                 {
                     LinkedList<int> nonBoundIndices = GetNonBoundIndices();
                     foreach (int i in nonBoundIndices)
-                        multiplierPairsChanged += InnerLoop(i);
+                        alphaPairsChanged += InnerLoop(i);
                     iterations++;
                 }
 
                 if (entireSet)
                     entireSet = false;
-                else if (multiplierPairsChanged == 0)
+                else if (alphaPairsChanged == 0)
                     entireSet = true;
             }
 
             // Calculate weights of this SVM.
-            CalculateWeights();
+            CalculateSupportVectors();
         }
 
         /// <summary>
         /// Calculates weights of this SVM using formula in the paper.
         /// </summary>
-        private void CalculateWeights()
+        private void CalculateSupportVectors()
         {
             for (int i = 0; i < sampleCount; i++)
                 weights += alphas[i] * labels[i] * dataMatrix.GetRow(i);
+
+            LinkedList<int> nonZeroIndices = new LinkedList<int>();
+            for (int i = 0; i < alphas.Count; i++)
+            {
+                if (alphas[i] > 0)
+                    nonZeroIndices.AddLast(i);
+            }
+
+            supportVectors = new Matrix(nonZeroIndices.Count, dataMatrix.ColumnCount);
+            supportVectorLabels = new Vector(nonZeroIndices.Count);
+            supportVectorAlphas = new Vector(nonZeroIndices.Count);
+            int rowCount = 0;
+            foreach (int i in nonZeroIndices)
+            {
+                supportVectorLabels[rowCount] = labels[i];
+                supportVectors.SetRow(dataMatrix.GetRow(i), rowCount);
+                supportVectorAlphas[rowCount] = alphas[i];
+                rowCount++;
+            }
         }
 
         /// <summary>
@@ -370,7 +391,9 @@ namespace MachineLearning
             if (sample.Count != dataMatrix.ColumnCount)
                 throw new ArgumentException("The sample must have the same data format as the training set.");
 
-            double hypothesis = sample * weights + bias;
+            Vector kernelValues = Kernel.KernelTransform(supportVectors, sample);
+            double hypothesis = kernelValues * Vector.ElementWiseMultiplication(supportVectorLabels, supportVectorAlphas) + bias;
+
             return hypothesis;
         }
 

@@ -46,6 +46,7 @@
     <Compile Include="DistanceMetrics.cs" />
     <Compile Include="GaussianKernel.cs" />
     <Compile Include="IKernel.cs" />
+    <Compile Include="KMeans.cs" />
     <Compile Include="KNearestNeighbor.cs" />
     <Compile Include="LinearKernel.cs" />
     <Compile Include="MachineLearningUtil.cs" />

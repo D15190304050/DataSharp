@@ -11,9 +11,9 @@ namespace MachineLearning
     {
         public LinearKernel() { }
 
-        public double KernelTransform(Vector v1, Vector v2)
+        public Vector KernelTransform(Matrix m, Vector v)
         {
-            return v1 * v2;
+            return m * v;
         }
     }
 }

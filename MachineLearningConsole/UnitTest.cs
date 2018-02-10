@@ -91,20 +91,6 @@ namespace MachineLearning
             // Test for linear kernel.
             string dataPath = @"TestData\svmTestSet.txt";
             LinearKernel linearKernel = new LinearKernel();
-            SvmTest(dataPath, linearKernel);
-
-            // Test for Gaussian kernel.
-            dataPath = @"TestData\testSetRBF.txt";
-            GaussianKernel gaussianKernel = new GaussianKernel(1.3);
-        }
-
-        /// <summary>
-        /// A helper function for unit testing SVM.
-        /// </summary>
-        /// <param name="dataPath">The text file that contains the data set.</param>
-        /// <param name="kernel">The given kernel function.</param>
-        public static void SvmTest(string dataPath, IKernel kernel)
-        {
             string[] lines = File.ReadAllLines(dataPath);
             int sampleCount = lines.Length;
             Matrix dataMatrix = new Matrix(sampleCount, 2);
@@ -119,18 +105,36 @@ namespace MachineLearning
             }
 
             SupportVectorMachine svm = new SupportVectorMachine(dataMatrix, labels, 0.6, 0.001);
-            svm.Kernel = kernel;
+            svm.Kernel = linearKernel;
             svm.Train(40);
-            Console.WriteLine(dataMatrix.GetRow(1));
-            Console.WriteLine(dataMatrix.GetRow(2));
-            Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(1)) + " " + labels[1]);
+            int sample1Index = 1;
+            Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(sample1Index)) + " " + labels[sample1Index]);
             Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(2)) + " " + labels[2]);
         }
 
         public static void SvmRbfTest()
         {
             string trainingDataPath = @"TestData\testSetRBF.txt";
+            string[] lines = File.ReadAllLines(trainingDataPath);
+            int sampleCount = lines.Length;
+            Matrix dataMatrix = new Matrix(sampleCount, 2);
+            Vector labels = new Vector(sampleCount);
 
+            for (int i = 0; i < sampleCount; i++)
+            {
+                string[] line = lines[i].Split('\t');
+                dataMatrix[i, 0] = double.Parse(line[0]);
+                dataMatrix[i, 1] = double.Parse(line[1]);
+                labels[i] = double.Parse(line[2]);
+            }
+
+            SupportVectorMachine svm = new SupportVectorMachine(dataMatrix, labels, 200, 0.0001);
+            GaussianKernel gaussianKernel = new GaussianKernel(1.3);
+            svm.Kernel = gaussianKernel;
+            svm.Train(1000);
+            int sample1Index = 3;
+            Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(sample1Index)) + " " + labels[sample1Index]);
+            Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(2)) + " " + labels[2]);
         }
     }
 }

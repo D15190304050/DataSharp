@@ -16,10 +16,15 @@ namespace MachineLearning
             this.Sigma = sigma;
         }
 
-        public double KernelTransform(Vector v1, Vector v2)
+        public Vector KernelTransform(Matrix m, Vector v)
         {
-            Vector deltaRow = v1 - v2;
-            return Math.Exp(-1 * (deltaRow * deltaRow) / (/*2 * */Sigma * Sigma));
+            Vector result = new Vector(m.RowCount);
+            for (int i = 0; i < m.RowCount; i++)
+            {
+                Vector deltaRow = m.GetRow(i) - v;
+                result[i] = Math.Exp(-1 * (deltaRow * deltaRow) / (Sigma * Sigma));
+            }
+            return result;
         }
     }
 }

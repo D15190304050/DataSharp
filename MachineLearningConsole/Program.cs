@@ -14,7 +14,8 @@ namespace MachineLearning
             //UnitTest.MachineLearningUtilTest();
             //ClassifyPerson();
 
-            UnitTest.SvmTest();
+            //UnitTest.SvmTest();
+            UnitTest.SvmRbfTest();
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");
