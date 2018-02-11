@@ -1402,6 +1402,45 @@ namespace Mathematics
             return columns;
         }
 
+        public Vector Sum(int axis = 1)
+        {
+            if (axis == 0)
+            {
+                Vector result = new Vector(this.ColumnCount);
+                foreach (Vector rowVector in matrix)
+                    result += rowVector;
+                return result;
+            }
+            else if (axis == 1)
+            {
+                Vector result = new Vector(this.RowCount);
+                Vector[] columnVectors = this.ToColumnVectors();
+                foreach (Vector columnVector in columnVectors)
+                    result += columnVector;
+                return result;
+            }
+            else
+                throw new ArgumentException("axis can be only 0 or 1.");
+        }
+
+        /// <summary>
+        /// Returns a Vector that contains the mean value of this matrix on given axis.
+        /// </summary>
+        /// <param name="axis">The direction.</param>
+        /// <returns>A Vector that contains the mean value of this matrix on given axis.</returns>
+        /// <remarks>
+        /// axis = 0 => returns a 
+        /// </remarks>
+        public Vector Mean(int axis = 1)
+        {
+            if (axis == 0)
+                return Sum(0) / this.RowCount;
+            else if (axis == 1)
+                return Sum(1) / this.ColumnCount;
+            else
+                throw new ArgumentException("axis can be only 0 or 1.");
+        }
+
         /// <summary>
         /// Returns a Matrix whose i-th component equals matrix[i, j] + scalar, where matrix and scalar are input arguments.
         /// </summary>

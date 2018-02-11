@@ -229,6 +229,10 @@ namespace Mathematics
             Vector v5 = new Vector(1, 1, 1, 1);
             Console.WriteLine($"v5 = {v5}");
             Console.WriteLine($"v5 * m9 =\n{v5 * m8}");
+
+            Console.WriteLine($"m9 =\n{m9}");
+            Console.WriteLine($"Mean of m9 on axis = 0:\n {m9.Mean(0)}");
+            Console.WriteLine($"Mean of m9 on axis = 1:\n {m9.Mean(1)}");
         }
 
         private static void PrintArray(double[] array)

@@ -63,5 +63,16 @@ namespace Mathematics
             }
             return array[indexOfMin];
         }
+
+        public static double Mean(double[] array)
+        {
+            if (array == null)
+                throw new ArgumentNullException("array");
+
+            double sum = 0;
+            foreach (double x in array)
+                sum += x;
+            return sum / array.Length;
+        }
     }
 }
