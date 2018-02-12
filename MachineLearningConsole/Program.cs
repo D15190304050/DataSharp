@@ -17,13 +17,8 @@ namespace MachineLearning
             //UnitTest.SvmTest();
             //UnitTest.SvmRbfTest();
 
-            string dataPath = @"TestData\clusterTestSet.txt";
-            Vector[] dataMatrix = MachineLearningUtil.FileToMatrix(dataPath);
-            KMeans kmeans = new KMeans(dataMatrix, 4, DistanceMetrics.EuclideanDistance);
-            kmeans.Cluster();
-            Vector[] centroids = kmeans.GetCentroids();
-            foreach (Vector centroid in centroids)
-                Console.WriteLine(centroid);
+            //UnitTest.KmeansTest();
+            //UnitTest.KmeansppTest();
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");

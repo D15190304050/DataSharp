@@ -112,6 +112,9 @@ namespace MachineLearning
             Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(2)) + " " + labels[2]);
         }
 
+        /// <summary>
+        /// Unit test method for the SupportVectorMachine with RBF kernel.
+        /// </summary>
         public static void SvmRbfTest()
         {
             string trainingDataPath = @"TestData\testSetRBF.txt";
@@ -135,6 +138,34 @@ namespace MachineLearning
             int sample1Index = 3;
             Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(sample1Index)) + " " + labels[sample1Index]);
             Console.WriteLine(svm.GetHypothesis(dataMatrix.GetRow(2)) + " " + labels[2]);
+        }
+
+        /// <summary>
+        /// Unit test method for the KMeans class.
+        /// </summary>
+        public static void KmeansTest()
+        {
+            string dataPath = @"TestData\clusterTestSet.txt";
+            Vector[] dataMatrix = MachineLearningUtil.FileToMatrix(dataPath);
+            KMeans kmeans = new KMeans(dataMatrix, 4, DistanceMetrics.EuclideanDistance);
+            kmeans.Cluster();
+            Vector[] centroids = kmeans.GetCentroids();
+            foreach (Vector centroid in centroids)
+                Console.WriteLine(centroid);
+        }
+
+        /// <summary>
+        /// Unit test method for the KMeansPlusPlus class.
+        /// </summary>
+        public static void KmeansppTest()
+        {
+            string dataPath = @"TestData\clusterTestSet.txt";
+            Vector[] dataMatrix = MachineLearningUtil.FileToMatrix(dataPath);
+            KMeansPlusPlus kmeans = new KMeansPlusPlus(dataMatrix, 4, DistanceMetrics.EuclideanDistance);
+            kmeans.Cluster();
+            Vector[] centroids = kmeans.GetCentroids();
+            foreach (Vector centroid in centroids)
+                Console.WriteLine(centroid);
         }
     }
 }

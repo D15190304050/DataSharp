@@ -18,7 +18,7 @@ namespace MachineLearning
         /// <remarks>
         /// Each Vector represents one sample. All Vectors has the same number of components.
         /// </remarks>
-        private Vector[] dataMatrix;
+        protected Vector[] dataMatrix;
 
         /// <summary>
         /// The array that contains the cluster index of each sample.
@@ -68,7 +68,7 @@ namespace MachineLearning
         /// Generates K random centroids for clustering.
         /// </summary>
         /// <returns>K random centroids.</returns>
-        private Vector[] GenerateRandomCentroids()
+        protected virtual Vector[] GenerateRandomCentroids()
         {
             Vector[] randomCentroids = new Vector[this.K];
 

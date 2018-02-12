@@ -36,13 +36,13 @@ namespace Mathematics
         /// <summary>
         /// Initializes a Vector with specified number of components.
         /// </summary>
-        /// <param name="length">The number of components in this Vector.</param>
-        public Vector(int length)
+        /// <param name="count">The number of components in this Vector.</param>
+        public Vector(int count)
         {
-            if (length <= 0)
+            if (count <= 0)
                 throw new ArgumentException("The length of a Vector must be a positive integer.");
 
-            vector = new double[length];
+            vector = new double[count];
         }
 
         /// <summary>
