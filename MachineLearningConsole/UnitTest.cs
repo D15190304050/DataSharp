@@ -161,9 +161,23 @@ namespace MachineLearning
         {
             string dataPath = @"TestData\clusterTestSet.txt";
             Vector[] dataMatrix = MachineLearningUtil.FileToMatrix(dataPath);
-            KMeansPlusPlus kmeans = new KMeansPlusPlus(dataMatrix, 4, DistanceMetrics.EuclideanDistance);
-            kmeans.Cluster();
-            Vector[] centroids = kmeans.GetCentroids();
+            KMeansPlusPlus kmeanspp = new KMeansPlusPlus(dataMatrix, 4, DistanceMetrics.EuclideanDistance);
+            kmeanspp.Cluster();
+            Vector[] centroids = kmeanspp.GetCentroids();
+            foreach (Vector centroid in centroids)
+                Console.WriteLine(centroid);
+        }
+
+        /// <summary>
+        /// Unit test method for the FuzzyCMeans class.
+        /// </summary>
+        public static void FcmTest()
+        {
+            string dataPath = @"TestData\clusterTestSet.txt";
+            Vector[] dataMatrix = MachineLearningUtil.FileToMatrix(dataPath);
+            FuzzyCMeans fcm = new FuzzyCMeans(dataMatrix, 4, 2, DistanceMetrics.EuclideanDistance);
+            fcm.Cluster();
+            Vector[] centroids = fcm.GetCentroids();
             foreach (Vector centroid in centroids)
                 Console.WriteLine(centroid);
         }

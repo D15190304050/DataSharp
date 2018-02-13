@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DistanceMetrics.cs" />
+    <Compile Include="FuzzyCMeans.cs" />
     <Compile Include="GaussianKernel.cs" />
     <Compile Include="IKernel.cs" />
     <Compile Include="KMeans.cs" />

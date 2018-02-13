@@ -12,10 +12,26 @@ namespace MachineLearning
     /// </summary>
     public class KMeansPlusPlus : KMeans
     {
-        public KMeansPlusPlus(Vector[] dataMatrix, int k, Func<Vector, Vector, double> distanceMetrix = null)
-            : base(dataMatrix, k, distanceMetrix)
+        /// <summary>
+        /// Initializes a new instance of the KMeansPlusPlus class.
+        /// </summary>
+        /// <param name="dataMatrix">The Vector array that stores all the samples.</param>
+        /// <param name="k">Number of clusters.</param>
+        /// <param name="distanceMetric">The distance metric of 2 samples.</param>
+        /// <remarks>
+        /// This constructor will make a shallow copy of dataMatrix, instead of a deep copy.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">If <param name="dataMatrix" /> is null.</exception>
+        /// <exception cref="ArgumentException">If <param name="dataMatrix" /> doesn't have the shape as a matrix.</exception>
+        /// <exception cref="ArgumentException">If <param name="k" /> less than 0.</exception>
+        public KMeansPlusPlus(Vector[] dataMatrix, int k, Func<Vector, Vector, double> distanceMetric = null)
+            : base(dataMatrix, k, distanceMetric)
         { }
 
+        /// <summary>
+        /// Generate random initial centroids using roulette selection.
+        /// </summary>
+        /// <returns>Random initial centroids selected by roulette selection.</returns>
         protected override Vector[] GenerateRandomCentroids()
         {
             Vector[] randomCentroids = new Vector[base.K];

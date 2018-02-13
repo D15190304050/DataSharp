@@ -118,6 +118,15 @@ namespace Mathematics
         }
 
         /// <summary>
+        /// Clear every entry of this Vector.
+        /// </summary>
+        public void Clear()
+        {
+            for (int i = 0; i < this.Count; i++)
+                vector[i] = 0;
+        }
+
+        /// <summary>
         /// Returns the sub-vector of this Vector with specified range [<paramref name="startIndex" />, <paramref name="endIndex" />].
         /// </summary>
         /// <param name="startIndex">The start index (inclusive).</param>

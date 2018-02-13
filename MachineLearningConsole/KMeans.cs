@@ -49,6 +49,9 @@ namespace MachineLearning
         /// <remarks>
         /// This constructor will make a shallow copy of dataMatrix, instead of a deep copy.
         /// </remarks>
+        /// <exception cref="ArgumentNullException">If <param name="dataMatrix" /> is null.</exception>
+        /// <exception cref="ArgumentException">If <param name="dataMatrix" /> doesn't have the shape as a matrix.</exception>
+        /// <exception cref="ArgumentException">If <param name="k" /> less than 0.</exception>
         public KMeans(Vector[] dataMatrix, int k, Func<Vector, Vector, double> distanceMetric = null)
         {
             // Check given dataMatrix.
@@ -56,6 +59,10 @@ namespace MachineLearning
                 throw new ArgumentNullException("dataMatrix");
             if (!Matrix.IsMatrix(dataMatrix))
                 throw new ArgumentException("The input array of Vector doesn't have the shape as a matrix.");
+
+            // Check the number of clusters.
+            if (k <= 0)
+                throw new ArgumentException("Number of clusters must be a positive integer.", "k");
 
             // Initialize internal data structures.
             this.dataMatrix = dataMatrix;
@@ -83,8 +90,14 @@ namespace MachineLearning
         /// <summary>
         /// Find clusters and centroids using k-means algorithm.
         /// </summary>
+        /// <exception cref="ArgumentNullException">If <param name="DistanceMetric" /> is null.</exception>
         public void Cluster()
         {
+            // Check if there is a distance metric.
+            if (this.DistanceMetric == null)
+                throw new ArgumentNullException("DistanceMetric");
+
+            // Get the number of samples.
             int numSamples = dataMatrix.Length;
 
             // A double array stores the cluster infomation of each sample.
