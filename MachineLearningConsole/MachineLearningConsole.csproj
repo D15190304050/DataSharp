@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArtificialBeeColony.cs" />
     <Compile Include="DistanceMetrics.cs" />
     <Compile Include="FuzzyCMeans.cs" />
     <Compile Include="GaussianKernel.cs" />
