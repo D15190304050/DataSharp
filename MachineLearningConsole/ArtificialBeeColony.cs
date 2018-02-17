@@ -30,17 +30,17 @@ namespace MachineLearning
         /// <summary>
         /// lowerBound[i] = lower bound of i-th entry of the solution vector.
         /// </summary>
-        private double[] lowerBound;
+        private double[] lowerBounds;
 
         /// <summary>
         /// upperBound[i] = lower bound of i-th entry of the solution vector.
         /// </summary>
-        private double[] upperBound;
+        private double[] upperBounds;
 
         /// <summary>
         /// 
         /// </summary>
-        private double result;
+        //private double result;
 
         /// <summary>
         /// The Bee class represents a bee in the ABC algorithm.
@@ -83,10 +83,18 @@ namespace MachineLearning
         }
 
         /// <summary>
-        /// 
+        /// Nectar sources.
         /// </summary>
         private Bee[] nectarSource;
+
+        /// <summary>
+        /// Employed bees.
+        /// </summary>
         private Bee[] employed;
+
+        /// <summary>
+        /// On-lookers.
+        /// </summary>
         private Bee[] onLookers;
 
         /// <summary>
@@ -94,9 +102,19 @@ namespace MachineLearning
         /// </summary>
         private Bee bestSolution;
 
+        /// <summary>
+        /// Number of dimensions of the solution vector.
+        /// </summary>
         private int dimensions;
+
+        /// <summary>
+        /// Maximum number of iterations.
+        /// </summary>
         private int maxIterations;
 
+        /// <summary>
+        /// Objective function.
+        /// </summary>
         public Func<Vector, double> ObjectiveFunction { get; set; }
 
         /// <summary>
@@ -110,7 +128,44 @@ namespace MachineLearning
         /// <param name="upperBounds"></param>
         public ArtificialBeeColony(int populationScale = 10, int limit = 10, int maxIterations = 40, int dimensions = 0, double[] lowerBounds = null, double[] upperBounds = null)
         {
+            this.populationScale = populationScale;
+            this.numFoodSource = populationScale / 2;
+            this.limit = limit;
+            this.maxIterations = maxIterations;
+            this.dimensions = dimensions;
+            this.lowerBounds = lowerBounds;
+            this.upperBounds = upperBounds;
 
+            nectarSource = new Bee[numFoodSource];
+            for (int i = 0; i < numFoodSource; i++)
+                nectarSource[i] = new Bee(dimensions);
+            employed = new Bee[numFoodSource];
+            for (int i = 0; i < numFoodSource; i++)
+                employed[i] = new Bee(dimensions);
+            onLookers = new Bee[numFoodSource];
+            for (int i = 0; i < numFoodSource; i++)
+                onLookers[i] = new Bee(dimensions);
+
+            bestSolution = new Bee(dimensions);
+        }
+
+        public double Solve(out Vector solution)
+        {
+            solution = null;
+            if (!CanRun())
+                return double.PositiveInfinity;
+
+            Initialize();
+            for (int i = 0; i < maxIterations; i++)
+            {
+                SendEmployedBees();
+                UpdateFitnessRatio();
+                SendOnLooerBees();
+                MemorizeBestSolution();
+            }
+
+            solution = bestSolution.Solution;
+            return bestSolution.Value;
         }
 
         /// <summary>
@@ -142,7 +197,7 @@ namespace MachineLearning
             {
                 for (int j = 0; j < dimensions; j++)
                 {
-                    double r = StdRandom.Uniform(lowerBound[j], upperBound[j]);
+                    double r = StdRandom.Uniform(lowerBounds[j], upperBounds[j]);
                     nectarSource[i].Solution[j] = r;
                     employed[i].Solution[j] = r;
                     onLookers[i].Solution[j] = r;
@@ -168,7 +223,7 @@ namespace MachineLearning
             }
 
             // Initialize best solution.
-            for (int j = 0; j < numFoodSource; j++)
+            for (int j = 0; j < dimensions; j++)
                 bestSolution.Solution[j] = nectarSource[0].Solution[j];
             bestSolution.Value = nectarSource[0].Value;
             bestSolution.Fitness = nectarSource[0].Fitness;
@@ -217,7 +272,7 @@ namespace MachineLearning
                 employed[i].Solution[param2Change] = nectarSource[i].Solution[param2Change] + r * (nectarSource[i].Solution[param2Change] - nectarSource[k].Solution[param2Change]);
 
                 // Clip to bounds.
-                employed[i].Solution[param2Change] = Clip(employed[i].Solution[param2Change], lowerBound[param2Change], upperBound[param2Change]);
+                employed[i].Solution[param2Change] = Clip(employed[i].Solution[param2Change], lowerBounds[param2Change], upperBounds[param2Change]);
 
                 // Calculate value and fitness for the new solution.
                 employed[i].Value = ObjectiveFunction(employed[i].Solution);
@@ -294,7 +349,7 @@ namespace MachineLearning
                     onLookers[i].Solution[param2Change] = nectarSource[i].Solution[param2Change] + r * (nectarSource[i].Solution[param2Change] - nectarSource[k].Solution[param2Change]);
 
                     // Clip.
-                    onLookers[i].Solution[param2Change] = Clip(onLookers[i].Solution[param2Change], lowerBound[param2Change], upperBound[param2Change]);
+                    onLookers[i].Solution[param2Change] = Clip(onLookers[i].Solution[param2Change], lowerBounds[param2Change], upperBounds[param2Change]);
 
                     // Choose a better solution greedily.
                     if (onLookers[i].Value < nectarSource[i].Value)
@@ -329,6 +384,9 @@ namespace MachineLearning
             return value;
         }
 
+        /// <summary>
+        /// Send a scout to find a new candidate solution.
+        /// </summary>
         private void SendScoutBees()
         {
             // Get the index of the solution vector with max trail count.
@@ -345,7 +403,7 @@ namespace MachineLearning
                 for (int j = 0; j < dimensions; j++)
                 {
                     double r = StdRandom.Uniform(0.0, 1.0);
-                    nectarSource[indexOfMaxTrail].Solution[j] = lowerBound[j] + r * (upperBound[j] - lowerBound[j]);
+                    nectarSource[indexOfMaxTrail].Solution[j] = lowerBounds[j] + r * (upperBounds[j] - lowerBounds[j]);
                 }
                 nectarSource[indexOfMaxTrail].Value = ObjectiveFunction(nectarSource[indexOfMaxTrail].Solution);
                 nectarSource[indexOfMaxTrail].Fitness = CalculateFitness(nectarSource[indexOfMaxTrail].Value);

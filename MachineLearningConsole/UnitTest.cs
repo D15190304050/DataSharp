@@ -181,5 +181,45 @@ namespace MachineLearning
             foreach (Vector centroid in centroids)
                 Console.WriteLine(centroid);
         }
+
+        /// <summary>
+        /// Unit test method for the ArtificialBeeColony class.
+        /// </summary>
+        public static void AbcTest()
+        {
+            double[] lowerBounds = { -100, -100 };
+            double[] upperBounds = { 100, 100 };
+            ArtificialBeeColony abc = new ArtificialBeeColony(40, 20, 1000, 2, lowerBounds, upperBounds);
+            abc.ObjectiveFunction = AbcTestObjective;
+
+            try
+            {
+                double value = abc.Solve(out Vector solution);
+                Console.WriteLine(value);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+        }
+
+        /// <summary>
+        /// Objective function for the AbcTest() method().
+        /// </summary>
+        /// <returns></returns>
+        private static double AbcTestObjective(Vector v)
+        {
+            if (v == null)
+                throw new ArgumentNullException("v");
+            if (v.Count != 2)
+                throw new ArgumentException("Number of components in the given vector must be 2.");
+
+            double x = v[0] * v[0] + v[1] * v[1];
+            double sin = Math.Sin(Math.Sqrt(x));
+            double numerator = sin * sin - 0.5;
+            double temp = 1 + 0.001 * x;
+            double denomenator = temp * temp;
+            return 0.5 + numerator / denomenator;
+        }
     }
 }

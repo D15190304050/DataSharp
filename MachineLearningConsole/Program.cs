@@ -19,7 +19,8 @@ namespace MachineLearning
 
             //UnitTest.KmeansTest();
             //UnitTest.KmeansppTest();
-            UnitTest.FcmTest();
+            //UnitTest.FcmTest();
+            UnitTest.AbcTest();
 
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to continue...");
