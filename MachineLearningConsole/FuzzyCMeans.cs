@@ -184,16 +184,16 @@ namespace MachineLearning
                         double denominator = 0;
                         for (int k = 0; k < this.K; k++)
                         {
+                            if (distanceMatrix[k, j] < 1e-12)
+                                distanceMatrix[k, j] = 1e-12;
                             double quotientOfDistance = distanceMatrix[i, j] / distanceMatrix[k, j];
                             denominator += Math.Pow(quotientOfDistance, 2 / (this.ProbabilityIndex - 1));
                         }
 
                         double updatedMemberOfIJ = 1 / denominator;
                         if (Math.Abs(memberOf[i, j] - updatedMemberOfIJ) > epsilon)
-                        {
                             clusterChanged = true;
-                            memberOf[i, j] = updatedMemberOfIJ;
-                        }
+                        memberOf[i, j] = updatedMemberOfIJ;
                     }
                 }
 
