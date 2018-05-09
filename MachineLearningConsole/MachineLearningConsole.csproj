@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArtificialBeeColony.cs" />
+    <Compile Include="CheckPointConfiguration.cs" />
     <Compile Include="DistanceMetrics.cs" />
     <Compile Include="FuzzyCMeans.cs" />
     <Compile Include="GaussianKernel.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="MachineLearningUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SupervisedModel.cs" />
     <Compile Include="SupportVectorMachine.cs" />
     <Compile Include="UnitTest.cs" />
   </ItemGroup>
@@ -2963,6 +2965,9 @@
     <Content Include="TestData\testSetRBF2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Optimizers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
