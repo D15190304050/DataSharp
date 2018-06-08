@@ -36,6 +36,9 @@ namespace Plotting
                 case "Scatter":
                     ScatterTest();
                     break;
+                case "PlotDemo":
+                    PlotTest();
+                    break;
                 default: break;
             }
         }
@@ -49,6 +52,22 @@ namespace Plotting
             double[] y = { 5, 4, 3, 2, 1 };
             scatter.Show();
             scatter.Plot(x, y);
+        }
+
+        private void PlotTest()
+        {
+            PlotDemo plot = new PlotDemo();
+            double[] x = new double[700];
+            double[] y = new double[700];
+
+            for (int i = 0; i < 700; i++)
+            {
+                x[i] = i * 0.01;
+                y[i] = Math.Sin(x[i]);
+            }
+
+            plot.Show();
+            plot.Plot(x, y);
         }
     }
 }
