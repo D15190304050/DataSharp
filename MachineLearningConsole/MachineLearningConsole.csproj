@@ -45,9 +45,11 @@
   <ItemGroup>
     <Compile Include="ArtificialBeeColony.cs" />
     <Compile Include="CheckPointConfiguration.cs" />
+    <Compile Include="Dbscan.cs" />
     <Compile Include="DistanceMetrics.cs" />
     <Compile Include="FuzzyCMeans.cs" />
     <Compile Include="GaussianKernel.cs" />
+    <Compile Include="IClustering.cs" />
     <Compile Include="IKernel.cs" />
     <Compile Include="KMeans.cs" />
     <Compile Include="KMeansPlusPlus.cs" />

@@ -23,7 +23,7 @@ namespace MachineLearning
         /// <summary>
         /// The array that contains the cluster index of each sample.
         /// </summary>
-        private int[] centroidIndices;
+        private readonly int[] centroidIndices;
 
         /// <summary>
         /// Cluster centroids of given samples.

@@ -20,7 +20,7 @@ namespace MachineLearning
         /// <summary>
         /// The array that contains the cluster index of each sample.
         /// </summary>
-        private int[] centroidIndices;
+        private readonly int[] centroidIndices;
 
         /// <summary>
         /// Cluster centroids of given samples.
@@ -38,15 +38,16 @@ namespace MachineLearning
         public int K { get; set; }
 
         /// <summary>
-        /// The index of the probability of belonging to some cluster.
+        /// The degree of the probability of belonging to some cluster.
         /// </summary>
-        public double ProbabilityIndex { get; set; }
+        public double ProbabilityDegree { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the FuzzyCMeans class with given parameters.
         /// </summary>
         /// <param name="dataMatrix">The Vector array that stores all the samples.</param>
         /// <param name="k">Number of clusters.</param>
+        /// <param name="probabilityDegree">The degree of the probability of belonging to some cluster.</param>
         /// <param name="distanceMetric">The distance metric of 2 samples.</param>
         /// <remarks>
         /// This constructor will make a shallow copy of dataMatrix, instead of a deep copy.
@@ -54,27 +55,27 @@ namespace MachineLearning
         /// <exception cref="ArgumentNullException">If <param name="dataMatrix" /> is null.</exception>
         /// <exception cref="ArgumentException">If <param name="dataMatrix" /> doesn't have the shape as a matrix.</exception>
         /// <exception cref="ArgumentException">If <param name="k" /> less than 0.</exception>
-        /// <exception cref="ArgumentException">If <param name="probabilityIndex" /> less than 1.</exception>
-        public FuzzyCMeans(Vector[] dataMatrix, int k, double probabilityIndex, Func<Vector, Vector, double> distanceMetric = null)
+        /// <exception cref="ArgumentException">If <param name="probabilityDegree" /> less than 1.</exception>
+        public FuzzyCMeans(Vector[] dataMatrix, int k, double probabilityDegree, Func<Vector, Vector, double> distanceMetric = null)
         {
             // Check given dataMatrix.
             if (dataMatrix == null)
-                throw new ArgumentNullException("dataMatrix");
+                throw new ArgumentNullException(nameof(dataMatrix));
             if (!Matrix.IsMatrix(dataMatrix))
                 throw new ArgumentException("The input array of Vector doesn't have the shape as a matrix.");
 
             // Check the number of clusters.
             if (k <= 0)
-                throw new ArgumentException("Number of clusters must be a positive integer.", "k");
+                throw new ArgumentException("Number of clusters must be a positive integer.", nameof(k));
 
             // Check probability index.
-            if (probabilityIndex <= 1)
-                throw new ArgumentException("Value of probabilityIndex must be greater than 1.", "probabilityIndex");
+            if (probabilityDegree <= 1)
+                throw new ArgumentException("Value of probabilityIndex must be greater than 1.", nameof(probabilityDegree));
 
             // Initialize internal data structures.
             this.dataMatrix = dataMatrix;
             this.K = k;
-            this.ProbabilityIndex = probabilityIndex;
+            this.ProbabilityDegree = probabilityDegree;
             this.DistanceMetric = distanceMetric;
             centroidIndices = new int[dataMatrix.Length];
         }
@@ -187,7 +188,7 @@ namespace MachineLearning
                             if (distanceMatrix[k, j] < 1e-12)
                                 distanceMatrix[k, j] = 1e-12;
                             double quotientOfDistance = distanceMatrix[i, j] / distanceMatrix[k, j];
-                            denominator += Math.Pow(quotientOfDistance, 2 / (this.ProbabilityIndex - 1));
+                            denominator += Math.Pow(quotientOfDistance, 2 / (this.ProbabilityDegree - 1));
                         }
 
                         double updatedMemberOfIJ = 1 / denominator;
@@ -204,7 +205,7 @@ namespace MachineLearning
                     double denominator = 0;
                     for (int j = 0; j < numSamples; j++)
                     {
-                        double memberOfFactor = Math.Pow(memberOf[i, j], this.ProbabilityIndex);
+                        double memberOfFactor = Math.Pow(memberOf[i, j], this.ProbabilityDegree);
                         centroids[i] += memberOfFactor * dataMatrix[j];
                         denominator += memberOfFactor;
                     }
