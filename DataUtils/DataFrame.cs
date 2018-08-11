@@ -76,5 +76,15 @@ namespace DataUtils
         {
 
         }
+
+        /// <summary>
+        /// Return reshaped DataFrame organized by given row / column values. This is like the pivot function of DataFrame in Python Pandas.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <param name="values"></param>
+        public void Reshape(string row, string column, params string[] values)
+        {
+        }
     }
 }
