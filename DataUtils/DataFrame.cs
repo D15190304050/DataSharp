@@ -14,10 +14,29 @@ namespace DataUtils
         /// <summary>
         /// Initializes a new instance of DataFrame from a CSV file with given URI.
         /// </summary>
-        /// <param name="csvFilePath">The URI of the CSV file.</param>
-        public DataFrame(Uri csvFilePath)
+        /// <param name="csvPath">The path of the CSV file.</param>
+        public DataFrame ReadCsv(string csvPath)
         {
+            return null;
+        }
 
+        /// <summary>
+        /// Initializes a new instance of DataFrame from a txt file with given URI.
+        /// </summary>
+        /// <param name="txtPath">The path of the txt file.</param>
+        public DataFrame ReadTxt(string txtPath)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the first <paramref name="numLines" /> lines of data in this DataFrame.  It is useful for quickly testing if your object has the right type of data in it.
+        /// </summary>
+        /// <param name="numLines"></param>
+        /// <returns></returns>
+        public IEnumerable<string> Head(int numLines = 5)
+        {
+            return null;
         }
 
         /// <summary>
@@ -75,6 +94,36 @@ namespace DataUtils
         public void RemoveColumnInPlace(string columnName)
         {
 
+        }
+
+        /// <summary>
+        /// Renames and returns the specified columns in the keys of the given dictionary to the values in the same
+        /// dictionary, respectively.
+        /// </summary>
+        /// <param name="columns">The dictionary that contains the names to rename.</param>
+        /// <returns>A new <see cref="DataFrame" /> instance with the specified columns renamed.</returns>
+        /// <remarks>
+        /// The original names of columns are the keys of the given dictionary, the new names of columns are the values
+        /// in the same dictionary, respectively. This operation only change the name of the columns, without changing
+        /// the data of the columns.
+        /// </remarks>
+        public DataFrame Rename(Dictionary<string, string> columns)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Renames the specified columns in the keys of the given dictionary to the values in the same dictionary,
+        /// respectively, in-place.
+        /// </summary>
+        /// <param name="columns">The dictionary that contains the names to rename.</param>
+        /// <remarks>
+        /// The original names of columns are the keys of the given dictionary, the new names of columns are the values
+        /// in the same dictionary, respectively. This operation only change the name of the columns, without changing
+        /// the data of the columns.
+        /// </remarks>
+        public void RenameInPlace(Dictionary<string, string> columns)
+        {
         }
 
         /// <summary>
