@@ -71,7 +71,7 @@ namespace DataUtils
         /// <summary>
         /// Removes a specified column from this DataFrame and return the new DataFrame.
         /// </summary>
-        /// <param name="columnIndex">The name of the column to be removed.</param>
+        /// <param name="columnName">The name of the column to be removed.</param>
         /// <returns>A specified column from this DataFrame and return the new DataFrame.</returns>
         public DataFrame RemoveColumn(string columnName)
         {
@@ -81,7 +81,7 @@ namespace DataUtils
         /// <summary>
         /// Removes a specified column from this DataFrame in-place without creating a new instance of DataFrame.
         /// </summary>
-        /// <param name="rowIndex">The index of the column to be removed.</param>
+        /// <param name="columnIndex">The index of the column to be removed.</param>
         public void RemoveColumnInPlace(int columnIndex)
         {
 
@@ -90,7 +90,7 @@ namespace DataUtils
         /// <summary>
         /// Removes a specified column from this DataFrame in-place without creating a new instance of DataFrame.
         /// </summary>
-        /// <param name="rowIndex">The name of the column to be removed.</param>
+        /// <param name="columnName">The name of the column to be removed.</param>
         public void RemoveColumnInPlace(string columnName)
         {
 
