@@ -12,6 +12,29 @@ namespace DataUtils
     public class DataFrame
     {
         /// <summary>
+        /// Gets the <see cref="DataFrameRow" /> associated with the given row index.
+        /// </summary>
+        /// <param name="rowIndex">The index of the row to reterive.</param>
+        /// <returns>The <see cref="DataFrameRow" /> associated with the given row index.</returns>
+        public DataFrameRow this[int rowIndex]
+        {
+            get { return null; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="DataFrameRow" /> associated with the given row label.
+        /// </summary>
+        /// <param name="rowLabel">The label of the row to reterive.</param>
+        /// <returns>The <see cref="DataFrameRow" /> associated with the given row label.</returns>
+        public DataFrameRow this[string rowLabel]
+        {
+            get { return null; }
+
+            // Modify the data row in-place, add a new data row if the row label does not exist before.
+            set { }
+        }
+
+        /// <summary>
         /// Initializes a new instance of DataFrame from a CSV file with given URI.
         /// </summary>
         /// <param name="csvPath">The path of the CSV file.</param>
