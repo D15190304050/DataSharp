@@ -9,7 +9,10 @@ namespace DataUtils
     /// <summary>
     /// The DataFrame class represents a data table that holds structured data. Each row in the table represents a record, and each column in the table represents a kind of attribute.
     /// </summary>
-    public class DataFrame
+    /// <remarks>
+    /// This is the C# implementation of DataFrame  Python Pandas.
+    /// </remarks>
+    public class DataFrame : ICloneable
     {
         /// <summary>
         /// Gets the <see cref="DataFrameRow" /> associated with the given row index.
@@ -55,7 +58,7 @@ namespace DataUtils
         /// <summary>
         /// Returns the first <paramref name="numLines" /> lines of data in this DataFrame.  It is useful for quickly testing if your object has the right type of data in it.
         /// </summary>
-        /// <param name="numLines"></param>
+        /// <param name="numLines">The number of records to return.</param>
         /// <returns></returns>
         public IEnumerable<string> Head(int numLines = 5)
         {
@@ -63,17 +66,36 @@ namespace DataUtils
         }
 
         /// <summary>
-        /// Removes a specified row from this DataFrame and return the new DataFrame.
+        /// Returns a deep copy of this <see cref="DataFrame" />.
+        /// </summary>
+        /// <returns>A deep copy of this <see cref="DataFrame" />.</returns>
+        public DataFrame Copy()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Returns a copy of this <see cref="DataFrame" /> with the specified row removed.
         /// </summary>
         /// <param name="rowIndex">The index of the row to be removed.</param>
-        /// <returns>A specified row from this DataFrame and return the new DataFrame.</returns>
+        /// <returns>A copy of this <see cref="DataFrame" /> with the specified row removed.</returns>
         public DataFrame RemoveRow(int rowIndex)
         {
             return null;
         }
 
         /// <summary>
-        /// Removes a specified row from this DataFrame in-place without creating a new instance of DataFrame.
+        /// Returns a copy of this <see cref="DataFrame" /> with the specified row removed.
+        /// </summary>
+        /// <param name="rowName">The name of the row to be removed.</param>
+        /// <returns>A copy of this <see cref="DataFrame" /> with the specified row removed.</returns>
+        public DataFrame RemoveRow(string rowName)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Removes a specified row from this <see cref="DataFrame" /> in-place without creating a new instance of <see cref="DataFrame" />.
         /// </summary>
         /// <param name="rowIndex">The index of the row to be removed.</param>
         public void RemoveRowInPlace(int rowIndex)
@@ -82,27 +104,36 @@ namespace DataUtils
         }
 
         /// <summary>
-        /// Removes a specified column from this DataFrame and return the new DataFrame.
+        /// Removes a specified row from this <see cref="DataFrame" /> in-place without creating a new instance of <see cref="DataFrame" />.
+        /// </summary>
+        /// <param name="rowName">The name of the row to be removed.</param>
+        public void RemoveRowInPlace(string rowName)
+        {
+            
+        }
+
+        /// <summary>
+        /// Returns a copy of this <see cref="DataFrame" /> with the specified column removed.
         /// </summary>
         /// <param name="columnIndex">The index of the column to be removed.</param>
-        /// <returns>A specified column from this DataFrame and return the new DataFrame.</returns>
+        /// <returns>A copy of this <see cref="DataFrame" /> with the specified column removed.</returns>
         public DataFrame RemoveColumn(int columnIndex)
         {
             return null;
         }
 
         /// <summary>
-        /// Removes a specified column from this DataFrame and return the new DataFrame.
+        /// Returns a copy of this <see cref="DataFrame" /> with the specified column removed.
         /// </summary>
         /// <param name="columnName">The name of the column to be removed.</param>
-        /// <returns>A specified column from this DataFrame and return the new DataFrame.</returns>
+        /// <returns>A copy of this <see cref="DataFrame" /> with the specified column removed.</returns>
         public DataFrame RemoveColumn(string columnName)
         {
             return null;
         }
 
         /// <summary>
-        /// Removes a specified column from this DataFrame in-place without creating a new instance of DataFrame.
+        /// Removes a specified column from this <see cref="DataFrame" /> in-place without creating a new instance of <see cref="DataFrame" />.
         /// </summary>
         /// <param name="columnIndex">The index of the column to be removed.</param>
         public void RemoveColumnInPlace(int columnIndex)
@@ -111,7 +142,7 @@ namespace DataUtils
         }
 
         /// <summary>
-        /// Removes a specified column from this DataFrame in-place without creating a new instance of DataFrame.
+        /// Removes a specified column from this <see cref="DataFrame" /> in-place without creating a new instance of <see cref="DataFrame" />.
         /// </summary>
         /// <param name="columnName">The name of the column to be removed.</param>
         public void RemoveColumnInPlace(string columnName)
@@ -157,6 +188,20 @@ namespace DataUtils
         /// <param name="values"></param>
         public void Reshape(string row, string column, params string[] values)
         {
+        }
+
+        /// <summary>
+        /// Returns the transpose of this DataFrame.
+        /// </summary>
+        /// <returns></returns>
+        public DataFrame Transpose()
+        {
+            return null;
+        }
+
+        public object Clone()
+        {
+            return Copy();
         }
     }
 }
