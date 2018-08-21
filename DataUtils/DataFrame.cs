@@ -12,7 +12,7 @@ namespace DataUtils
     /// <remarks>
     /// This is the C# implementation of DataFrame  Python Pandas.
     /// </remarks>
-    public class DataFrame : ICloneable
+    public class DataFrame
     {
         /// <summary>
         /// Gets the <see cref="DataFrameRow" /> associated with the given row index.
@@ -27,9 +27,9 @@ namespace DataUtils
         /// <summary>
         /// Gets the <see cref="DataFrameRow" /> associated with the given row label.
         /// </summary>
-        /// <param name="rowLabel">The label of the row to reterive.</param>
+        /// <param name="rowName">The name of the row to reterive.</param>
         /// <returns>The <see cref="DataFrameRow" /> associated with the given row label.</returns>
-        public DataFrameRow this[string rowLabel]
+        public DataFrameRow this[string rowName]
         {
             get { return null; }
 
@@ -69,7 +69,7 @@ namespace DataUtils
         /// Returns a deep copy of this <see cref="DataFrame" />.
         /// </summary>
         /// <returns>A deep copy of this <see cref="DataFrame" />.</returns>
-        public DataFrame Copy()
+        public DataFrame DeepCopy()
         {
             return null;
         }
@@ -197,11 +197,6 @@ namespace DataUtils
         public DataFrame Transpose()
         {
             return null;
-        }
-
-        public object Clone()
-        {
-            return Copy();
         }
     }
 }
