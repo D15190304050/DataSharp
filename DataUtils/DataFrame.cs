@@ -11,10 +11,10 @@ namespace DataUtils
 
 
     /// <summary>
-    /// The DataFrame class represents a data table that holds structured data. Each row in the table represents a record, and each column in the table represents a kind of attribute.
+    /// The <see cref="DataFrame" />  class represents a data table that holds structured data. Each row in the table represents a record, and each column in the table represents a kind of attribute.
     /// </summary>
     /// <remarks>
-    /// This is the C# implementation of DataFrame  Python Pandas.
+    /// This is the C# implementation of DataFrame Python Pandas.
     /// </remarks>
     public class DataFrame
     {
@@ -58,7 +58,7 @@ namespace DataUtils
         }
 
         /// <summary>
-        /// Initializes a new instance of DataFrame from a CSV file with given URI.
+        /// Initializes a new instance of <see cref="DataFrame" />  from a CSV file with given URI.
         /// </summary>
         /// <param name="csvPath">The path of the CSV file.</param>
         public DataFrame ReadCsv(string csvPath)
@@ -67,7 +67,7 @@ namespace DataUtils
         }
 
         /// <summary>
-        /// Initializes a new instance of DataFrame from a txt file with given URI.
+        /// Initializes a new instance of <see cref="DataFrame" />  from a txt file with given URI.
         /// </summary>
         /// <param name="txtPath">The path of the txt file.</param>
         public DataFrame ReadTxt(string txtPath)
@@ -76,7 +76,7 @@ namespace DataUtils
         }
 
         /// <summary>
-        /// Returns the first <paramref name="numLines" /> lines of data in this DataFrame.  It is useful for quickly testing if your object has the right type of data in it.
+        /// Returns the first <paramref name="numLines" /> lines of data in this <see cref="DataFrame" /> .  It is useful for quickly testing if your object has the right type of data in it.
         /// </summary>
         /// <param name="numLines">The number of records to return.</param>
         /// <returns></returns>
@@ -237,13 +237,12 @@ namespace DataUtils
         /// Sets the <see cref="DataFrame" /> row names using one existing columns.
         /// </summary>
         /// <param name="columnName"></param>
-        [Obsolete]
         public void SetRowNames(string columnName)
         {
         }
 
         /// <summary>
-        /// Return reshaped DataFrame organized by given row / column values. This is like the pivot function of DataFrame in Python Pandas.
+        /// Return reshaped <see cref="DataFrame" />  organized by given row / column values. This is like the pivot function of <see cref="DataFrame" />  in Python Pandas.
         /// </summary>
         /// <param name="row"></param>
         /// <param name="column"></param>
@@ -253,7 +252,7 @@ namespace DataUtils
         }
 
         /// <summary>
-        /// Returns the transpose of this DataFrame.
+        /// Returns the transpose of this <see cref="DataFrame" /> .
         /// </summary>
         /// <returns></returns>
         public DataFrame Transpose()
