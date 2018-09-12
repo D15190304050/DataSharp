@@ -21,7 +21,7 @@ namespace DataUtils
         /// <summary>
         /// Gets the <see cref="DataFrameRow" /> associated with the given row index.
         /// </summary>
-        /// <param name="rowIndex">The index of the row to reterive.</param>
+        /// <param name="rowIndex">The index of the row to retrieve.</param>
         /// <returns>The <see cref="DataFrameRow" /> associated with the given row index.</returns>
         public DataFrameRow this[int rowIndex]
         {

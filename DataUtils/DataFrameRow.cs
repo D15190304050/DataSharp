@@ -14,5 +14,24 @@ namespace DataUtils
     /// </remaars>
     public class DataFrameRow
     {
+
+
+        public object this[int i]
+        {
+            get { return null; }
+            set { }
+        }
+
+        public object this[string columnName]
+        {
+            get { return null; }
+            set { }
+        }
+
+        public DataFrameRow()
+        {
+        }
+
+
     }
 }
