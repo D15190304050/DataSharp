@@ -7,7 +7,17 @@ using System.Threading.Tasks;
 namespace DataUtils
 {
     // Unsolved:
+    //     Here `unsolved` means that the APIs of this class is not determined.
+    //     All APIs in this class are all not implemented yet.
+    //     I will finish this work as soon as possible.
     // * Implement Linq interfaces such as Where().
+    // * Slicing (implemented by method rather than operator[]), row-wise.
+    // * Masking (implemented by method rather than operator[]), row-wise.
+    // * Fancy indexing?
+    // * Add column.
+    // * Add row.
+    // * Constructor accepting a list of dictionary with same keys.
+    // * Maintain column label and row label when performing mathematical operations between 2 DataFrames.
 
 
     /// <summary>
@@ -31,7 +41,7 @@ namespace DataUtils
         /// <summary>
         /// Gets the <see cref="DataFrameRow" /> associated with the given row label.
         /// </summary>
-        /// <param name="rowName">The name of the row to reterive.</param>
+        /// <param name="rowName">The name of the row to retrieve.</param>
         /// <returns>The <see cref="DataFrameRow" /> associated with the given row label.</returns>
         public DataFrameRow this[string rowName]
         {
@@ -239,6 +249,26 @@ namespace DataUtils
         /// <param name="columnName"></param>
         public void SetRowNames(string columnName)
         {
+        }
+
+        /// <summary>
+        /// Returns the selected column in this <see cref="DataFrame" /> with given column index as a <see cref="Dictionary{TKey, TValue}" />.
+        /// </summary>
+        /// <param name="columnIndex">The index of the column to return.</param>
+        /// <returns>The selected column in this <see cref="DataFrame" /> with given column index as a <see cref="Dictionary{TKey, TValue}" />.</returns>
+        public Dictionary<string, object> SelectColumn(int columnIndex)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the selected column in this <see cref="DataFrame" /> with given column name as a <see cref="Dictionary{TKey, TValue}" />.
+        /// </summary>
+        /// <param name="columnName">The name of the column to return.</param>
+        /// <returns>The selected column in this <see cref="DataFrame" /> with given column name as a <see cref="Dictionary{TKey, TValue}" />.</returns>
+        public Dictionary<string, object> SelectColumn(string columnName)
+        {
+            return null;
         }
 
         /// <summary>
