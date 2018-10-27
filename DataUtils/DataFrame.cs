@@ -18,6 +18,12 @@ namespace DataUtils
     // * Add row.
     // * Constructor accepting a list of dictionary with same keys.
     // * Maintain column label and row label when performing mathematical operations between 2 DataFrames.
+    // * Add support for multi-level indexing for both rows and columns (supports partial indexing).
+    // * Concatenate and append 2 DataFrame objects (combine 2 DataFrame object on the row and column direction).
+    //   Throw an exception if the result of combination has duplicated row or column names.
+    // * One-to-one merge.
+    // * Simple query.
+    // * Vectorized string operations.
 
 
     /// <summary>
@@ -91,6 +97,11 @@ namespace DataUtils
         /// <param name="numLines">The number of records to return.</param>
         /// <returns></returns>
         public IEnumerable<string> Head(int numLines = 5)
+        {
+            return null;
+        }
+
+        public IEnumerable<string> Tail(int numLines = 5)
         {
             return null;
         }

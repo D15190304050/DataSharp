@@ -8,8 +8,20 @@ namespace Mathematics
 {
     public class Tensor<T>
     {
-        public int Dimensions { get; }
-        //public
+        /// <summary>
+        /// Shape of this <see cref="Tensor{T}" />.
+        /// </summary>
+        public Vector Shape { get; }
+
+        /// <summary>
+        /// Reads and returns a tensor stored in the specified CSV file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public Tensor<T> ReadCsv(string filePath)
+        {
+            return null;
+        }
 
         public void Reshape(params int[] dimensions)
         {
