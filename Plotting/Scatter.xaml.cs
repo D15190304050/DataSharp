@@ -13,6 +13,34 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Mathematics;
 
+// Unsolved:
+// * MATLAB-style state-based interface.
+// * Object-oriented interface.
+// * XLabel, YLabel, Title, Legend
+// * Axis scaling.
+// * Color bar.
+// * FillBetween(x value, lower y-bound, upper y-bound, color)
+// * Meshgrid
+// * Contour, which supports "contour label", color map,
+// * Histogram
+// * Histogram2D with color bar.
+// * HexBin
+// * Legend, set positions (upper/lower left/center/right)
+// * Color limit (color range)
+// * Color map.
+// * subplots, make it easy to access and modify each subplot
+// * ShareX, ShareY
+// * GridSpecification
+// * Text annotation, support coordinate transform, including ax.transData and ax.transAxes of python matplotlib.
+// * Arrows
+// * Fine-grained adjust on ticks.
+// * Grid on.
+// * Interactive 3D plot.
+//    - Grid / Triangulated 3D surface.
+// * High level plot API like seaborn.
+// * PairPlot like seaborn.
+// * Violin plot.
+
 namespace Plotting
 {
     /// <summary>
@@ -22,7 +50,7 @@ namespace Plotting
     {
         public double PointRadius { get; set; }
         public double PlottingIndent { get; set; }
-
+        
         private LinkedList<DataPoint> points;
 
         public Scatter()
@@ -48,6 +76,7 @@ namespace Plotting
             foreach (DataPoint point in pointsToPlot)
                 points.AddLast(point);
             Plot();
+            
         }
 
         private void Plot()
@@ -115,6 +144,10 @@ namespace Plotting
                 
                 
             }
+        }
+
+        public void SaveFigure(string filePath)
+        {
         }
     }
 }
