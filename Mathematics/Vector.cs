@@ -12,6 +12,9 @@ namespace Mathematics
     [Serializable]
     public class Vector
     {
+        // Unsolved:
+        // * Slice.
+
         /// <summary>
         /// The array that contains every components of this Vector.
         /// </summary>

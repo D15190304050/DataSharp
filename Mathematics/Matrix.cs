@@ -9,6 +9,9 @@ namespace Mathematics
     [Serializable]
     public class Matrix
     {
+        // Unsolved:
+        // * Slice.
+
         /// <summary>
         /// The internal representation of this matrix.
         /// </summary>
