@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MachineLearning
 {
-    public class Model
+    public abstract class Model
     {
         // Unsolved:
         // * Accuracy(): returns the accuracy of the model on the given test data.
@@ -28,6 +28,27 @@ namespace MachineLearning
 
         // class NaiveBayesClassifier
         // class GaussianNaiveBayesClassifier
+
+        // Model MakePipeline(): like make_pipeline of the sklearn (sklearn.pipeline.make_pipeline) package of python
+        // Support Gaussian basis function for linear regression.
+
+        // SVM
+        // * public IEnumerable<Vector> SupportVectors { get; }
+
+        // public abstract class Classifier : Model
+        // * ClassificationReport()
+
+        // public class CrossValidation
+        // * TrainTestSplit(data, labels, double trainingPortion, int validationFolds, int randomSeed) => (trainingData, testData, trainingLabels, testLabels)
+
+        // public class RandomNumberGenerator
+        // * public RandomNumberGenerator(int seed)
+
+        // public class PrincipalComponentAnalysis
+        // * public PrincipalComponentAnalysis(int components)
+        // * public PrincipalComponentAnalysis(double keepRatio) => how many variance should be preserved
+        // * public void Fit(data)
+        // * compute the cumulative explained variance.
 
         public void Fit()
         {

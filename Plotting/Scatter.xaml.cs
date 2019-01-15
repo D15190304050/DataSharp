@@ -40,6 +40,8 @@ using Mathematics;
 // * High level plot API like seaborn.
 // * PairPlot like seaborn.
 // * Violin plot.
+// * public Figure Subplots(int numRows, int numColumns)
+// * ax.flat
 
 namespace Plotting
 {
