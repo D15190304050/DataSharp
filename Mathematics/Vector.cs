@@ -18,7 +18,7 @@ namespace Mathematics
         /// <summary>
         /// The array that contains every components of this Vector.
         /// </summary>
-        private double[] vector;
+        private readonly double[] vector;
 
         /// <summary>
         /// Gets or sets the value of the components with index i in the Vector.
@@ -102,7 +102,7 @@ namespace Mathematics
         public Vector(Vector vector)
         {
             if (vector == null)
-                throw new ArgumentNullException("The input vector must not be null.");
+                throw new ArgumentNullException(nameof(vector), "The input vector must not be null.");
             this.vector = new double[vector.Count];
             for (int i = 0; i < vector.Count; i++)
                 this.vector[i] = vector[i];
@@ -403,21 +403,21 @@ namespace Mathematics
         /// <summary>
         /// Returns true if the given Vector equals to this Vector, otherwise, false.
         /// </summary>
-        /// <param name="vector">The given Vector.</param>
+        /// <param name="that">The given Vector.</param>
         /// <param name="epsilon">The minimum positive double value when the program determine whether the difference of 2 scalar is 0 or not.</param>
         /// <returns>true if the given Vector equals to this Vector, otherwise, false.</returns>
         /// <exception cref="ArgumentNullException">If the input Vector is null.</exception>
-        public bool Equals(Vector vector, double epsilon = 1e-5)
+        public bool Equals(Vector that, double epsilon = 1e-5)
         {
-            if (vector == null)
+            if (that == null)
                 return false;
 
-            if (this.Count != vector.Count)
+            if (this.Count != that.Count)
                 return false;
 
             for (int i = 0; i < this.Count; i++)
             {
-                if (Math.Abs(this[i] - vector[i]) > epsilon)
+                if (Math.Abs(this[i] - that[i]) > epsilon)
                     return false;
             }
 

@@ -51,12 +51,15 @@
     <Compile Include="GaussianKernel.cs" />
     <Compile Include="IClustering.cs" />
     <Compile Include="IKernel.cs" />
+    <Compile Include="ISupervisedModel.cs" />
+    <Compile Include="IUnsupervisedModel.cs" />
     <Compile Include="KMeans.cs" />
     <Compile Include="KMeansPlusPlus.cs" />
     <Compile Include="KNearestNeighbor.cs" />
     <Compile Include="LinearKernel.cs" />
     <Compile Include="MachineLearningUtil.cs" />
     <Compile Include="Model.cs" />
+    <Compile Include="SupervisedPerformanceMeasure.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SupervisedModel.cs" />

@@ -49,6 +49,20 @@ namespace MachineLearning
         // * public PrincipalComponentAnalysis(double keepRatio) => how many variance should be preserved
         // * public void Fit(data)
         // * compute the cumulative explained variance.
+        // * public Vector[] InverseTransform(Vector[] compressedData) => returns the data re-constructed by PCA.
+        // * public Vector[] Transform(Vector[] data) => returns the compressed data.
+
+        // namespace MachineLearning.Datasets
+        // * Provides simple open datasets for machine learning.
+        // * Or maybe this can be a simple class => public class Datasets
+        // * public string Info(): get a quick description of the data.
+        // * public void PlotHistogram(): plot histogram for each numerical attribute of the dataset.
+
+        // public class GridSearch
+        // Performing grid search to find the best hyper-parameter set from the given range.
+
+        // public class GridSearchCrossValidation
+        // Performing grid search to find the best hyper-parameter set from the given range by cross validation.
 
         public void Fit()
         {
