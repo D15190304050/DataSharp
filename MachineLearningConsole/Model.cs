@@ -21,7 +21,16 @@ namespace MachineLearning
 
         // TF-IDF
 
+        // Methods for the Model class.
+        // * Fit(trainingFeatures, trainingLabels)
         // Fit the model using the training data.
+        // * EvaluationResult Evaluate(testFeatures, testLabels, EvaluationOptions)
+        // [Flag] EvaluationOptions, including accuracy, mean squared error, mean absolute error, precision and other options.
+        // EvaluationResult: an entity class, you can get properties of corresponding evaluation metrics.
+        // * public void NameScope(string name): Generate a scope (block) with the unified name, all the components in the same name scope will be shown as an entire block in tensorboard.
+        // Animation toggle for data flow can be triggered.
+        // All visualization result shown in browser are maintained by JavaScript, with over 20k lines of code.
+        // Using browser instead of a windowed program is for cross-platform.
 
         // class ProbabilityClassifier
         // * PredictProbability(samples): probabilityOfSample 
@@ -64,6 +73,18 @@ namespace MachineLearning
         // public class GridSearchCrossValidation
         // Performing grid search to find the best hyper-parameter set from the given range by cross validation.
 
+        // Callback functions for model training process.
+        // This can be delegate, though in python it is a class implemented an interface.
+        // * OnEpochBegin()
+        // * OnEpochEnd()
+
+        // public class Summary
+        // Provides methods for summary like TF summary.
+        // * Histogram() like tensorboard.
+        // * Scalar like tensorboard.
+        // * Computational graph.
+        // * Draw graph in the browser.
+
         public void Fit()
         {
         }
@@ -76,6 +97,26 @@ namespace MachineLearning
         public double Accuracy()
         {
             return 0;
+        }
+
+        // Question: which one is better: property or method.
+        /// <summary>
+        /// Returns the summary information of this model.
+        /// </summary>
+        /// <returns></returns>
+        public string Summary()
+        {
+            return "";
+        }
+
+        public void Save(string modelPath)
+        {
+
+        }
+
+        public static Model Restore(string modelPath)
+        {
+            return null;
         }
     }
 }
