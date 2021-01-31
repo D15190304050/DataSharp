@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachineLearning
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// The SupervisedModel represents the root class of supervised machine learning algorithms.

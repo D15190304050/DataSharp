@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mathematics
+namespace DataSharp.Mathematics
 {
     /// <summary>
     /// The CombinationHelper class provides a static method for computing the combinations of a speified array with the specified number of element to be extracted.

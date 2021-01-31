@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mathematics
+namespace DataSharp.Mathematics
 {
     /// <summary>
     /// The SetHelper class provides static method for supporting some frequent set operations.

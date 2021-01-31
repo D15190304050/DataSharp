@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mathematics;
+using DataSharp.Mathematics;
 
-namespace MachineLearning
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// The IKernel interface provides a member method for applying kernel function on 2 vectors.

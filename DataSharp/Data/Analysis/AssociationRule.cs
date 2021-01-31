@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataMiningConsole
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// The AssociationRule class represents the associatoin rule in the domain of data mining.

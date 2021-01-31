@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mathematics;
+using DataSharp.Mathematics;
 
-namespace DataMiningConsole
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// The AssociationRules class provides a static method for generating association rules from the extracted frequent itemsets.

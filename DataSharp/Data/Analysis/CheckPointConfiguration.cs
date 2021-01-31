@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachineLearning
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// The CheckPointConfiguration class represents the way to save check points of machine learning models during training.

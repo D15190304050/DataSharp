@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataMiningConsole
+namespace DataSharp.Data.Analysis
 {
     public static class FunctionalityTest
     {

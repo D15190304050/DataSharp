@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Mathematics
+namespace DataSharp.Mathematics
 {
     /// <summary>
     /// The FunctionalityTest class provides the prototypes of some functions will be used in this project along with

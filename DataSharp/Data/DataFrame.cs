@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataUtils
+namespace DataSharp.Data
 {
     // Unsolved:
     //     Here `unsolved` means that the APIs of this class is not determined.

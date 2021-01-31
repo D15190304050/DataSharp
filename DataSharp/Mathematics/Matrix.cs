@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Mathematics
+namespace DataSharp.Mathematics
 {
     /// <summary>
     /// The Matrix class represents a matrix in mathematics. This class provides some corresponding operation.

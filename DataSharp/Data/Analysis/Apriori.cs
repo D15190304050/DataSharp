@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mathematics;
+using DataSharp.Mathematics;
 
-namespace DataMiningConsole
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// The Apriori class represents the Apriori algorithm that is used for finding frequent itemsets from specified data table.

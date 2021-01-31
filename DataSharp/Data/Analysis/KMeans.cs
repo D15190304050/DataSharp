@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mathematics;
+using DataSharp.Mathematics;
 
-namespace MachineLearning
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// The KMeans class impelemts the k-means algorithm.

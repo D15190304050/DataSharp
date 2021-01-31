@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mathematics;
+using DataSharp.Mathematics;
 using System.IO;
 
-namespace MachineLearning
+namespace DataSharp.Data.Analysis
 {
     public class MachineLearningUtil
     {

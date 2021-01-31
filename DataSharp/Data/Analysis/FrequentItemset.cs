@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataMiningConsole
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// The FrequentItemset class represents a solver to extract frequent itemsets from given data base and data table.

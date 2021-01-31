@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachineLearning
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// C4.5 algorithm.

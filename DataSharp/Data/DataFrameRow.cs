@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataUtils
+namespace DataSharp.Data
 {
     /// <summary>
     /// The <see cref="DataFrameRow" /> class represents a row in a <see cref="DataFrame" /> that contains a row of data.

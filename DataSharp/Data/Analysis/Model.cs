@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace MachineLearning
+namespace DataSharp.Data.Analysis
 {
     public abstract class Model
     {
@@ -62,7 +62,7 @@ namespace MachineLearning
         // * public Vector[] InverseTransform(Vector[] compressedData) => returns the data re-constructed by PCA.
         // * public Vector[] Transform(Vector[] data) => returns the compressed data.
 
-        // namespace MachineLearning.Datasets
+        // namespace DataSharp.Data.Analysis.Datasets
         // * Provides simple open datasets for machine learning.
         // * Or maybe this can be a simple class => public class Datasets
         // * public string Info(): get a quick description of the data.

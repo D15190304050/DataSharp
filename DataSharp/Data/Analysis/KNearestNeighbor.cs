@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Mathematics;
+using DataSharp.Mathematics;
 
-namespace MachineLearning
+namespace DataSharp.Data.Analysis
 {
     /// <summary>
     /// The KNearestNeighbor class represents the solver of k-Nearest Neighbor algorithm for given data set.
