@@ -35,8 +35,8 @@ namespace DataSharp.Mathematics
         /// <returns>The element of this Matrix with specified row index and column index.</returns>
         public double this[int rowIndex, int columnIndex]
         {
-            get { return matrix[rowIndex][columnIndex]; }
-            set { matrix[rowIndex][columnIndex] = value; }
+            get => matrix[rowIndex][columnIndex];
+            set => matrix[rowIndex][columnIndex] = value;
         }
 
         /// <summary>
