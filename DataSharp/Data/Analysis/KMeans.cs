@@ -100,7 +100,7 @@ namespace DataSharp.Data.Analysis
             // Get the number of samples.
             int numSamples = dataMatrix.Length;
 
-            // A double array stores the cluster infomation of each sample.
+            // A double array that stores the cluster infomation of each sample.
             // clusterInfo[i, 0] indicates the cluster index of i-th sample.
             // clusterInfo[i, 1] indicates the distance between the cluster centroid and i-th sample, measured by given distance metric.
             double[,] clusterInfo = new double[numSamples, 2];
