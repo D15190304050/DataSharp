@@ -319,7 +319,7 @@ namespace DataSharp.Mathematics
         /// </summary>
         /// <param name="rowIndex">The index of a row.</param>
         /// <exception cref="ArgumentOutOfRangeException">If the input row index is out of the range of this Matrix.</exception>
-        private void CheckRowIndex(int rowIndex)
+        private void ValidateRowIndex(int rowIndex)
         {
             if (!RowIndexIsInRange(rowIndex))
                 throw new ArgumentOutOfRangeException(nameof(rowIndex), "rowIndex is out of the range of this Matrix.");
@@ -330,7 +330,7 @@ namespace DataSharp.Mathematics
         /// </summary>
         /// <param name="columnIndex">The index of a column.</param>
         /// <exception cref="ArgumentOutOfRangeException">If the input column index is out of the range of this Matrix.</exception>
-        private void CheckColumnIndex(int columnIndex)
+        private void ValidateColumnIndex(int columnIndex)
         {
             if (!ColumnIndexIsInRange(columnIndex))
                 throw new ArgumentOutOfRangeException(nameof(columnIndex), "columnIndex is out of the range of this Matrix.");
@@ -345,7 +345,7 @@ namespace DataSharp.Mathematics
         /// <param name="endColumnIndex">The end column index of the sub region (inclusive).</param>
         /// <exception cref="ArgumentOutOfRangeException">If one of the indices is out of range of this Matrix.</exception>
         /// <exception cref="ArgumentException">If the end index is not greater than the start index (both row and column).</exception>
-        private void CheckIndices(int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
+        private void ValidateIndexes(int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
             // Write them here because this operation will return the parameter name as well.
             if (!RowIndexIsInRange(startRowIndex))
@@ -367,7 +367,7 @@ namespace DataSharp.Mathematics
         /// Throws ArgumentException if this Matrix is not a square matrix.
         /// </summary>
         /// <exception cref="ArgumentException">If this Matrix is not a square matrix.</exception>
-        private void CheckIsSquareMatrix()
+        private void ValidateIsSquareMatrix()
         {
             if (!IsSquareMatrix)
                 throw new ArgumentException("This is not a square matrix.");
@@ -423,7 +423,7 @@ namespace DataSharp.Mathematics
         public void ClearRow(int rowIndex)
         {
             // Check whether the argument is in range.
-            CheckRowIndex(rowIndex);
+            ValidateRowIndex(rowIndex);
 
             // Clear the specified row.
             for (int j = 0; j < this.ColumnCount; j++)
@@ -438,7 +438,7 @@ namespace DataSharp.Mathematics
         public void ClearColumn(int columnIndex)
         {
             // Check whether the argument is in range.
-            CheckColumnIndex(columnIndex);
+            ValidateColumnIndex(columnIndex);
 
             // Clear the specified column.
             for (int i = 0; i < this.RowCount; i++)
@@ -494,7 +494,7 @@ namespace DataSharp.Mathematics
         /// <exception cref="ArgumentException">If the end index is not greater than the start index (both row and column).</exception>
         public void ClearSubMatrix(int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
-            CheckIndices(startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
+            ValidateIndexes(startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
 
             for (int i = startRowIndex; i <= endRowIndex; i++)
             {
@@ -560,7 +560,7 @@ namespace DataSharp.Mathematics
         /// <exception cref="ArgumentOutOfRangeException">If the input row index is out of the range of this Matrix.</exception>
         public Vector GetRow(int rowIndex)
         {
-            CheckRowIndex(rowIndex);
+            ValidateRowIndex(rowIndex);
             return new Vector(matrix[rowIndex]);
         }
 
@@ -575,7 +575,7 @@ namespace DataSharp.Mathematics
         /// <exception cref="ArgumentException">If <paramref name="startColumnIndex" /> or <paramref name="endColumnIndex" /> is out of range or <paramref name="startColumnIndex" /> is not less than <paramref name="endColumnIndex" />.</exception>
         public Vector GetSubRow(int rowIndex, int startColumnIndex, int endColumnIndex)
         {
-            CheckRowIndex(rowIndex);
+            ValidateRowIndex(rowIndex);
 
             // Remainging check will be done here in the Vector's constructor.
             return matrix[rowIndex].GetSubVector(startColumnIndex, endColumnIndex);
@@ -589,7 +589,7 @@ namespace DataSharp.Mathematics
         /// <exception cref="ArgumentOutOfRangeException">If the input column index is out of the range of this Matrix.</exception>
         public Vector GetColumn(int columnIndex)
         {
-            CheckColumnIndex(columnIndex);
+            ValidateColumnIndex(columnIndex);
 
             double[] vector = new double[this.RowCount];
             for (int i = 0; i < vector.Length; i++)
@@ -609,7 +609,7 @@ namespace DataSharp.Mathematics
         /// <exception cref="ArgumentException">If <paramref name="startRowIndex" /> or <paramref name="endRowIndex" /> is out of range or <paramref name="startRowIndex" /> is not less than <paramref name="endRowIndex" />.</exception>
         public Vector GetSubColumn(int columnIndex, int startRowIndex, int endRowIndex)
         {
-            CheckColumnIndex(columnIndex);
+            ValidateColumnIndex(columnIndex);
 
             double[] vector = new double[endRowIndex - startRowIndex + 1];
             for (int i = 0; i < vector.Length; i++)
@@ -626,7 +626,7 @@ namespace DataSharp.Mathematics
         public Matrix UpperTriangular()
         {
             // Only a square matrix have its upper triangular matrix.
-            CheckIsSquareMatrix();
+            ValidateIsSquareMatrix();
 
             // Make a deep copy of this Matrix.
             Matrix result = this.Clone();
@@ -649,7 +649,7 @@ namespace DataSharp.Mathematics
         public Matrix LowerTriangular()
         {
             // Only a square matrix have its lower triangular matrix.
-            CheckIsSquareMatrix();
+            ValidateIsSquareMatrix();
 
             // Make a deep copy of this Matrix.
             Matrix result = this.Clone();
@@ -827,7 +827,7 @@ namespace DataSharp.Mathematics
         public Matrix GetSubMatrix(int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
             // Check input indices before extraction.
-            CheckIndices(startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
+            ValidateIndexes(startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
 
             // Get the row count and column count of the sub-matrix.
             int numRows = endRowIndex - startRowIndex + 1;
@@ -854,7 +854,7 @@ namespace DataSharp.Mathematics
         public Vector GetDiagonal()
         {
             // Only a square matrix have its diagonal.
-            CheckIsSquareMatrix();
+            ValidateIsSquareMatrix();
 
             // Initialize the result Vector.
             Vector result = new Vector(this.RowCount);
@@ -904,7 +904,7 @@ namespace DataSharp.Mathematics
         public Matrix RemoveColumn(int columnIndex)
         {
             // Check the column index before processing.
-            CheckColumnIndex(columnIndex);
+            ValidateColumnIndex(columnIndex);
 
             // Initialize the result Matrix.
             Matrix result = new Matrix(this.RowCount, this.ColumnCount - 1);
@@ -938,7 +938,7 @@ namespace DataSharp.Mathematics
         public void SetColumn(Vector column, int columnIndex)
         {
             // Check the column index and column Vector before processing.
-            CheckColumnIndex(columnIndex);
+            ValidateColumnIndex(columnIndex);
             CheckColumnVector(column);
 
             // Assignment.
@@ -957,7 +957,7 @@ namespace DataSharp.Mathematics
         public void SetColumn(double[] column, int columnIndex)
         {
             // Check the column index before processing.
-            CheckColumnIndex(columnIndex);
+            ValidateColumnIndex(columnIndex);
 
             // Throw exception if the given array is not suitable for the assignment operation.
             if (column == null)
@@ -1009,7 +1009,7 @@ namespace DataSharp.Mathematics
         public Matrix RemoveRow(int rowIndex)
         {
             // Check the column index before processing.
-            CheckRowIndex(rowIndex);
+            ValidateRowIndex(rowIndex);
 
             // Initialize the result Matrix.
             Matrix result = new Matrix(this.RowCount - 1, this.ColumnCount);
@@ -1043,7 +1043,7 @@ namespace DataSharp.Mathematics
         public void SetRow(Vector row, int rowIndex)
         {
             // Check the column index and column Vector before processing.
-            CheckRowIndex(rowIndex);
+            ValidateRowIndex(rowIndex);
             CheckRowVector(row);
 
             // Assignment.
@@ -1062,7 +1062,7 @@ namespace DataSharp.Mathematics
         public void SetRow(double[] row, int rowIndex)
         {
             // Check the row index before processing.
-            CheckRowIndex(rowIndex);
+            ValidateRowIndex(rowIndex);
 
             // Throw exception if the given array is not suitable for the assignment operation.
             if (row == null)
@@ -1088,8 +1088,8 @@ namespace DataSharp.Mathematics
         public void SetSubMatrix(Matrix subMatrix, int startRowIndex, int startColumnIndex)
         {
             // Check start row index and start column index.
-            CheckRowIndex(startColumnIndex);
-            CheckColumnIndex(startColumnIndex);
+            ValidateRowIndex(startColumnIndex);
+            ValidateColumnIndex(startColumnIndex);
 
             // Check whether the size of the sub-region is smaller than the given Matrix.
             if (this.RowCount < subMatrix.RowCount + startRowIndex)
@@ -1117,7 +1117,7 @@ namespace DataSharp.Mathematics
         public void SetDiagonal(Vector diagonal)
         {
             // Check whether this Matrix is square matrix.
-            CheckIsSquareMatrix();
+            ValidateIsSquareMatrix();
 
             // Check the diagonal Vector.
             if (diagonal == null)
@@ -1142,7 +1142,7 @@ namespace DataSharp.Mathematics
         public void SetDiagonal(params double[] diagonal)
         {
             // Check whether this Matrix is square matrix.
-            CheckIsSquareMatrix();
+            ValidateIsSquareMatrix();
 
             // Check the diagonal Vector.
             if (diagonal == null)
