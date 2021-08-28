@@ -289,7 +289,7 @@ namespace DataSharp.Mathematics
             for (int i = 0; i < matrix.RowCount; i++)
             {
                 for (int j = 0; j < matrix.ColumnCount; j++)
-                    matrix[i, j] = StdRandom.Uniform(lowerLimit, upperLimit + 1);
+                    matrix[i, j] = StdRandom.Uniform(lowerLimit, upperLimit);
             }
             return matrix;
         }
