@@ -122,8 +122,8 @@ namespace DataSharp.Mathematics
             Console.WriteLine($"m4 * v1 = {m4 * v1}");
 
             Console.WriteLine("Test for concatenation operation.");
-            Console.WriteLine($"m1.Append(m4) =\n{m1.Append(m4)}");
-            Console.WriteLine($"m1.Stack(m4) =\n{m1.Stack(m4)}");
+            Console.WriteLine($"m1.Append(m4) =\n{m1.AppendRight(m4)}");
+            Console.WriteLine($"m1.Stack(m4) =\n{m1.AppendBottom(m4)}");
 
             m5.ClearColumn(1);
             Console.WriteLine($"After clearing column 1, m5 =\n{m5}");
@@ -159,23 +159,23 @@ namespace DataSharp.Mathematics
             Console.WriteLine($"m5 now =\n{m5}");
             Console.WriteLine($"The matrix that removes column2 from m5 =\n{m5.RemoveColumn(2)}");
             Console.WriteLine($"The matrix that removes column2 from m5 =\n{m5.RemoveRow(2)}");
-            Console.WriteLine($"The matrix that insert v1 as a column to m5 =\n{m5 = m5.InsertColumn(v1)}");
+            Console.WriteLine($"The matrix that insert v1 as a column to m5 =\n{m5 = m5.AppendColumn(v1)}");
             Console.WriteLine($"m6 now =\n{m6}");
-            Console.WriteLine($"The matrix that insert v1 as a row to m6 is =\n{m6.InsertRow(v1)}");
+            Console.WriteLine($"The matrix that insert v1 as a row to m6 is =\n{m6.AppendRow(v1)}");
 
-            m5.SetColumn(v1, 1);
+            m5.SetColumn(1, v1);
             Console.WriteLine($"After setting column 1 of m5 using v1, we get m5 =\n{m5}");
-            m1.SetRow(v1, 1);
+            m1.SetRow(1, v1);
             Console.WriteLine($"After setting row 1 of m5 using v1, we get m1 =\n{m1}");
 
             Console.WriteLine($"m1 is symmetric = {m1.IsSymmetric()}");
             Matrix m7 = Matrix.Ones(3, 3);
             Console.WriteLine($"m7 =\n{m7}");
             Console.WriteLine($"m7 is symmetric = {m7.IsSymmetric()}");
-            m7.SetDiagonal(2, 3, 4);
+            m7.SetDiagonal(new double[] { 2, 3, 4 });
             Console.WriteLine($"After setting diagonal, m7 =\n{m7}\n m7 is symmetric = {m7.IsSymmetric()}");
 
-            m7.SetColumn(new Vector(7, 8, 9), 0);
+            m7.SetColumn(0, new Vector(7, 8, 9));
             Console.WriteLine($"m7 now is: \n{m7}");
             Console.WriteLine("The rows of m7 is:");
             PrintArray(m7.ToRowArrays());

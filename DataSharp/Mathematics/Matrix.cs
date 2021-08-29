@@ -379,7 +379,7 @@ namespace DataSharp.Mathematics
         /// <param name="column">The input column vector to check.</param>
         /// <exception cref="ArgumentNullException">If the input column vector is null.</exception>
         /// <exception cref="ArgumentException">If the input column vector doesn't have the same length as the row count of this matrix.</exception>
-        private void CheckColumnVector(Vector column)
+        private void ValidateColumnVector(Vector column)
         {
             if (column == null)
                 throw new ArgumentNullException(nameof(column), "The column to insert is null.");
@@ -394,7 +394,7 @@ namespace DataSharp.Mathematics
         /// <param name="row">The input row vector to check.</param>
         /// <exception cref="ArgumentNullException">If the input row vector is null.</exception>
         /// <exception cref="ArgumentException">If the input row vector doesn't have the same length as the row count of this matrix.</exception>
-        private void CheckRowVector(Vector row)
+        private void ValidateRowVector(Vector row)
         {
             if (row == null)
                 throw new ArgumentNullException(nameof(row), "The row to insert is null.");
@@ -456,12 +456,12 @@ namespace DataSharp.Mathematics
             for (int i = 0; i < rowIndices.Length; i++)
             {
                 if (!RowIndexIsInRange(rowIndices[i]))
-                    throw new ArgumentOutOfRangeException(nameof(rowIndices), "One of the row indices is out of the range of this Matrix.");
+                    throw new ArgumentOutOfRangeException(nameof(rowIndices), "Row index ( with index: " + i + " is out of the range of the Matrix.");
             }
 
             // Clear those rows.
-            for (int i = 0; i < rowIndices.Length; i++)
-                ClearRow(rowIndices[i]);
+            foreach (int rowIndex in rowIndices)
+                ClearRow(rowIndex);
         }
 
         /// <summary>
@@ -475,7 +475,7 @@ namespace DataSharp.Mathematics
             for (int i = 0; i < columnIndices.Length; i++)
             {
                 if (!ColumnIndexIsInRange(columnIndices[i]))
-                    throw new ArgumentOutOfRangeException(nameof(columnIndices), "One of the column indices is out or the range of this Matrix.");
+                    throw new ArgumentOutOfRangeException(nameof(columnIndices), "Column index ( with index: " + i + " is out of the range of the Matrix.");
             }
 
             // Clear those columns.
@@ -872,10 +872,10 @@ namespace DataSharp.Mathematics
         /// <returns>A Matrix that inserts a column to this Matrix at right side.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="column" /> is null.</exception>
         /// <exception cref="ArgumentException">If the input column vector doesn't have the same length as the row count of this matrix.</exception>
-        public Matrix InsertColumn(Vector column)
+        public Matrix AppendColumn(Vector column)
         {
             // Check the column Vector before processing.
-            CheckColumnVector(column);
+            ValidateColumnVector(column);
 
             // Initialize the result Matrix.
             Matrix result = new Matrix(this.RowCount, this.ColumnCount + 1);
@@ -935,11 +935,11 @@ namespace DataSharp.Mathematics
         /// <exception cref="ArgumentOutOfRangeException">If the input column index is out of the range of this Matrix.</exception>
         /// <exception cref="ArgumentNullException">If the input column Vector is null.</exception>
         /// <exception cref="ArgumentException">If the input column Vector doesn't have the same length as the row count of this matrix.</exception>
-        public void SetColumn(Vector column, int columnIndex)
+        public void SetColumn(int columnIndex, Vector column)
         {
             // Check the column index and column Vector before processing.
+            ValidateColumnVector(column);
             ValidateColumnIndex(columnIndex);
-            CheckColumnVector(column);
 
             // Assignment.
             for (int i = 0; i < this.RowCount; i++)
@@ -954,7 +954,7 @@ namespace DataSharp.Mathematics
         /// <exception cref="ArgumentOutOfRangeException">If the input column index is out of the range of this Matrix.</exception>
         /// <exception cref="ArgumentNullException">If the input double array is null.</exception>
         /// <exception cref="ArgumentException">If the input double array doesn't have the same length as the row count of this matrix.</exception>
-        public void SetColumn(double[] column, int columnIndex)
+        public void SetColumn(int columnIndex, double[] column)
         {
             // Check the column index before processing.
             ValidateColumnIndex(columnIndex);
@@ -977,10 +977,10 @@ namespace DataSharp.Mathematics
         /// <returns>A Matrix that inserts a row to this Matrix at the bottom.</returns>
         /// <exception cref="ArgumentNullException">If the input row vector is null.</exception>
         /// <exception cref="ArgumentException">If the input row vector doesn't have the same length as the row count of this matrix.</exception>
-        public Matrix InsertRow(Vector row)
+        public Matrix AppendRow(Vector row)
         {
             // Check the row Vector before processing.
-            CheckRowVector(row);
+            ValidateRowVector(row);
 
             // Initialize the result Matrix.
             Matrix result = new Matrix(this.RowCount + 1, this.ColumnCount);
@@ -1040,11 +1040,11 @@ namespace DataSharp.Mathematics
         /// <exception cref="ArgumentOutOfRangeException">If the input row index is out of the range of this Matrix.</exception>
         /// <exception cref="ArgumentNullException">If the input row Vector is null.</exception>
         /// <exception cref="ArgumentException">If the input row Vector doesn't have the same length as the row count of this matrix.</exception>
-        public void SetRow(Vector row, int rowIndex)
+        public void SetRow(int rowIndex, Vector row)
         {
             // Check the column index and column Vector before processing.
             ValidateRowIndex(rowIndex);
-            CheckRowVector(row);
+            ValidateRowVector(row);
 
             // Assignment.
             for (int j = 0; j < this.ColumnCount; j++)
@@ -1059,7 +1059,7 @@ namespace DataSharp.Mathematics
         /// <exception cref="ArgumentOutOfRangeException">If the input row index is out of the range of this Matrix.</exception>
         /// <exception cref="ArgumentNullException">If the input double array is null.</exception>
         /// <exception cref="ArgumentException">If the input double array doesn't have the same length as the column count of this matrix.</exception>
-        public void SetRow(double[] row, int rowIndex)
+        public void SetRow(int rowIndex, double[] row)
         {
             // Check the row index before processing.
             ValidateRowIndex(rowIndex);
@@ -1178,7 +1178,7 @@ namespace DataSharp.Mathematics
         /// <returns>A Matrix that whose left part is this Matrix, right part is the given Matrix.</returns>
         /// <exception cref="ArgumentNullException">If the Matrix to append is null.</exception>
         /// <exception cref="ArgumentException">If the row count of the input Matrix is not equal to the the row count of this Matrix.</exception>
-        public Matrix Append(Matrix right)
+        public Matrix AppendRight(Matrix right)
         {
             // Check the given Matrix.
             if (right == null)
@@ -1213,7 +1213,7 @@ namespace DataSharp.Mathematics
         /// <param name="lower">The matrix to stack this matrix upon.</param>
         /// <exception cref="ArgumentNullException">If the Matrix to stack is null.</exception>
         /// <exception cref="ArgumentException">If the column count of the input Matrix is not equal to the the column count of this Matrix.</exception>
-        public Matrix Stack(Matrix lower)
+        public Matrix AppendBottom(Matrix lower)
         {
             // Check the given Matrix.
             if (lower == null)
@@ -1420,7 +1420,7 @@ namespace DataSharp.Mathematics
                 return result;
             }
             else
-                throw new ArgumentException("axis can be only 0 or 1.");
+                throw new ArgumentException("\"axis\" can only be either 0 or 1.");
         }
 
         /// <summary>
@@ -1438,7 +1438,7 @@ namespace DataSharp.Mathematics
             else if (axis == 1)
                 return Sum(1) / this.ColumnCount;
             else
-                throw new ArgumentException("axis can be only 0 or 1.");
+                throw new ArgumentException("\"axis\" can only be either 0 or 1.");
         }
 
         /// <summary>
@@ -1491,7 +1491,7 @@ namespace DataSharp.Mathematics
         public static Matrix operator +(Matrix matrix1, Matrix matrix2)
         {
             // Check 2 input matrices.
-            CheckMatrices(matrix1, matrix2);
+            ValidateMatrices(matrix1, matrix2);
 
             // Make a deep copy of this Matrix.
             Matrix result = matrix1.Clone();
@@ -1572,7 +1572,7 @@ namespace DataSharp.Mathematics
         public static Matrix operator -(Matrix matrix1, Matrix matrix2)
         {
             // Check 2 input matrices.
-            CheckMatrices(matrix1, matrix2);
+            ValidateMatrices(matrix1, matrix2);
 
             // Make a deep copy of this Matrix.
             Matrix result = matrix1.Clone();
@@ -1766,7 +1766,7 @@ namespace DataSharp.Mathematics
         /// <param name="matrix1">A Matrix.</param>
         /// <param name="matrix2">The other Matrix.</param>
         /// <exception cref="ArgumentException">If input matrices don't have the same shape.</exception>
-        private static void HaveSameShape(Matrix matrix1, Matrix matrix2)
+        private static void validateShape(Matrix matrix1, Matrix matrix2)
         {
             if ((matrix1.RowCount != matrix2.RowCount) || (matrix1.ColumnCount != matrix2.ColumnCount))
                 throw new ArgumentException("Input matrices don't have the same shape.");
@@ -1779,7 +1779,7 @@ namespace DataSharp.Mathematics
         /// <param name="matrix2">The other Matrix.</param>
         /// <exception cref="ArgumentNullException">If one of the input Matrix is null.</exception>
         /// <exception cref="ArgumentException">If input matrices don't have the same shape.</exception>
-        private static void CheckMatrices(Matrix matrix1, Matrix matrix2)
+        private static void ValidateMatrices(Matrix matrix1, Matrix matrix2)
         {
             // Check if one of the Matrix is null.
             if (matrix1 == null)
@@ -1788,7 +1788,7 @@ namespace DataSharp.Mathematics
                 throw new ArgumentNullException(nameof(matrix2), "matrix2 is null");
 
             // Check whether they have the same shape.
-            HaveSameShape(matrix1, matrix2);
+            validateShape(matrix1, matrix2);
         }
 
         /// <summary>
@@ -1800,7 +1800,7 @@ namespace DataSharp.Mathematics
             // Use StringBuilder to accelerate.
             StringBuilder s = new StringBuilder();
 
-            // Gether contents for the StringBuilder.
+            // Gather contents for the StringBuilder.
             for (int i = 0; i < this.RowCount; i++)
             {
                 for (int j = 0; j < this.ColumnCount; j++)
