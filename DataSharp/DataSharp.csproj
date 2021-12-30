@@ -5,10 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Data\Sql\" />
     <Folder Include="Plotting\" />
     <Folder Include="Fun\" />
     <Folder Include="Geo\" />
     <Folder Include="Graphs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
 </Project>

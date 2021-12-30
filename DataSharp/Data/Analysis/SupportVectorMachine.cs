@@ -308,7 +308,7 @@ namespace DataSharp.Data.Analysis
                 throw new ArgumentNullException("Kernel");
 
             for (int i = 0; i < dataMatrix.RowCount; i++)
-                kernelValues.SetColumn(Kernel.KernelTransform(dataMatrix, dataMatrix.GetRow(i)), i);
+                kernelValues.SetColumn(i, Kernel.KernelTransform(dataMatrix, dataMatrix.GetRow(i)));
 
             // Iteration count starts from 0.
             int iterations = 0;
@@ -373,7 +373,7 @@ namespace DataSharp.Data.Analysis
             foreach (int i in nonZeroIndices)
             {
                 supportVectorLabels[rowCount] = labels[i];
-                supportVectors.SetRow(dataMatrix.GetRow(i), rowCount);
+                supportVectors.SetRow(rowCount, dataMatrix.GetRow(i));
                 supportVectorAlphas[rowCount] = alphas[i];
                 rowCount++;
             }

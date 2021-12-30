@@ -183,27 +183,6 @@ namespace DataSharp.Data.Analysis
         }
 
         /// <summary>
-        /// Unit test method for the ArtificialBeeColony class.
-        /// </summary>
-        public static void AbcTest()
-        {
-            double[] lowerBounds = { -100, -100 };
-            double[] upperBounds = { 100, 100 };
-            ArtificialBeeColony abc = new ArtificialBeeColony(40, 20, 1000, 2, lowerBounds, upperBounds);
-            abc.ObjectiveFunction = AbcTestObjective;
-
-            try
-            {
-                double value = abc.Solve(out Vector solution);
-                Console.WriteLine(value);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.StackTrace);
-            }
-        }
-
-        /// <summary>
         /// Objective function for the AbcTest() method().
         /// </summary>
         /// <returns></returns>

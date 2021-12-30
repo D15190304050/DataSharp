@@ -14,12 +14,14 @@ namespace DataSharp.Data
     /// </remaars>
     public class DataFrameRow
     {
+        private List<object> rowData;
 
+        
 
         public object this[int i]
         {
-            get { return null; }
-            set { }
+            get { return rowData[i]; }
+            set { rowData[i] = value; }
         }
 
         public object this[string columnName]

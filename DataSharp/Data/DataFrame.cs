@@ -24,6 +24,7 @@ namespace DataSharp.Data
     // * One-to-one merge.
     // * Simple query.
     // * Vectorized string operations.
+    // * Add SQL support.
 
 
     /// <summary>
