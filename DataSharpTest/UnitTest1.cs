@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Numerics;
 
 namespace DataSharpTest
 {
@@ -9,6 +10,7 @@ namespace DataSharpTest
         [TestMethod]
         public void TestMethod1()
         {
+            Complex c = new Complex();
         }
     }
 }
