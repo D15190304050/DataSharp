@@ -5,19 +5,19 @@ using System.Threading;
 
 namespace DataSharp.Data.Types.Atomic
 {
-    public abstract class AtomicBase<T>
+    public class AtomicDouble : AtomicBase<double>
     {
-        protected T value;
+        /// <summary>
+        /// Creates a new <c>AtomicDouble</c> instance with an initial value of <c>0</c>.
+        /// </summary>
+        public AtomicDouble() : this(0) { }
 
         /// <summary>
-        /// This method returns the current value.
+        /// Creates a new <c>AtomicDouble</c> instance with the initial value provided.
         /// </summary>
-        /// <returns>
-        /// The value of the <c>value</c> accessed atomically.
-        /// </returns>
-        public T Get()
+        public AtomicDouble(double value)
         {
-            return value;
+            this.value = value;
         }
 
         /// <summary>
@@ -26,7 +26,10 @@ namespace DataSharp.Data.Types.Atomic
         /// <param name="value">
         /// The new value to set.
         /// </param>
-        public abstract void Set(T value);
+        public override void Set(double value)
+        {
+            Interlocked.Exchange(ref this.value, value);
+        }
 
         /// <summary>
         /// This method atomically sets the value and returns the original value.
@@ -37,7 +40,10 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The value before setting to the new value.
         /// </returns>
-        public abstract T GetAndSet(T value);
+        public override double GetAndSet(double value)
+        {
+            return Interlocked.Exchange(ref this.value, value);
+        }
 
         /// <summary>
         /// Atomically sets the value to the given updated value if the current value <c>==</c> the expected value.
@@ -51,7 +57,10 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// <c>true</c> if the comparison and set was successful. A <c>false</c> indicates the comparison failed.
         /// </returns>
-        public abstract bool CompareAndSet(T expected, T result);
+        public override bool CompareAndSet(double expected, double result)
+        {
+            return Interlocked.CompareExchange(ref value, result, expected) == expected;
+        }
 
         /// <summary>
         /// This method atomically adds a <c>delta</c> the value and returns the original value.
@@ -62,7 +71,18 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The value before adding the delta.
         /// </returns>
-        public abstract T GetAndAdd(T delta);
+        public override double GetAndAdd(double delta)
+        {
+            for (; ; )
+            {
+                double current = Get();
+                double next = current + delta;
+                if (CompareAndSet(current, next))
+                {
+                    return current;
+                }
+            }
+        }
 
         /// <summary>
         /// This method increments the value by 1 and returns the previous value. This is the atomic 
@@ -71,7 +91,10 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The value before incrementing.
         /// </returns>
-        public abstract T Increment();
+        public override double Increment()
+        {
+            return GetAndAdd(1);
+        }
 
         /// <summary>
         /// This method decrements the value by 1 and returns the previous value. This is the atomic 
@@ -80,6 +103,14 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The value before decrementing.
         /// </returns>
-        public abstract T Decrement();
+        public override double Decrement()
+        {
+            return GetAndAdd(-1);
+        }
+
+        public static implicit operator double(AtomicDouble value)
+        {
+            return value.Get();
+        }
     }
 }

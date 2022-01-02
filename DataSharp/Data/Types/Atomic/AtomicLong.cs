@@ -5,17 +5,17 @@ using System.Threading;
 
 namespace DataSharp.Data.Types.Atomic
 {
-    class AtomicInt : AtomicBase<int>
+    public class AtomicLong : AtomicBase<long>
     {
         /// <summary>
-        /// Creates a new <c>AtomicInt</c> instance with an initial value of <c>0</c>.
+        /// Creates a new <c>AtomicLong</c> instance with an initial value of <c>0</c>.
         /// </summary>
-        public AtomicInt() : this(0) {}
+        public AtomicLong() : this(0) { }
 
         /// <summary>
-        /// Creates a new <c>AtomicInt</c> instance with the initial value provided.
+        /// Creates a new <c>AtomicLong</c> instance with the initial value provided.
         /// </summary>
-        public AtomicInt(int value)
+        public AtomicLong(long value)
         {
             this.value = value;
         }
@@ -26,7 +26,7 @@ namespace DataSharp.Data.Types.Atomic
         /// <param name="value">
         /// The new value to set.
         /// </param>
-        public override void Set(int value)
+        public override void Set(long value)
         {
             Interlocked.Exchange(ref this.value, value);
         }
@@ -40,7 +40,7 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The value before setting to the new value.
         /// </returns>
-        public override int GetAndSet(int value)
+        public override long GetAndSet(long value)
         {
             return Interlocked.Exchange(ref this.value, value);
         }
@@ -57,7 +57,7 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// <c>true</c> if the comparison and set was successful. A <c>false</c> indicates the comparison failed.
         /// </returns>
-        public override bool CompareAndSet(int expected, int result)
+        public override bool CompareAndSet(long expected, long result)
         {
             return Interlocked.CompareExchange(ref value, result, expected) == expected;
         }
@@ -71,7 +71,7 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The updated value.
         /// </returns>
-        public override int AddAndGet(int delta)
+        public override long AddAndGet(long delta)
         {
             return Interlocked.Add(ref value, delta);
         }
@@ -85,12 +85,12 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The value before adding the delta.
         /// </returns>
-        public override int GetAndAdd(int delta)
+        public override long GetAndAdd(long delta)
         {
             for (; ; )
             {
-                int current = Get();
-                int next = current + delta;
+                long current = Get();
+                long next = current + delta;
                 if (CompareAndSet(current, next))
                 {
                     return current;
@@ -105,7 +105,7 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The value before incrementing.
         /// </returns>
-        public override int Increment()
+        public override long Increment()
         {
             return GetAndAdd(1);
         }
@@ -117,7 +117,7 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The value before decrementing.
         /// </returns>
-        public override int Decrement()
+        public override long Decrement()
         {
             return GetAndAdd(-1);
         }
@@ -128,8 +128,8 @@ namespace DataSharp.Data.Types.Atomic
         /// </summary>
         /// <returns>
         /// The value after incrementing.
-        /// </returns>
-        public override int PreIncrement()
+        /// </returns>s
+        public override long PreIncrement()
         {
             return Interlocked.Increment(ref value);
         }
@@ -141,15 +141,12 @@ namespace DataSharp.Data.Types.Atomic
         /// <returns>
         /// The value after decrementing.
         /// </returns>
-        public override int PreDecrement()
+        public override long PreDecrement()
         {
             return Interlocked.Decrement(ref value);
         }
 
-        /// <summary>
-        /// This operator allows an implicit cast from <c>AtomicInt</c> to <c>int</c>.
-        /// </summary>
-        public static implicit operator int(AtomicInt value)
+        public static implicit operator long(AtomicLong value)
         {
             return value.Get();
         }
