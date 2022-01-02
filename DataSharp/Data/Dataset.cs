@@ -4,7 +4,9 @@ using System.Text;
 
 namespace DataSharp.Data
 {
-    public class Dataset
+    [Serializable]
+    public class Dataset<T>
     {
+        
     }
 }
