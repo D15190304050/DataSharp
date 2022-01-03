@@ -10,15 +10,9 @@ namespace DataSharp.Data.Types.Atomic
         protected T value;
 
         /// <summary>
-        /// This method returns the current value.
-        /// </summary>
-        /// <returns>
         /// The value of the <c>value</c> accessed atomically.
-        /// </returns>
-        public T Get()
-        {
-            return value;
-        }
+        /// </summary>
+        public T Value { get { return value; } }
 
         /// <summary>
         /// This method sets the current value atomically.
@@ -81,5 +75,34 @@ namespace DataSharp.Data.Types.Atomic
         /// The value before decrementing.
         /// </returns>
         public abstract T Decrement();
+
+        /// <summary>
+        /// Atomically adds the given value to the current value.
+        /// </summary>
+        /// <param name="delta">
+        /// The value to add.
+        /// </param>
+        /// <returns>
+        /// The updated value.
+        /// </returns>
+        public abstract T AddAndGet(T delta);
+
+        /// <summary>
+        /// This method increments the value by 1 and returns the new value. This is the atomic version 
+        /// of pre-increment.
+        /// </summary>
+        /// <returns>
+        /// The value after incrementing.
+        /// </returns>
+        public abstract T PreIncrement();
+
+        /// <summary>
+        /// This method decrements the value by 1 and returns the new value. This is the atomic version 
+        /// of pre-decrement.
+        /// </summary>
+        /// <returns>
+        /// The value after decrementing.
+        /// </returns>
+        public abstract T PreDecrement();
     }
 }

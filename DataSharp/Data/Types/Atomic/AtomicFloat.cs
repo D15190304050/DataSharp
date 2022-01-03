@@ -75,7 +75,7 @@ namespace DataSharp.Data.Types.Atomic
         {
             for (; ; )
             {
-                float current = Get();
+                float current = value;
                 float next = current + delta;
                 if (CompareAndSet(current, next))
                 {
@@ -110,7 +110,45 @@ namespace DataSharp.Data.Types.Atomic
 
         public static implicit operator float(AtomicFloat value)
         {
-            return value.Get();
+            return value.value;
+        }
+
+        /// <summary>
+        /// Atomically adds the given value to the current value.
+        /// </summary>
+        /// <param name="delta">
+        /// The value to add.
+        /// </param>
+        /// <returns>
+        /// The updated value.
+        /// </returns>
+        public override float AddAndGet(float delta)
+        {
+            return Interlocked.Exchange(ref value, value + delta);
+        }
+
+        /// <summary>
+        /// This method increments the value by 1 and returns the new value. This is the atomic version 
+        /// of pre-increment.
+        /// </summary>
+        /// <returns>
+        /// The value after incrementing.
+        /// </returns>
+        public override float PreIncrement()
+        {
+            return AddAndGet(1);
+        }
+
+        /// <summary>
+        /// This method decrements the value by 1 and returns the new value. This is the atomic version 
+        /// of pre-decrement.
+        /// </summary>
+        /// <returns>
+        /// The value after decrementing.
+        /// </returns>
+        public override float PreDecrement()
+        {
+            return AddAndGet(-1);
         }
     }
 }

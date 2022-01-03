@@ -89,7 +89,7 @@ namespace DataSharp.Data.Types.Atomic
         {
             for (; ; )
             {
-                int current = Get();
+                int current = value;
                 int next = current + delta;
                 if (CompareAndSet(current, next))
                 {
@@ -151,7 +151,7 @@ namespace DataSharp.Data.Types.Atomic
         /// </summary>
         public static implicit operator int(AtomicInt value)
         {
-            return value.Get();
+            return value.value;
         }
     }
 }

@@ -89,7 +89,7 @@ namespace DataSharp.Data.Types.Atomic
         {
             for (; ; )
             {
-                long current = Get();
+                long current = value;
                 long next = current + delta;
                 if (CompareAndSet(current, next))
                 {
@@ -128,7 +128,7 @@ namespace DataSharp.Data.Types.Atomic
         /// </summary>
         /// <returns>
         /// The value after incrementing.
-        /// </returns>s
+        /// </returns>
         public override long PreIncrement()
         {
             return Interlocked.Increment(ref value);
@@ -148,7 +148,7 @@ namespace DataSharp.Data.Types.Atomic
 
         public static implicit operator long(AtomicLong value)
         {
-            return value.Get();
+            return value.value;
         }
     }
 }
