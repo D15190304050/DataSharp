@@ -92,7 +92,20 @@ namespace DataSharp.Data.Types
         /// <returns></returns>
         public static int GetHashCode(object o)
         {
-            return 0;
+            switch (o)
+            {
+                case Array:
+                case IDictionary<string, object>:
+                case Metadata:
+                case long:
+                case double:
+                case bool:
+                case string:
+                case null:
+                    return o.GetHashCode();
+                default:
+                    throw new ArgumentException($"Do not support type ${o.GetType()}");
+            }
         }
     }
 }
